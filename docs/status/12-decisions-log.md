@@ -80,3 +80,10 @@ Phase 2a establishes mock.ts acting as the data service boundary. All shared UI 
 Reason:
 Requirement requested production-minded architecture built without connecting Supabase but ready for it.
 
+
+## Decision 014
+Phase 2b introduces internal taxonomy mapping in mock data, utilizing Next.js \generateStaticParams\ effectively generating \/paslaugos/[slug]\ templates natively mimicking a fast SSG headless CMS payload.
+
+Reason:
+Requirement to remain premium and fast while avoiding connecting to Supabase yet. Ensures when CMS wires in, the data shape swap is trivial.
+
