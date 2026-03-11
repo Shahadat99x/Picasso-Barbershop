@@ -1,19 +1,20 @@
 # Current Status
 
 ## Current Phase
-Phase 2a — Homepage (Completed)
+Phase 2b — Public Pages (Services, Branches, Specialists) (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
 - Phase 1 — Design system and UI foundation
 - Phase 2 — Public shell and global layout
 - Phase 2a — Homepage
+- Phase 2b — Public Pages (Services, Branches, Specialists)
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 2b — Public Pages (Services, Branches, Specialists)
+Phase 2c — Booking flow & Authentication scaffolding
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
