@@ -61,3 +61,8 @@ The project must be delivered phase-by-phase.
 
 Reason:
 This supports AI-agent workflows, smaller commits, better handoffs, and reduced context loss.
+## Decision 011
+Phase 1 established a soft off-white and warm beige aesthetic with rounded cards and deep charcoal text, adhering to the premium and minimal requirement without being overly generic.
+
+Reason:
+As defined in the design system foundation, the 'minimal luxury with soft editorial feel' fits best with these specific Tailwind token values.
