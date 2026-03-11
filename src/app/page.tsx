@@ -2,110 +2,162 @@ import React from "react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { SecondaryButton } from "@/components/ui/SecondaryButton";
+
+// Core Mock Data
+import { 
+  mockFeaturedServices, 
+  mockBranches, 
+  mockSpecialists, 
+  mockTestimonials, 
+  mockBlogPosts 
+} from "@/data/mock";
+
+// UI Cards
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { BranchCard } from "@/components/shared/BranchCard";
+import { SpecialistCard } from "@/components/shared/SpecialistCard";
+import { TestimonialCard } from "@/components/shared/TestimonialCard";
+import { BlogCard } from "@/components/shared/BlogCard";
 import { PromoBanner } from "@/components/shared/PromoBanner";
-import Link from "next/link";
-import { siteConfig } from "@/config/navigation";
+
+// Page Sections
+import { HeroSection } from "@/components/sections/HeroSection";
+import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
+import { GallerySection } from "@/components/sections/GallerySection";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 
 export default function Home() {
   return (
     <main>
-      {/* Temporary Hero */}
-      <Section className="bg-secondary/10 border-b border-border/50">
-        <Container>
-          <div className="py-20 md:py-32 max-w-3xl text-center mx-auto">
-            <span className="block mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-              Welcome to
-            </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-8">
-              {siteConfig.name}
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-              {siteConfig.description}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href={siteConfig.bookingUrl}>
-                <PrimaryButton className="w-full sm:w-auto px-8 text-base h-12">
-                  Book an Appointment
-                </PrimaryButton>
-              </Link>
-              <Link href="/#services">
-                <SecondaryButton className="w-full sm:w-auto px-8 text-base h-12">
-                  View Services
-                </SecondaryButton>
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      {/* 1. Hero */}
+      <HeroSection />
 
-      {/* Temporary Services Preview */}
+      {/* 2. Featured Services */}
       <Section id="services" className="bg-background">
         <Container>
           <SectionHeading 
-            title="Our Services" 
+            title="Signature Services" 
             subtitle="Tailored for the modern gentleman" 
-            align="center"
+            align="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ServiceCard 
-              title="Classic Haircut"
-              description="A precision cut tailored to your face shape and style preferences."
-              price="€35"
-              duration="45 min"
-            />
-            <ServiceCard 
-              title="Beard Trim & Shape"
-              description="Expert shaping and fading using straight razor techniques."
-              price="€25"
-              duration="30 min"
-            />
-            <ServiceCard 
-              title="The Full Experience"
-              description="Haircut, beard sculpt, hot towel shave, and scalp massage."
-              price="€65"
-              duration="90 min"
-            />
+            {mockFeaturedServices.map((service, idx) => (
+              <ServiceCard 
+                key={idx}
+                title={service.title}
+                description={service.description}
+                price={service.price}
+                duration={service.duration}
+              />
+            ))}
           </div>
         </Container>
       </Section>
 
-      {/* Temporary Promo */}
-      <Section className="bg-background !py-0">
-        <Container>
-          <PromoBanner 
-            title="Experience The Full Treatment"
-            description="Book our signature package this month and receive a complimentary styling product tailored to your hair type."
-            ctaText="Book Package"
-          />
-        </Container>
-      </Section>
-
-      {/* Temporary Branches Preview */}
-      <Section id="branches" className="bg-background">
+      {/* 3. Branches Preview */}
+      <Section id="branches" className="bg-secondary/10">
         <Container>
           <SectionHeading 
             title="Our Locations" 
-            subtitle="Find a branch near you" 
+            subtitle="Find a salon near you" 
             align="center"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <BranchCard 
-              name="Old Town Classic"
-              address="Vilniaus g. 22, Vilnius"
-              hours="Mon-Sun: 9:00 - 20:00"
-            />
-            <BranchCard 
-              name="Užupis Retreat"
-              address="Užupio g. 14, Vilnius"
-              hours="Mon-Sat: 10:00 - 19:00"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {mockBranches.map((branch, idx) => (
+              <BranchCard 
+                key={idx}
+                name={branch.name}
+                address={branch.address}
+                hours={branch.hours}
+              />
+            ))}
           </div>
         </Container>
       </Section>
+
+      {/* 4. Why Choose Us */}
+      <WhyChooseUsSection />
+
+      {/* 5. Specialists Preview */}
+      <Section className="bg-background" variant="padded">
+        <Container>
+          <SectionHeading 
+            title="Meet The Team" 
+            subtitle="Master Specialists" 
+            align="left"
+          />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {mockSpecialists.map((specialist, idx) => (
+              <SpecialistCard 
+                key={idx}
+                name={specialist.name}
+                title={specialist.title}
+              />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* 6. Gallery Preview */}
+      <GallerySection />
+
+      {/* 7. Testimonials */}
+      <Section className="bg-secondary/10">
+        <Container>
+          <SectionHeading 
+            title="Client Experiences" 
+            subtitle="Testimonials" 
+            align="center"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {mockTestimonials.map((testimonial, idx) => (
+              <TestimonialCard 
+                key={idx}
+                content={testimonial.content}
+                author={testimonial.author}
+                role={testimonial.role}
+                rating={testimonial.rating}
+              />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* 8. Promotions / Featured Offer */}
+      <Section className="bg-background !py-0 -mt-10 relative z-10">
+        <Container>
+          <PromoBanner 
+            title="First Visit Privilege"
+            description="Experience our premium barbering services with an exclusive 15% discount on your first appointment. Use code WELCOME15 when booking."
+            ctaText="Claim Offer"
+          />
+        </Container>
+      </Section>
+
+      {/* 9. Latest Blog Preview */}
+      <Section id="blog" className="bg-background pt-24">
+        <Container>
+          <SectionHeading 
+            title="Editorial" 
+            subtitle="Journal & Trends" 
+            align="left"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {mockBlogPosts.map((post, idx) => (
+              <BlogCard 
+                key={idx}
+                title={post.title}
+                excerpt={post.excerpt}
+                date={post.date}
+                category={post.category}
+              />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* 10. Final CTA */}
+      <FinalCtaSection />
     </main>
   );
 }

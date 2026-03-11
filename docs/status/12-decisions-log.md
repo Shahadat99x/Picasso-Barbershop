@@ -73,3 +73,10 @@ Phase 2 introduced a centralized navigation object inside \config/navigation.ts\
 Reason:
 As defined in Phase 2 scope, keeping public layout wrappers reusable.
 
+
+## Decision 013
+Phase 2a establishes mock.ts acting as the data service boundary. All shared UI card components in Phase 1 read gracefully from these static lists inside the newly composed Homepage wrapper. This avoids building hardcoded component trees that would be thrown away in Phase 3.
+
+Reason:
+Requirement requested production-minded architecture built without connecting Supabase but ready for it.
+
