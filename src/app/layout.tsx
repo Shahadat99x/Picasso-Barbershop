@@ -8,9 +8,23 @@ import { StickyMobileBookingCTA } from "@/components/shared/StickyMobileBookingC
 
 const inter = Inter({ subsets: ["latin"] });
 
+import { siteConfig } from "@/config/navigation";
+
 export const metadata: Metadata = {
-  title: "Picasso Barbershop",
-  description: "Premium bilingual salon based in Vilnius",
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  openGraph: {
+    type: "website",
+    locale: "lt_LT",
+    url: "https://picassobarbershop.lt",
+    siteName: siteConfig.name,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [{ url: "/og-image.jpg" }],
+  },
 };
 
 export default function RootLayout({
