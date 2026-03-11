@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";

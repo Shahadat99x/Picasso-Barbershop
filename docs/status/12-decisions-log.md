@@ -87,3 +87,7 @@ Phase 2b introduces internal taxonomy mapping in mock data, utilizing Next.js \g
 Reason:
 Requirement to remain premium and fast while avoiding connecting to Supabase yet. Ensures when CMS wires in, the data shape swap is trivial.
 
+
+## Decision 015
+Phase 2c implements the branch specific physical locations structure natively. Map modules are held off behind visual placeholders to deliberately isolate Mapbox/Google API implementations for later interactive optimization phases.
+
