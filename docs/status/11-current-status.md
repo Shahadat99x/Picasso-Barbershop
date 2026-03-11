@@ -1,0 +1,45 @@
+# Current Status
+
+## Current Phase
+Phase 0 — Foundation and repo bootstrap
+
+## Completed Phases
+- none
+
+## In Progress
+- docs creation
+- architecture finalization
+- roadmap confirmation
+- LT/EN strategy confirmation
+- admin scope confirmation
+- basic PWA planning confirmation
+
+## Next Planned Phase
+Phase 1 — Design system and UI foundation
+
+## Known Decisions Already Confirmed
+- Lithuanian is the primary language
+- English is the secondary language
+- public site should be built before full admin modules
+- one Super Admin is enough for V1
+- Next.js + Cloudinary + Vercel + optional Supabase stack is approved
+- basic PWA is planned
+- premium frontend is the highest priority
+
+## Current Risks
+- real brand identity may still need refinement
+- real service list may evolve
+- branch-specific content may not yet be final
+- gallery assets may not yet be finalized
+- booking provider details may still need final confirmation
+
+## Notes for Next AI Session
+Read these files first:
+- `/docs/foundation/01-project-overview.md`
+- `/docs/foundation/03-information-architecture.md`
+- `/docs/foundation/04-content-model.md`
+- `/docs/planning/08-phase-index.md`
+- `/docs/foundation/06-design-system.md`
+
+Implement only one phase at a time.
+Do not overbuild admin before public templates are proven.
