@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { mainNav } from "@/config/navigation";
+import Link from "next/link";
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,11 +44,19 @@ export function MobileNav() {
         </div>
 
         <nav className="flex flex-col gap-6 text-lg font-medium">
-          <a href="#" className="hover:text-primary transition-colors">Services</a>
-          <a href="#" className="hover:text-primary transition-colors">Branches</a>
-          <a href="#" className="hover:text-primary transition-colors">Gallery</a>
-          <a href="#" className="hover:text-primary transition-colors">About</a>
-          <a href="#" className="hover:text-primary transition-colors">Contact</a>
+          {mainNav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={toggle}
+              className="hover:text-primary transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link href="/#contact" onClick={toggle} className="hover:text-primary transition-colors">
+            Contact
+          </Link>
         </nav>
 
         <div className="mt-12 flex flex-col gap-6">

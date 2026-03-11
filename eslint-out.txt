@@ -1,0 +1,6 @@
+
+W:\Picasso Barbershop\src\components\layout\MobileNav.tsx
+  56:11  error  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+Γ£û 1 problem (1 error, 0 warnings)
+
