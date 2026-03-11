@@ -1,21 +1,17 @@
 # Current Status
 
 ## Current Phase
-Phase 0 — Foundation and repo bootstrap
+Phase 1 — Design system and UI foundation (Completed)
 
 ## Completed Phases
-- none
+- Phase 0 — Foundation and repo bootstrap
+- Phase 1 — Design system and UI foundation
 
 ## In Progress
-- docs creation
-- architecture finalization
-- roadmap confirmation
-- LT/EN strategy confirmation
-- admin scope confirmation
-- basic PWA planning confirmation
+- none
 
 ## Next Planned Phase
-Phase 1 — Design system and UI foundation
+Phase 2 — Public shell and global layout / Phase 2a — Homepage
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
