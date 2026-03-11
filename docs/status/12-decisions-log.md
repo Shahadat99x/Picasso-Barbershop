@@ -66,3 +66,10 @@ Phase 1 established a soft off-white and warm beige aesthetic with rounded cards
 
 Reason:
 As defined in the design system foundation, the 'minimal luxury with soft editorial feel' fits best with these specific Tailwind token values.
+
+## Decision 012
+Phase 2 introduced a centralized navigation object inside \config/navigation.ts\ mapped across SiteHeader and SiteFooter. This centralizes links allowing easier injection of localization routines in a later phase without hardcoding UI shells.
+
+Reason:
+As defined in Phase 2 scope, keeping public layout wrappers reusable.
+
