@@ -91,3 +91,8 @@ Requirement to remain premium and fast while avoiding connecting to Supabase yet
 ## Decision 015
 Phase 2c implements the branch specific physical locations structure natively. Map modules are held off behind visual placeholders to deliberately isolate Mapbox/Google API implementations for later interactive optimization phases.
 
+## Decision 016
+Phase 3 focuses strictly on Branches (Index and Dynamic Details) based on `src/data/branches.ts`.
+Reason:
+The Phase Index numbering drifted from actual implementation. Booking scaffolding was completed earlier (as Phase 2c in logs), so Phase 3 is now dedicated to Branches to correctly match the implemented history.
+
