@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 2c — Booking flow & Authentication scaffolding (Completed)
+Phase 3 — Branches, Gallery, About, Contact (Branches Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -9,13 +9,14 @@ Phase 2c — Booking flow & Authentication scaffolding (Completed)
 - Phase 2 — Public shell and global layout
 - Phase 2a — Homepage
 - Phase 2b — Public Pages (Services, Branches, Specialists)
-- Phase 2c — Branches
+- Phase 2c — Booking flow & Authentication scaffolding
+- Phase 3 — Branches
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 3 — Database & User Model Scaffolding
+Phase 4 — Supabase schema and content architecture
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
