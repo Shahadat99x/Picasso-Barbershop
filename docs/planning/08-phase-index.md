@@ -44,13 +44,18 @@ Each AI session should ideally work on one phase only.
 - pricing and duration blocks
 - FAQ/CTA sections
 
-## Phase 2c — Branches
+## Phase 2c — Booking flow & Authentication scaffolding
+- booking CTA strategy
+- branch-specific booking buttons
+- service-specific booking links
+- fallback contact CTA
+- authentication scaffolding
+
+## Phase 3 — Branches, Gallery, About, Contact
 - branches index
 - branch detail template
 - branch contact blocks
 - map/hours/transport/booking sections
-
-## Phase 3 — Gallery, About, Contact
 - gallery page
 - about page
 - contact page
@@ -62,12 +67,6 @@ Each AI session should ideally work on one phase only.
 - blog article template
 - blog cards
 - article layout
-
-## Phase 3b — Booking flow
-- booking CTA strategy
-- branch-specific booking buttons
-- service-specific booking links
-- fallback contact CTA
 
 ## Phase 3c — Core SEO implementation
 - metadata
