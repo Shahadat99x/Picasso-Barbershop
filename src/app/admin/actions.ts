@@ -14,10 +14,6 @@ export interface AdminAuthActionState {
   error: string | null;
 }
 
-export const initialAdminAuthState: AdminAuthActionState = {
-  error: null,
-};
-
 export async function signInAdminAction(
   _prevState: AdminAuthActionState,
   formData: FormData,

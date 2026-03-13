@@ -2,11 +2,12 @@
 
 import { useActionState } from "react";
 
-import {
-  initialAdminAuthState,
-  signInAdminAction,
-} from "@/app/admin/actions";
+import { signInAdminAction } from "@/app/admin/actions";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
+
+const initialAdminAuthState = {
+  error: null,
+};
 
 export function AdminLoginForm() {
   const [state, formAction, isPending] = useActionState(
