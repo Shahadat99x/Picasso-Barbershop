@@ -1,13 +1,17 @@
+import { AdminShell } from "@/components/admin/AdminShell";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
+export const metadata = {
+  title: "Dashboard",
+};
 
 export default async function AdminProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await requireAuthenticatedAdminUser();
+  const user = await requireAuthenticatedAdminUser();
 
-  return children;
+  return <AdminShell email={user.email ?? "superadmin"}>{children}</AdminShell>;
 }
