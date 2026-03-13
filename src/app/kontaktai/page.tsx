@@ -17,12 +17,14 @@ import {
 } from "@/data/contact";
 import { mockBranches } from "@/data/branches";
 import { siteConfig } from "@/config/navigation";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Kontaktai",
+export const metadata: Metadata = createPageMetadata({
+  title: "Contact",
   description:
-    "Find contact details, opening hours, branch access, and booking guidance for Picasso Barbershop in Vilnius.",
-};
+    "Find branch contact details, opening hours, directions, and booking guidance for Picasso Barbershop in Vilnius.",
+  path: "/kontaktai",
+});
 
 const highlightIcons = [
   <CalendarClock key="calendar" className="h-5 w-5" />,

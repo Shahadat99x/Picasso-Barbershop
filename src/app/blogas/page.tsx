@@ -19,12 +19,14 @@ import {
   formatBlogDate,
 } from "@/data/blog";
 import { siteConfig } from "@/config/navigation";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Blogas",
+export const metadata: Metadata = createPageMetadata({
+  title: "Blog",
   description:
     "Read editorial articles from Picasso Barbershop covering grooming advice, branch guides, and premium salon rituals in Vilnius.",
-};
+  path: "/blogas",
+});
 
 const categoryIcons = [
   <BookOpenText key="book" className="h-5 w-5" />,
