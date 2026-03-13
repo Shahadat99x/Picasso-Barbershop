@@ -108,3 +108,9 @@ Gallery, About, and Contact are built on local structured mock data, with galler
 Reason:
 This keeps the frontend premium and production-minded without prematurely wiring Supabase or Cloudinary, while preserving clean future relations between gallery items, branches, and services.
 
+## Decision 019
+Phase 3b blog content uses a structured local article model with typed body blocks, related service/branch references, and local editorial SVG cover placeholders.
+
+Reason:
+This keeps the blog foundation CMS-ready while preserving a premium reading experience before Supabase and Cloudinary are connected for production content.
+

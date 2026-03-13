@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 3a — Gallery, About, Contact (Completed)
+Phase 3b — Blog foundation (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -12,12 +12,13 @@ Phase 3a — Gallery, About, Contact (Completed)
 - Phase 2c — Booking flow & Authentication scaffolding
 - Phase 3 — Branches
 - Phase 3a — Gallery, About, Contact
+- Phase 3b — Blog foundation
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 3b — Blog foundation
+Phase 3c — Core SEO implementation
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
@@ -33,6 +34,7 @@ Phase 3b — Blog foundation
 - real service list may evolve
 - branch-specific content may not yet be final
 - gallery assets may not yet be finalized
+- blog article topics and production imagery may still evolve
 - booking provider details may still need final confirmation
 - Lithuanian content layer is still structurally deferred until the localization phase
 
@@ -50,4 +52,6 @@ Current public routes delivered in this phase:
 - `/galerija`
 - `/apie-mus`
 - `/kontaktai`
+- `/blogas`
+- `/blogas/[slug]`
 Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
