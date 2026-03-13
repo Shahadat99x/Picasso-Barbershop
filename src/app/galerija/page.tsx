@@ -24,12 +24,14 @@ import {
 import { getBranchById, mockBranches } from "@/data/branches";
 import { getServiceBySlug } from "@/data/services";
 import { siteConfig } from "@/config/navigation";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Galerija",
+export const metadata: Metadata = createPageMetadata({
+  title: "Gallery",
   description:
-    "Explore the visual world of Picasso Barbershop through signature cuts, beard work, and premium salon details across Vilnius.",
-};
+    "Explore premium salon imagery, signature cuts, beard work, and interior details across our Vilnius locations.",
+  path: "/galerija",
+});
 
 const categoryIcons = {
   "signature-cuts": <Scissors className="h-5 w-5" />,

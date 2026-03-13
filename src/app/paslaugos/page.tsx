@@ -6,11 +6,14 @@ import { serviceCategories, getServicesByCategory } from "@/data/services";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Services",
-  description: "Explore our premium selection of barbering services, from classic haircuts to traditional hot towel shaves.",
-};
+  description:
+    "Explore premium haircuts, beard care, shaves, and signature grooming packages available across our Vilnius branches.",
+  path: "/paslaugos",
+});
 
 export default function ServicesIndexPage() {
   return (

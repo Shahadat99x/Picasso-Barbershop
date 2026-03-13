@@ -9,6 +9,7 @@ import { Section } from "@/components/layout/Section";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { ArticleBody } from "@/components/shared/ArticleBody";
 import { FeatureCard } from "@/components/shared/FeatureCard";
+import { StructuredData } from "@/components/shared/StructuredData";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import { getBranchById } from "@/data/branches";
@@ -20,6 +21,8 @@ import {
 } from "@/data/blog";
 import { getServiceBySlug } from "@/data/services";
 import { siteConfig } from "@/config/navigation";
+import { createPageMetadata, getCanonicalUrl } from "@/lib/metadata";
+import { createArticleSchema, createBreadcrumbSchema } from "@/lib/schema";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -33,12 +36,39 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!post) {
     return {
       title: "Article Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  return {
+  const metadata = createPageMetadata({
     title: post.title,
     description: post.excerpt,
+    path: `/blogas/${post.slug}`,
+    image: post.coverImageSrc,
+    type: "article",
+  });
+
+  return {
+    ...metadata,
+    openGraph: {
+      type: "article",
+      url: getCanonicalUrl(`/blogas/${post.slug}`),
+      title: `${post.title} | ${siteConfig.name}`,
+      description: post.excerpt,
+      siteName: siteConfig.name,
+      locale: "lt_LT",
+      images: [
+        {
+          url: getCanonicalUrl(post.coverImageSrc),
+        },
+      ],
+      publishedTime: post.publishedAt,
+      authors: [post.authorName],
+      tags: post.tags,
+    },
   };
 }
 
@@ -56,9 +86,26 @@ export default function BlogArticlePage({ params }: { params: { slug: string } }
     ? getServiceBySlug(post.relatedServiceSlug)
     : undefined;
   const relatedPosts = getRelatedBlogPosts(post.slug);
+  const structuredData = [
+    createBreadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blogas" },
+      { name: post.title, path: `/blogas/${post.slug}` },
+    ]),
+    createArticleSchema({
+      title: post.title,
+      description: post.excerpt,
+      path: `/blogas/${post.slug}`,
+      image: post.coverImageSrc,
+      publishedAt: post.publishedAt,
+      authorName: post.authorName,
+      category: post.category,
+    }),
+  ];
 
   return (
     <main>
+      <StructuredData data={structuredData} />
       <Section className="border-b border-border/50 bg-secondary/10 pb-14 pt-24 md:pb-20 md:pt-32">
         <Container>
           <div className="mx-auto max-w-4xl">

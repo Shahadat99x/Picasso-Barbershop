@@ -5,11 +5,14 @@ import { mockBranches } from "@/data/branches";
 import { BranchCard } from "@/components/shared/BranchCard";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Locations",
-  description: "Find a Picasso Barbershop near you in Vilnius. View our branch hours, directions, and unique atmospheres.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Branches",
+  description:
+    "Compare all Picasso Barbershop branches in Vilnius, including atmosphere, hours, and contact details.",
+  path: "/filialai",
+});
 
 export default function BranchesIndexPage() {
   return (

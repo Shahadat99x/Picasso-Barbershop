@@ -11,19 +11,34 @@ const inter = Inter({ subsets: ["latin"] });
 import { siteConfig } from "@/config/navigation";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: siteConfig.name,
+    default: "Premium Salon in Vilnius",
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  applicationName: siteConfig.name,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     type: "website",
     locale: "lt_LT",
-    url: "https://picassobarbershop.lt",
+    url: siteConfig.siteUrl,
     siteName: siteConfig.name,
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [{ url: "/og-image.jpg" }],
+    images: [{ url: siteConfig.defaultOgImage }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.defaultOgImage],
   },
 };
 

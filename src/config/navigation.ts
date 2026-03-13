@@ -33,8 +33,14 @@ export const footerNavGroups = {
 
 export const siteConfig = {
   name: "Picasso Barbershop",
-  description: "A premium salon experience based in Vilnius.",
+  description:
+    "Premium grooming, haircut, beard, and salon experiences across three Vilnius branches.",
   contactEmail: "hello@picassobarbershop.lt",
   contactPhone: "+370 600 00000",
   bookingUrl: "/kontaktai#rezervacija",
+  siteUrl: "https://picassobarbershop.lt",
+  defaultOgImage: "/mock/gallery/lounge.svg",
+  defaultAddress: "Vilniaus g. 22, Vilnius, Lithuania",
+  priceRange: "$$",
+  sameAs: ["https://instagram.com", "https://facebook.com"],
 };

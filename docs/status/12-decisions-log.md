@@ -114,3 +114,9 @@ Phase 3b blog content uses a structured local article model with typed body bloc
 Reason:
 This keeps the blog foundation CMS-ready while preserving a premium reading experience before Supabase and Cloudinary are connected for production content.
 
+## Decision 020
+Phase 3c uses a lightweight SEO utility layer with shared metadata helpers, route-generated sitemap and robots files, and page-level JSON-LD only where the content already supports it naturally.
+
+Reason:
+This keeps the SEO foundation maintainable and effective without overengineering schema management or introducing premature CMS/admin SEO tooling.
+

@@ -1,4 +1,6 @@
 import React from "react";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
@@ -19,16 +21,27 @@ import { SpecialistCard } from "@/components/shared/SpecialistCard";
 import { TestimonialCard } from "@/components/shared/TestimonialCard";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { PromoBanner } from "@/components/shared/PromoBanner";
+import { StructuredData } from "@/components/shared/StructuredData";
 
 // Page Sections
 import { HeroSection } from "@/components/sections/HeroSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { createPageMetadata } from "@/lib/metadata";
+import { createLocalBusinessSchema } from "@/lib/schema";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Premium Salon in Vilnius",
+  description:
+    "Discover premium grooming services, three Vilnius branches, editorial inspiration, and easy booking with Picasso Barbershop.",
+  path: "/",
+});
 
 export default function Home() {
   return (
     <main>
+      <StructuredData data={createLocalBusinessSchema()} />
       {/* 1. Hero */}
       <HeroSection />
 
@@ -155,6 +168,14 @@ export default function Home() {
                 href={`/blogas/${post.slug}`}
               />
             ))}
+          </div>
+          <div className="mt-10 text-center md:text-left">
+            <Link
+              href="/blogas"
+              className="text-primary font-medium hover:underline underline-offset-4"
+            >
+              Explore all editorial articles →
+            </Link>
           </div>
         </Container>
       </Section>

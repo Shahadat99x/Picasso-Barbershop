@@ -306,6 +306,18 @@ export function getRelatedBlogPosts(currentSlug: string, limit = 3) {
     .slice(0, limit);
 }
 
+export function getBlogPostsByRelatedServiceSlug(serviceSlug: string, limit = 3) {
+  return blogPosts
+    .filter((post) => post.relatedServiceSlug === serviceSlug)
+    .slice(0, limit);
+}
+
+export function getBlogPostsByRelatedBranchId(branchId: string, limit = 3) {
+  return blogPosts
+    .filter((post) => post.relatedBranchId === branchId)
+    .slice(0, limit);
+}
+
 export function formatBlogDate(date: string) {
   return new Intl.DateTimeFormat("en-US", {
     month: "long",
