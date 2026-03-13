@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 3 — Branches, Gallery, About, Contact (Branches Completed)
+Phase 3a — Gallery, About, Contact (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -11,12 +11,13 @@ Phase 3 — Branches, Gallery, About, Contact (Branches Completed)
 - Phase 2b — Public Pages (Services, Branches, Specialists)
 - Phase 2c — Booking flow & Authentication scaffolding
 - Phase 3 — Branches
+- Phase 3a — Gallery, About, Contact
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 4 — Supabase schema and content architecture
+Phase 3b — Blog foundation
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
@@ -33,6 +34,7 @@ Phase 4 — Supabase schema and content architecture
 - branch-specific content may not yet be final
 - gallery assets may not yet be finalized
 - booking provider details may still need final confirmation
+- Lithuanian content layer is still structurally deferred until the localization phase
 
 ## Notes for Next AI Session
 Read these files first:
@@ -44,3 +46,8 @@ Read these files first:
 
 Implement only one phase at a time.
 Do not overbuild admin before public templates are proven.
+Current public routes delivered in this phase:
+- `/galerija`
+- `/apie-mus`
+- `/kontaktai`
+Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
