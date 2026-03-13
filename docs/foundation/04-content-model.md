@@ -59,6 +59,8 @@ Suggested fields:
 - gallery_preview_image_url
 - booking_url
 - opening_hours_json
+- trust_points_lt json array optional
+- trust_points_en json array optional
 - is_active
 - sort_order
 - meta_title_lt
@@ -85,10 +87,15 @@ Suggested fields:
 - full_description_en
 - category
 - starting_price
+- currency_code
 - price_note_lt
 - price_note_en
 - duration_minutes
 - cover_image_url
+- benefits_lt json array optional
+- benefits_en json array optional
+- faq_lt json array optional
+- faq_en json array optional
 - is_featured
 - is_published
 - sort_order
@@ -202,9 +209,11 @@ Suggested fields:
 - slug_en
 - excerpt_lt
 - excerpt_en
-- body_lt
-- body_en
+- body_lt structured rich content json
+- body_en structured rich content json
 - cover_image_url
+- cover_alt_text_lt optional
+- cover_alt_text_en optional
 - author_name
 - category
 - tags_json
@@ -267,6 +276,7 @@ Represents global site settings.
 
 Suggested fields:
 - id
+- settings_key unique default 'default'
 - business_name
 - default_phone
 - default_email
