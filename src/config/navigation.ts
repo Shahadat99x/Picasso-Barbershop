@@ -8,6 +8,7 @@ export const mainNav: NavItem[] = [
   { label: "Branches", href: "/filialai" },
   { label: "Gallery", href: "/galerija" },
   { label: "About", href: "/apie-mus" },
+  { label: "Blog", href: "/blogas" },
   { label: "Contact", href: "/kontaktai" },
 ];
 
@@ -17,6 +18,7 @@ export const footerNavGroups = {
     { label: "Branches", href: "/filialai" },
     { label: "Gallery", href: "/galerija" },
     { label: "About Us", href: "/apie-mus" },
+    { label: "Blog", href: "/blogas" },
     { label: "Contact", href: "/kontaktai" },
   ],
   legal: [
