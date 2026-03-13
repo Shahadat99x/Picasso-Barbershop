@@ -1,5 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+
 import { cn } from "@/lib/utils";
 
 interface BlogCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -8,6 +10,8 @@ interface BlogCardProps extends React.HTMLAttributes<HTMLDivElement> {
   date: string;
   imageUrl?: string;
   category?: string;
+  readingTime?: string;
+  href?: string;
 }
 
 export function BlogCard({
@@ -16,41 +20,62 @@ export function BlogCard({
   date,
   imageUrl,
   category,
+  readingTime,
+  href,
   className,
   ...props
 }: BlogCardProps) {
-  return (
+  const cardContent = (
     <div
-      className={cn("group flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card hover:shadow-md transition-all cursor-pointer", className)}
+      className={cn(
+        "group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border/50 bg-card transition-all hover:shadow-md",
+        href && "cursor-pointer hover:border-primary/40",
+        className,
+      )}
       {...props}
     >
-      <div className="aspect-[16/10] w-full overflow-hidden bg-muted relative">
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
         {imageUrl ? (
-          <img
+          <Image
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 bg-secondary/20">
+          <div className="flex h-full w-full items-center justify-center bg-secondary/20 text-muted-foreground/30">
             Cover Placeholder
           </div>
         )}
         {category && (
-          <span className="absolute top-4 left-4 rounded-full bg-background/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-foreground tracking-wide">
+          <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1 text-xs font-medium tracking-wide text-foreground backdrop-blur-sm">
             {category}
           </span>
         )}
       </div>
-      <div className="p-6 flex flex-col flex-grow">
-        <time className="text-xs text-muted-foreground mb-3 tracking-wide">{date}</time>
-        <h3 className="text-xl font-medium tracking-tight mb-3 group-hover:text-primary/70 transition-colors">
+      <div className="flex flex-grow flex-col p-6">
+        <div className="mb-3 flex items-center gap-3 text-xs tracking-wide text-muted-foreground">
+          <time>{date}</time>
+          {readingTime ? <span>{readingTime}</span> : null}
+        </div>
+        <h3 className="mb-3 text-xl font-medium tracking-tight transition-colors group-hover:text-primary/70">
           {title}
         </h3>
-        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mt-auto">
+        <p className="mt-auto line-clamp-3 text-sm leading-relaxed text-muted-foreground">
           {excerpt}
         </p>
       </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="block h-full">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 }
