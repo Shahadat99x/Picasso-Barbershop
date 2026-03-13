@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { mainNav } from "@/config/navigation";
+import { mainNav, siteConfig } from "@/config/navigation";
 import Link from "next/link";
 
 export function MobileNav() {
@@ -54,14 +54,13 @@ export function MobileNav() {
               {item.label}
             </Link>
           ))}
-          <Link href="/#contact" onClick={toggle} className="hover:text-primary transition-colors">
-            Contact
-          </Link>
         </nav>
 
         <div className="mt-12 flex flex-col gap-6">
           <LanguageSwitcher className="justify-center" />
-          <PrimaryButton className="w-full">Book Now</PrimaryButton>
+          <Link href={siteConfig.bookingUrl} onClick={toggle}>
+            <PrimaryButton className="w-full">Book Now</PrimaryButton>
+          </Link>
         </div>
       </div>
     </div>
