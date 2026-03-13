@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 4 — Supabase schema and content architecture (Completed)
+Phase 4a — Admin auth and admin shell (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -15,12 +15,13 @@ Phase 4 — Supabase schema and content architecture (Completed)
 - Phase 3b — Blog foundation
 - Phase 3c — Core SEO implementation
 - Phase 4 — Supabase schema and content architecture
+- Phase 4a — Admin auth and admin shell
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 4a — Admin auth and admin shell
+Phase 4b — Admin content modules I
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
@@ -40,8 +41,9 @@ Phase 4a — Admin auth and admin shell
 - booking provider details may still need final confirmation
 - Lithuanian content layer is still structurally deferred until the localization phase
 - hreflang and CMS-managed SEO controls are still deferred to later phases
-- public pages still read local mock data until Phase 4a+ wiring begins
+- public pages still read local mock data until the later content-wiring phases begin
 - RLS is enabled as a safe baseline, but public/admin policies still need deliberate implementation
+- the admin shell is in place, but CRUD modules still need to replace the current placeholder routes
 
 ## Notes for Next AI Session
 Read these files first:
@@ -68,4 +70,11 @@ Supabase foundation delivered in this phase:
 - `supabase/migrations` for the core relational content model
 - `supabase/seed.sql` starter seed scaffold
 - `src/lib/supabase` helpers and typed database interface
+Admin foundation delivered in this phase:
+- `/admin/login`
+- protected `/admin`
+- server-managed admin session cookies backed by Supabase auth
+- superadmin allowlist via `SUPABASE_SUPERADMIN_EMAILS`
+- reusable admin shell with sidebar, top bar, and dashboard cards
+- placeholder module routes for upcoming CRUD phases
 Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.

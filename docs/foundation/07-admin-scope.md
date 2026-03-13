@@ -23,7 +23,6 @@ The salon owner is the only admin user in scope for V1.
 - Blog
 - Testimonials
 - Leads
-- SEO
 - Settings
 
 ## Dashboard
@@ -36,6 +35,11 @@ Should show:
 - recent leads
 - translation completeness warnings later
 - draft/unpublished content reminders
+
+Phase 4a baseline:
+- protected dashboard shell
+- summary totals or safe placeholders
+- richer operational widgets can be added in later admin phases
 
 ## Branches Module
 Super Admin can:
@@ -106,10 +110,8 @@ Super Admin can:
 - update status
 - store internal notes
 
-## SEO Module
-Depending on implementation approach, this may be:
-- integrated into each content type
-- or a separate helper overview
+## SEO Controls
+SEO controls are expected to live primarily inside each content type and in global Settings rather than as a dedicated sidebar module in V1.
 
 Minimum SEO controls needed:
 - title

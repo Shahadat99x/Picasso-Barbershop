@@ -132,3 +132,15 @@ Phase 4 enables RLS on all core content tables with no public policies yet, usin
 Reason:
 This avoids accidentally exposing new tables through Supabase before explicit read/write policies are designed, while keeping the schema ready for Phase 4a and later content wiring.
 
+## Decision 023
+Phase 4a uses Supabase email/password auth with server-managed HTTP-only session cookies and a `SUPABASE_SUPERADMIN_EMAILS` allowlist instead of introducing a custom roles table or multi-role permission layer.
+
+Reason:
+V1 only needs a single superadmin. This keeps access control minimal, production-minded, and compatible with the current schema while avoiding premature auth complexity.
+
+## Decision 024
+Public website routes now live inside a `(site)` route group so the `/admin` area can use an isolated shell and metadata strategy without path-based layout branching.
+
+Reason:
+This keeps the public and admin experiences cleanly separated in the App Router and makes future admin expansion easier to maintain.
+
