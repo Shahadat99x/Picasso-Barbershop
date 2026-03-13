@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 3b — Blog foundation (Completed)
+Phase 3c — Core SEO implementation (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -13,12 +13,13 @@ Phase 3b — Blog foundation (Completed)
 - Phase 3 — Branches
 - Phase 3a — Gallery, About, Contact
 - Phase 3b — Blog foundation
+- Phase 3c — Core SEO implementation
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 3c — Core SEO implementation
+Phase 4 — Supabase schema and content architecture
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
@@ -37,6 +38,7 @@ Phase 3c — Core SEO implementation
 - blog article topics and production imagery may still evolve
 - booking provider details may still need final confirmation
 - Lithuanian content layer is still structurally deferred until the localization phase
+- hreflang and CMS-managed SEO controls are still deferred to later phases
 
 ## Notes for Next AI Session
 Read these files first:
@@ -54,4 +56,9 @@ Current public routes delivered in this phase:
 - `/kontaktai`
 - `/blogas`
 - `/blogas/[slug]`
+SEO foundation delivered in this phase:
+- refined root and page metadata
+- `/sitemap.xml`
+- `/robots.txt`
+- base JSON-LD on homepage, service pages, branch pages, and blog articles
 Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
