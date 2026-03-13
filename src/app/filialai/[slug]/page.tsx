@@ -8,11 +8,19 @@ import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { MapPin, Phone, Mail, Clock, Car, Bus, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/config/navigation";
+import { createPageMetadata } from "@/lib/metadata";
 
 import { mockBranches, getBranchBySlug } from "@/data/branches";
 import { getServiceBySlug, ServiceData } from "@/data/services";
+import {
+  formatBlogDate,
+  getBlogPostsByRelatedBranchId,
+} from "@/data/blog";
 import { ServiceCard } from "@/components/shared/ServiceCard";
+import { BlogCard } from "@/components/shared/BlogCard";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { StructuredData } from "@/components/shared/StructuredData";
+import { createBreadcrumbSchema } from "@/lib/schema";
 
 // Next.js static params generation for mock data
 export function generateStaticParams() {
@@ -28,13 +36,18 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!branch) {
     return {
       title: "Branch Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  return {
+  return createPageMetadata({
     title: branch.name,
-    description: branch.intro.substring(0, 160) + "...",
-  };
+    description: branch.intro,
+    path: `/filialai/${branch.slug}`,
+  });
 }
 
 export default function BranchDetailPage({ params }: { params: { slug: string } }) {
@@ -48,9 +61,17 @@ export default function BranchDetailPage({ params }: { params: { slug: string } 
   const featuredServices = branch.featuredServiceSlugs
     .map(slug => getServiceBySlug(slug))
     .filter(Boolean);
+  const relatedArticles = getBlogPostsByRelatedBranchId(branch.id);
 
   return (
     <main>
+      <StructuredData
+        data={createBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Branches", path: "/filialai" },
+          { name: branch.name, path: `/filialai/${branch.slug}` },
+        ])}
+      />
       {/* Branch Hero */}
       <Section className="bg-secondary/10 border-b border-border/50 pb-16 md:pb-24 pt-24 md:pt-32">
         <Container>
@@ -214,6 +235,32 @@ export default function BranchDetailPage({ params }: { params: { slug: string } 
               <Link href="/paslaugos" className="text-primary font-medium hover:underline underline-offset-4">
                 View entire service menu →
               </Link>
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {relatedArticles.length > 0 && (
+        <Section className="border-t border-border/50 bg-background">
+          <Container>
+            <SectionHeading
+              title="Editorial related to this branch"
+              subtitle="Local reading"
+              align="left"
+            />
+            <div className="grid gap-6 md:grid-cols-3">
+              {relatedArticles.map((article) => (
+                <BlogCard
+                  key={article.id}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  date={formatBlogDate(article.publishedAt)}
+                  readingTime={article.readingTime}
+                  imageUrl={article.coverImageSrc}
+                  category={article.category}
+                  href={`/blogas/${article.slug}`}
+                />
+              ))}
             </div>
           </Container>
         </Section>

@@ -8,11 +8,19 @@ import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import { Clock, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/config/navigation";
+import { createPageMetadata } from "@/lib/metadata";
 
 import { mockServices, getServiceBySlug } from "@/data/services";
+import {
+  formatBlogDate,
+  getBlogPostsByRelatedServiceSlug,
+} from "@/data/blog";
 import { ServiceFaqSection } from "@/components/sections/ServiceFaqSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { BlogCard } from "@/components/shared/BlogCard";
+import { StructuredData } from "@/components/shared/StructuredData";
+import { createBreadcrumbSchema, createFaqSchema } from "@/lib/schema";
 
 // Next.js static params generation for mock data
 export function generateStaticParams() {
@@ -28,13 +36,18 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!service) {
     return {
       title: "Service Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  return {
+  return createPageMetadata({
     title: service.title,
     description: service.shortDescription,
-  };
+    path: `/paslaugos/${service.slug}`,
+  });
 }
 
 export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
@@ -44,8 +57,19 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
     notFound();
   }
 
+  const relatedArticles = getBlogPostsByRelatedServiceSlug(service.slug);
+  const structuredData = [
+    createBreadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Services", path: "/paslaugos" },
+      { name: service.title, path: `/paslaugos/${service.slug}` },
+    ]),
+    ...(service.faqs.length > 0 ? [createFaqSchema(service.faqs)] : []),
+  ];
+
   return (
     <main>
+      <StructuredData data={structuredData} />
       {/* Service Hero */}
       <Section className="bg-secondary/10 border-b border-border/50 pb-16 md:pb-24 pt-24 md:pt-32">
         <Container>
@@ -125,7 +149,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
                   <p className="text-sm text-muted-foreground mb-4">
                     Available at all Vilnius locations. Subject to specialist availability.
                   </p>
-                  <Link href="/#branches">
+                  <Link href="/filialai">
                     <SecondaryButton className="w-full">
                       View Locations
                     </SecondaryButton>
@@ -143,6 +167,35 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
       {/* Service Specific FAQ */}
       {service.faqs && service.faqs.length > 0 && (
         <ServiceFaqSection faqs={service.faqs} />
+      )}
+
+      {relatedArticles.length > 0 && (
+        <Section className="bg-background">
+          <Container>
+            <div className="mb-10 max-w-2xl">
+              <span className="mb-3 block text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                Editorial
+              </span>
+              <h2 className="text-3xl font-medium tracking-tight md:text-4xl">
+                Read before you book
+              </h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {relatedArticles.map((article) => (
+                <BlogCard
+                  key={article.id}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  date={formatBlogDate(article.publishedAt)}
+                  readingTime={article.readingTime}
+                  imageUrl={article.coverImageSrc}
+                  category={article.category}
+                  href={`/blogas/${article.slug}`}
+                />
+              ))}
+            </div>
+          </Container>
+        </Section>
       )}
 
       {/* Global Booking CTA */}
