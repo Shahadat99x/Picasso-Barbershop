@@ -120,3 +120,15 @@ Phase 3c uses a lightweight SEO utility layer with shared metadata helpers, rout
 Reason:
 This keeps the SEO foundation maintainable and effective without overengineering schema management or introducing premature CMS/admin SEO tooling.
 
+## Decision 021
+Phase 4 stores richer editorial and UI-managed content in JSON-capable fields where the content is naturally block- or list-based, including opening hours, trust points, service benefits/FAQ, and blog article bodies.
+
+Reason:
+The current frontend already uses structured local content. Mirroring that shape in Supabase reduces translation friction and makes later admin CRUD/UI block editing more realistic than flattening everything into plain text.
+
+## Decision 022
+Phase 4 enables RLS on all core content tables with no public policies yet, using service-role access as the safe backend baseline until the admin and public data-access phases are implemented.
+
+Reason:
+This avoids accidentally exposing new tables through Supabase before explicit read/write policies are designed, while keeping the schema ready for Phase 4a and later content wiring.
+

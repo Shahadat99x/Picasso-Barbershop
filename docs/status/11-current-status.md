@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 3c — Core SEO implementation (Completed)
+Phase 4 — Supabase schema and content architecture (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -14,12 +14,13 @@ Phase 3c — Core SEO implementation (Completed)
 - Phase 3a — Gallery, About, Contact
 - Phase 3b — Blog foundation
 - Phase 3c — Core SEO implementation
+- Phase 4 — Supabase schema and content architecture
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 4 — Supabase schema and content architecture
+Phase 4a — Admin auth and admin shell
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
@@ -39,6 +40,8 @@ Phase 4 — Supabase schema and content architecture
 - booking provider details may still need final confirmation
 - Lithuanian content layer is still structurally deferred until the localization phase
 - hreflang and CMS-managed SEO controls are still deferred to later phases
+- public pages still read local mock data until Phase 4a+ wiring begins
+- RLS is enabled as a safe baseline, but public/admin policies still need deliberate implementation
 
 ## Notes for Next AI Session
 Read these files first:
@@ -61,4 +64,8 @@ SEO foundation delivered in this phase:
 - `/sitemap.xml`
 - `/robots.txt`
 - base JSON-LD on homepage, service pages, branch pages, and blog articles
+Supabase foundation delivered in this phase:
+- `supabase/migrations` for the core relational content model
+- `supabase/seed.sql` starter seed scaffold
+- `src/lib/supabase` helpers and typed database interface
 Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
