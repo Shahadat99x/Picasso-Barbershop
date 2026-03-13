@@ -8,9 +8,9 @@ import {
   mockFeaturedServices, 
   mockBranches, 
   mockSpecialists, 
-  mockTestimonials, 
-  mockBlogPosts 
+  mockTestimonials 
 } from "@/data/mock";
+import { blogPosts, formatBlogDate } from "@/data/blog";
 
 // UI Cards
 import { ServiceCard } from "@/components/shared/ServiceCard";
@@ -143,13 +143,16 @@ export default function Home() {
             align="left"
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {mockBlogPosts.map((post, idx) => (
+            {blogPosts.slice(0, 3).map((post) => (
               <BlogCard 
-                key={idx}
+                key={post.id}
                 title={post.title}
                 excerpt={post.excerpt}
-                date={post.date}
+                date={formatBlogDate(post.publishedAt)}
+                readingTime={post.readingTime}
                 category={post.category}
+                imageUrl={post.coverImageSrc}
+                href={`/blogas/${post.slug}`}
               />
             ))}
           </div>
