@@ -88,3 +88,7 @@ export const mockBranches: BranchData[] = [
 export function getBranchBySlug(slug: string): BranchData | undefined {
   return mockBranches.find(b => b.slug === slug);
 }
+
+export function getBranchById(id: string): BranchData | undefined {
+  return mockBranches.find((branch) => branch.id === id);
+}

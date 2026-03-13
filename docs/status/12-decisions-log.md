@@ -96,3 +96,15 @@ Phase 3 focuses strictly on Branches (Index and Dynamic Details) based on `src/d
 Reason:
 The Phase Index numbering drifted from actual implementation. Booking scaffolding was completed earlier (as Phase 2c in logs), so Phase 3 is now dedicated to Branches to correctly match the implemented history.
 
+## Decision 017
+Phase 3a is reserved for Gallery, About, and Contact, while Blog foundation moves to Phase 3b.
+
+Reason:
+The implemented order now reflects the actual delivery sequence: Branches were completed first as Phase 3, and the remaining public editorial/contact pages now form the next slice before Blog.
+
+## Decision 018
+Gallery, About, and Contact are built on local structured mock data, with gallery visuals represented by local SVG editorial placeholders.
+
+Reason:
+This keeps the frontend premium and production-minded without prematurely wiring Supabase or Cloudinary, while preserving clean future relations between gallery items, branches, and services.
+

@@ -4,20 +4,20 @@ export interface NavItem {
 }
 
 export const mainNav: NavItem[] = [
-  { label: "Services", href: "/#services" },
-  { label: "Branches", href: "/#branches" },
-  { label: "Gallery", href: "/#gallery" },
-  { label: "About", href: "/#about" },
-  { label: "Blog", href: "/#blog" },
+  { label: "Services", href: "/paslaugos" },
+  { label: "Branches", href: "/filialai" },
+  { label: "Gallery", href: "/galerija" },
+  { label: "About", href: "/apie-mus" },
+  { label: "Contact", href: "/kontaktai" },
 ];
 
 export const footerNavGroups = {
   explore: [
-    { label: "Services", href: "/#services" },
-    { label: "Branches", href: "/#branches" },
-    { label: "Gallery", href: "/#gallery" },
-    { label: "About Us", href: "/#about" },
-    { label: "Blog", href: "/#blog" },
+    { label: "Services", href: "/paslaugos" },
+    { label: "Branches", href: "/filialai" },
+    { label: "Gallery", href: "/galerija" },
+    { label: "About Us", href: "/apie-mus" },
+    { label: "Contact", href: "/kontaktai" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy-policy" },
@@ -34,5 +34,5 @@ export const siteConfig = {
   description: "A premium salon experience based in Vilnius.",
   contactEmail: "hello@picassobarbershop.lt",
   contactPhone: "+370 600 00000",
-  bookingUrl: "#book", // To be replaced with actual booking link in Phase 3b
+  bookingUrl: "/kontaktai#rezervacija",
 };

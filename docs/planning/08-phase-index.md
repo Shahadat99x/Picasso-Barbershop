@@ -51,18 +51,20 @@ Each AI session should ideally work on one phase only.
 - fallback contact CTA
 - authentication scaffolding
 
-## Phase 3 — Branches, Gallery, About, Contact
+## Phase 3 — Branches
 - branches index
 - branch detail template
 - branch contact blocks
 - map/hours/transport/booking sections
+
+## Phase 3a — Gallery, About, Contact
 - gallery page
 - about page
 - contact page
 - contact form UI
 - social/contact blocks
 
-## Phase 3a — Blog foundation
+## Phase 3b — Blog foundation
 - blog index
 - blog article template
 - blog cards
