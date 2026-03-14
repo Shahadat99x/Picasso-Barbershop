@@ -3,10 +3,12 @@ import { Container } from "./Container";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { MobileNav } from "./MobileNav";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { mainNav, siteConfig } from "@/config/navigation";
+import { getMainNav, siteConfig } from "@/config/navigation";
 import Link from "next/link";
 
-export function SiteHeader() {
+export function SiteHeader({ locale = "lt" }: { locale?: string }) {
+  const nav = getMainNav(locale as "lt" | "en");
+  
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
       <Container className="flex h-20 items-center justify-between">
@@ -19,7 +21,7 @@ export function SiteHeader() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
-          {mainNav.map((item) => (
+          {nav.map((item) => (
             <Link key={item.href} href={item.href} className="transition-colors hover:text-foreground">
               {item.label}
             </Link>

@@ -9,7 +9,7 @@ export default function EnSiteLayout({
 }>) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <SiteHeader />
+      <SiteHeader locale="en" />
       <div className="flex-1">{children}</div>
       <SiteFooter />
       <StickyMobileBookingCTA />
