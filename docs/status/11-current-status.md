@@ -1,9 +1,11 @@
 # Current Status
 
 ## Current Phase
-Phase 4b — Admin content modules I (Completed)
+
+Phase 4c — Admin content modules II (Completed)
 
 ## Completed Phases
+
 - Phase 0 — Foundation and repo bootstrap
 - Phase 1 — Design system and UI foundation
 - Phase 2 — Public shell and global layout
@@ -17,14 +19,18 @@ Phase 4b — Admin content modules I (Completed)
 - Phase 4 — Supabase schema and content architecture
 - Phase 4a — Admin auth and admin shell
 - Phase 4b — Admin content modules I
+- Phase 4c — Admin content modules II
 
 ## In Progress
+
 - none
 
 ## Next Planned Phase
-Phase 4c — Admin content modules II
+
+Phase 5 — Localization system
 
 ## Known Decisions Already Confirmed
+
 - Lithuanian is the primary language
 - English is the secondary language
 - public site should be built before full admin modules
@@ -34,6 +40,7 @@ Phase 4c — Admin content modules II
 - premium frontend is the highest priority
 
 ## Current Risks
+
 - real brand identity may still need refinement
 - real service list may evolve
 - branch-specific content may not yet be final
@@ -47,7 +54,9 @@ Phase 4c — Admin content modules II
 - the admin shell is in place, but CRUD modules still need to replace the current placeholder routes
 
 ## Notes for Next AI Session
+
 Read these files first:
+
 - `/docs/foundation/01-project-overview.md`
 - `/docs/foundation/03-information-architecture.md`
 - `/docs/foundation/04-content-model.md`
@@ -57,21 +66,22 @@ Read these files first:
 Implement only one phase at a time.
 Do not overbuild admin before public templates are proven.
 Current public routes delivered in this phase:
+
 - `/galerija`
 - `/apie-mus`
 - `/kontaktai`
 - `/blogas`
 - `/blogas/[slug]`
-SEO foundation delivered in this phase:
+  SEO foundation delivered in this phase:
 - refined root and page metadata
 - `/sitemap.xml`
 - `/robots.txt`
 - base JSON-LD on homepage, service pages, branch pages, and blog articles
-Supabase foundation delivered in this phase:
+  Supabase foundation delivered in this phase:
 - `supabase/migrations` for the core relational content model
 - `supabase/seed.sql` starter seed scaffold
 - `src/lib/supabase` helpers and typed database interface
-Admin foundation delivered in this phase:
+  Admin foundation delivered in this phase:
 - `/admin/login`
 - protected `/admin`
 - server-managed admin session cookies backed by Supabase auth
@@ -79,4 +89,4 @@ Admin foundation delivered in this phase:
 - reusable admin shell with sidebar, top bar, and dashboard cards
 - placeholder module routes for upcoming CRUD phases
 - CRUD modules for Branches, Services, and Specialists using React Server Actions and shadcn/ui forms
-Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
+  Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
