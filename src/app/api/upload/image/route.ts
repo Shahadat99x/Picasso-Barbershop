@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
     uploadFormData.append('file', base64);
     uploadFormData.append('timestamp', Math.round(new Date().getTime() / 1000).toString());
     uploadFormData.append('folder', 'picasso-barbershop');
+    uploadFormData.append('upload_preset', 'admin_upload');
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
