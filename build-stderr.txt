@@ -1,0 +1,57 @@
+
+> Build error occurred
+Error: Turbopack build failed with 3 errors:
+./src/app/admin/(protected)/branches/page.tsx:14:1
+Module not found: Can't resolve '@/components/ui/badge'
+  12 |   TableRow,
+  13 | } from "@/components/ui/table";
+> 14 | import { Badge } from "@/components/ui/badge";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  15 | import { Button } from "@/components/ui/button";
+  16 |
+  17 | export const dynamic = "force-dynamic";
+
+Import map: aliased to relative './src/components/ui/badge' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./src/app/admin/(protected)/services/page.tsx:14:1
+Module not found: Can't resolve '@/components/ui/badge'
+  12 |   TableRow,
+  13 | } from "@/components/ui/table";
+> 14 | import { Badge } from "@/components/ui/badge";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  15 | import { Button } from "@/components/ui/button";
+  16 |
+  17 | export const dynamic = "force-dynamic";
+
+Import map: aliased to relative './src/components/ui/badge' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./src/app/admin/(protected)/specialists/page.tsx:14:1
+Module not found: Can't resolve '@/components/ui/badge'
+  12 |   TableRow,
+  13 | } from "@/components/ui/table";
+> 14 | import { Badge } from "@/components/ui/badge";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  15 | import { Button } from "@/components/ui/button";
+  16 |
+  17 | export const dynamic = "force-dynamic";
+
+Import map: aliased to relative './src/components/ui/badge' inside of [project]/
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./src/app/admin/(protected)/branches/page.tsx:14:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./src/app/admin/(protected)/services/page.tsx:14:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./src/app/admin/(protected)/specialists/page.tsx:14:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

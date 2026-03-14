@@ -59,8 +59,8 @@ export function ServiceForm({ initialData }: { initialData?: Service }) {
           if (res.error) throw new Error(res.error);
         }
         router.push("/admin/services");
-      } catch (err: any) {
-        setError(err.message || "An error occurred while saving.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred while saving.");
       }
     });
   };

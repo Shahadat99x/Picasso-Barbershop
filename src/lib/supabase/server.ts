@@ -23,7 +23,7 @@ export function createSupabaseServerClient() {
 }
 
 export function createSupabaseAdminClient() {
-  return createClient<Database>(
+  return createClient<any>(
     getSupabaseUrl(),
     getSupabaseServiceRoleKey(),
     serverOptions,

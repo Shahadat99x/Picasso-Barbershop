@@ -12,7 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -66,7 +67,6 @@ export default async function SpecialistsPage() {
                     </TableCell>
                     <TableCell className="text-slate-500">{specialist.role_lt}</TableCell>
                     <TableCell className="text-slate-500">
-                      {/* @ts-expect-error Typescript might not infer nested select correctly */}
                       {specialist.branches?.name_lt || "None"}
                     </TableCell>
                     <TableCell>
@@ -97,17 +97,16 @@ export default async function SpecialistsPage() {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        asChild
-                        className="h-8 w-8 text-slate-400 hover:text-slate-900"
+                      <Link
+                        href={`/admin/specialists/${specialist.id}`}
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "icon" }),
+                          "h-8 w-8 text-slate-400 hover:text-slate-900"
+                        )}
                       >
-                        <Link href={`/admin/specialists/${specialist.id}`}>
-                          <Edit2 className="h-4 w-4" />
-                          <span className="sr-only">Edit specialist</span>
-                        </Link>
-                      </Button>
+                        <Edit2 className="h-4 w-4" />
+                        <span className="sr-only">Edit specialist</span>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))

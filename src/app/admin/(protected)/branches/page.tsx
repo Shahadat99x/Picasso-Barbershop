@@ -12,7 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -83,17 +84,16 @@ export default async function BranchesPage() {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        asChild
-                        className="h-8 w-8 text-slate-400 hover:text-slate-900"
+                      <Link
+                        href={`/admin/branches/${branch.id}`}
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "icon" }),
+                          "h-8 w-8 text-slate-400 hover:text-slate-900"
+                        )}
                       >
-                        <Link href={`/admin/branches/${branch.id}`}>
-                          <Edit2 className="h-4 w-4" />
-                          <span className="sr-only">Edit branch</span>
-                        </Link>
-                      </Button>
+                        <Edit2 className="h-4 w-4" />
+                        <span className="sr-only">Edit branch</span>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))

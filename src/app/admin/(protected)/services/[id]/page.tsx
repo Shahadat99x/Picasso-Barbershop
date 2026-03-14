@@ -12,19 +12,19 @@ export default async function EditServicePage({
 }) {
   const { id } = await params;
   
-  try {
-    const service = await getService(id);
+  const service = await getService(id).catch(() => null);
 
-    return (
-      <div className="mx-auto max-w-3xl">
-        <AdminPageHeader
-          title="Edit Service"
-          description={`Update details for ${service.title_lt}.`}
-        />
-        <ServiceForm initialData={service} />
-      </div>
-    );
-  } catch (error) {
+  if (!service) {
     notFound();
   }
+
+  return (
+    <div className="mx-auto max-w-3xl">
+      <AdminPageHeader
+        title="Edit Service"
+        description={`Update details for ${service.title_lt}.`}
+      />
+      <ServiceForm initialData={service} />
+    </div>
+  );
 }

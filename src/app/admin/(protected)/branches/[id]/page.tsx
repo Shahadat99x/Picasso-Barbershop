@@ -12,19 +12,19 @@ export default async function EditBranchPage({
 }) {
   const { id } = await params;
   
-  try {
-    const branch = await getBranch(id);
+  const branch = await getBranch(id).catch(() => null);
 
-    return (
-      <div className="mx-auto max-w-3xl">
-        <AdminPageHeader
-          title="Edit Branch"
-          description={`Update details for ${branch.name_lt}.`}
-        />
-        <BranchForm initialData={branch} />
-      </div>
-    );
-  } catch (error) {
+  if (!branch) {
     notFound();
   }
+
+  return (
+    <div className="mx-auto max-w-3xl">
+      <AdminPageHeader
+        title="Edit Branch"
+        description={`Update details for ${branch.name_lt}.`}
+      />
+      <BranchForm initialData={branch} />
+    </div>
+  );
 }

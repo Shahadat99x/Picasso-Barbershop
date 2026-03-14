@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface AdminPageHeaderProps {
   title: string;
@@ -20,12 +21,16 @@ export function AdminPageHeader({ title, description, action }: AdminPageHeaderP
         {description && <p className="mt-1 text-sm text-slate-500">{description}</p>}
       </div>
       {action && (
-        <Button asChild className="shrink-0 bg-slate-900 transition-colors hover:bg-slate-800">
-          <Link href={action.href}>
-            <Plus className="mr-2 h-4 w-4" />
-            {action.label}
-          </Link>
-        </Button>
+        <Link
+          href={action.href}
+          className={cn(
+            buttonVariants({ variant: "default" }),
+            "shrink-0 bg-slate-900 transition-colors hover:bg-slate-800"
+          )}
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          {action.label}
+        </Link>
       )}
     </div>
   );

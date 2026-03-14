@@ -1,0 +1,187 @@
+
+> picasso-barbershop@0.1.0 lint
+> eslint
+
+
+W:\Picasso Barbershop\src\app\admin\(protected)\branches\[id]\page.tsx
+  19:7   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\branches\[id]\page.tsx:19:7
+  17 |
+  18 |     return (
+> 19 |       <div className="mx-auto max-w-3xl">
+     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 20 |         <AdminPageHeader
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 21 |           title="Edit Branch"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 22 |           description={`Update details for ${branch.name_lt}.`}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 23 |         />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 24 |         <BranchForm initialData={branch} />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 25 |       </div>
+     | ^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  26 |     );
+  27 |   } catch (error) {
+  28 |     notFound();  react-hooks/error-boundaries
+  20:9   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\branches\[id]\page.tsx:20:9
+  18 |     return (
+  19 |       <div className="mx-auto max-w-3xl">
+> 20 |         <AdminPageHeader
+     |         ^^^^^^^^^^^^^^^^
+> 21 |           title="Edit Branch"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 22 |           description={`Update details for ${branch.name_lt}.`}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 23 |         />
+     | ^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  24 |         <BranchForm initialData={branch} />
+  25 |       </div>
+  26 |     );                                                                                                                                                                    react-hooks/error-boundaries
+  24:9   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\branches\[id]\page.tsx:24:9
+  22 |           description={`Update details for ${branch.name_lt}.`}
+  23 |         />
+> 24 |         <BranchForm initialData={branch} />
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  25 |       </div>
+  26 |     );
+  27 |   } catch (error) {                                                                                                                                                                                                                                                                                                                                                             react-hooks/error-boundaries
+  27:12  warning  'error' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+
+W:\Picasso Barbershop\src\app\admin\(protected)\branches\branch-form.tsx
+  50:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+W:\Picasso Barbershop\src\app\admin\(protected)\services\[id]\page.tsx
+  19:7   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\services\[id]\page.tsx:19:7
+  17 |
+  18 |     return (
+> 19 |       <div className="mx-auto max-w-3xl">
+     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 20 |         <AdminPageHeader
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 21 |           title="Edit Service"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 22 |           description={`Update details for ${service.title_lt}.`}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 23 |         />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 24 |         <ServiceForm initialData={service} />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 25 |       </div>
+     | ^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  26 |     );
+  27 |   } catch (error) {
+  28 |     notFound();  react-hooks/error-boundaries
+  20:9   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\services\[id]\page.tsx:20:9
+  18 |     return (
+  19 |       <div className="mx-auto max-w-3xl">
+> 20 |         <AdminPageHeader
+     |         ^^^^^^^^^^^^^^^^
+> 21 |           title="Edit Service"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 22 |           description={`Update details for ${service.title_lt}.`}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 23 |         />
+     | ^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  24 |         <ServiceForm initialData={service} />
+  25 |       </div>
+  26 |     );                                                                                                                                                                  react-hooks/error-boundaries
+  24:9   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\services\[id]\page.tsx:24:9
+  22 |           description={`Update details for ${service.title_lt}.`}
+  23 |         />
+> 24 |         <ServiceForm initialData={service} />
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  25 |       </div>
+  26 |     );
+  27 |   } catch (error) {                                                                                                                                                                                                                                                                                                                                                            react-hooks/error-boundaries
+  27:12  warning  'error' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+
+W:\Picasso Barbershop\src\app\admin\(protected)\services\service-form.tsx
+  62:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+W:\Picasso Barbershop\src\app\admin\(protected)\specialists\[id]\page.tsx
+  23:7   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\specialists\[id]\page.tsx:23:7
+  21 |
+  22 |     return (
+> 23 |       <div className="mx-auto max-w-3xl">
+     |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 24 |         <AdminPageHeader
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 25 |           title="Edit Specialist"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 26 |           description={`Update details for ${specialist.full_name}.`}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 27 |         />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 28 |         <SpecialistForm initialData={specialist} branches={branches} />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^
+> 29 |       </div>
+     | ^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  30 |     );
+  31 |   } catch (error) {
+  32 |     notFound();  react-hooks/error-boundaries
+  24:9   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\specialists\[id]\page.tsx:24:9
+  22 |     return (
+  23 |       <div className="mx-auto max-w-3xl">
+> 24 |         <AdminPageHeader
+     |         ^^^^^^^^^^^^^^^^
+> 25 |           title="Edit Specialist"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 26 |           description={`Update details for ${specialist.full_name}.`}
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 27 |         />
+     | ^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  28 |         <SpecialistForm initialData={specialist} branches={branches} />
+  29 |       </div>
+  30 |     );                                                                                                                                                            react-hooks/error-boundaries
+  28:9   error    Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+W:\Picasso Barbershop\src\app\admin\(protected)\specialists\[id]\page.tsx:28:9
+  26 |           description={`Update details for ${specialist.full_name}.`}
+  27 |         />
+> 28 |         <SpecialistForm initialData={specialist} branches={branches} />
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  29 |       </div>
+  30 |     );
+  31 |   } catch (error) {                                                                                                                                                                                                                                                                                                                                     react-hooks/error-boundaries
+  31:12  warning  'error' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+
+W:\Picasso Barbershop\src\app\admin\(protected)\specialists\specialist-form.tsx
+  73:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 15 problems (12 errors, 3 warnings)
+

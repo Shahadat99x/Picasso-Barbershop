@@ -70,8 +70,8 @@ export function SpecialistForm({
           if (res.error) throw new Error(res.error);
         }
         router.push("/admin/specialists");
-      } catch (err: any) {
-        setError(err.message || "An error occurred while saving.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred while saving.");
       }
     });
   };

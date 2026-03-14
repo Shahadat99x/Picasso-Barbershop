@@ -13,22 +13,24 @@ export default async function EditSpecialistPage({
 }) {
   const { id } = await params;
   
-  try {
-    const [specialist, branches] = await Promise.all([
-      getSpecialist(id),
-      getBranches(),
-    ]);
+  const result = await Promise.all([
+    getSpecialist(id),
+    getBranches(),
+  ]).catch(() => null);
 
-    return (
-      <div className="mx-auto max-w-3xl">
-        <AdminPageHeader
-          title="Edit Specialist"
-          description={`Update details for ${specialist.full_name}.`}
-        />
-        <SpecialistForm initialData={specialist} branches={branches} />
-      </div>
-    );
-  } catch (error) {
+  if (!result) {
     notFound();
   }
+  
+  const [specialist, branches] = result;
+
+  return (
+    <div className="mx-auto max-w-3xl">
+      <AdminPageHeader
+        title="Edit Specialist"
+        description={`Update details for ${specialist.full_name}.`}
+      />
+      <SpecialistForm initialData={specialist} branches={branches} />
+    </div>
+  );
 }
