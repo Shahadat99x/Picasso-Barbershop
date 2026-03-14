@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 5a — Translation operations and bilingual QA (Completed)
+Phase 5b — Localized SEO expansion (In Progress)
 
 ## Completed Phases
 
@@ -25,11 +25,11 @@ Phase 5a — Translation operations and bilingual QA (Completed)
 
 ## In Progress
 
-- none
+- Phase 5b — Localized SEO expansion
 
 ## Next Planned Phase
 
-Phase 5b — Content population from admin
+Phase 6 — Performance optimization
 
 ## Known Decisions Already Confirmed
 
@@ -49,7 +49,26 @@ Phase 5b — Content population from admin
 - gallery assets may not yet be finalized
 - blog article topics and production imagery may still evolve
 - booking provider details may still need final confirmation
-- hreflang and CMS-managed SEO controls are still deferred to later phases
+
+## Phase 5b - Localized SEO Expansion
+
+Localization system delivered in this phase:
+
+- i18n locale configuration (`src/i18n/locales.ts`)
+- UI dictionaries for navigation and common elements (`src/i18n/dictionaries/ui.ts`)
+- Bilingual content helpers (`src/i18n/get-content.ts`)
+- Language switcher component with actual routing
+- English versions of all public pages
+- Navigation config updated with locale-aware paths
+
+Localized SEO delivered in this phase:
+
+- hreflang implementation with LT/EN alternates (`src/lib/metadata.ts`)
+- Locale-aware canonical URLs
+- createLocalizedPageMetadata helper function
+- generateHreflangAlternates for language tag generation
+- Sitemap includes both LT and EN routes
+- Key pages updated with localized metadata (homepage, services, branches, blog, gallery, about, contact)
 
 ## Notes for Next AI Session
 
