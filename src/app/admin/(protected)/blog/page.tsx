@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TranslationStatusBadge, calculateTranslationStatus } from "@/components/admin/TranslationStatusBadge";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function BlogPage() {
                 <TableHead className="font-medium text-slate-500">Category</TableHead>
                 <TableHead className="font-medium text-slate-500">Author</TableHead>
                 <TableHead className="font-medium text-slate-500">Published</TableHead>
+                <TableHead className="font-medium text-slate-500">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -48,7 +50,7 @@ export default async function BlogPage() {
               {blogPosts.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={7}
                     className="h-32 text-center text-sm text-slate-500"
                   >
                     No blog posts found. Create your first blog post to get started.
@@ -69,6 +71,9 @@ export default async function BlogPage() {
                       {post.published_at
                         ? new Date(post.published_at).toLocaleDateString("lt-LT")
                         : "-"}
+                    </TableCell>
+                    <TableCell>
+                      <TranslationStatusBadge status={calculateTranslationStatus(post.title_lt, post.title_en)} />
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">

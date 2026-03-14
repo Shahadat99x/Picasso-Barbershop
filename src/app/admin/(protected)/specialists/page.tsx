@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TranslationStatusBadge, calculateTranslationStatus } from "@/components/admin/TranslationStatusBadge";
 
 export const dynamic = "force-dynamic";
 
@@ -35,8 +36,9 @@ export default async function SpecialistsPage() {
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Name</TableHead>
-                <TableHead className="font-medium text-slate-500">Role</TableHead>
+                <TableHead className="font-medium text-slate-500">Role (LT)</TableHead>
                 <TableHead className="font-medium text-slate-500">Branch</TableHead>
+                <TableHead className="font-medium text-slate-500">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="font-medium text-slate-500">Featured</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
@@ -66,6 +68,9 @@ export default async function SpecialistsPage() {
                     <TableCell className="text-slate-500">{specialist.role_lt}</TableCell>
                     <TableCell className="text-slate-500">
                       {specialist.branches?.name_lt || "None"}
+                    </TableCell>
+                    <TableCell>
+                      <TranslationStatusBadge status={calculateTranslationStatus(specialist.role_lt, specialist.role_en)} />
                     </TableCell>
                     <TableCell>
                       {specialist.is_active ? (

@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TranslationStatusBadge, calculateTranslationStatus } from "@/components/admin/TranslationStatusBadge";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,7 @@ export default async function ServicesPage() {
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Title (LT)</TableHead>
                 <TableHead className="font-medium text-slate-500">Category</TableHead>
+                <TableHead className="font-medium text-slate-500">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="font-medium text-slate-500">Featured</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
@@ -47,7 +49,7 @@ export default async function ServicesPage() {
               {services.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={5}
+                    colSpan={6}
                     className="h-32 text-center text-sm text-slate-500"
                   >
                     No services found. Create your first service to get started.
@@ -63,6 +65,9 @@ export default async function ServicesPage() {
                       {service.title_lt}
                     </TableCell>
                     <TableCell className="text-slate-500">{service.category}</TableCell>
+                    <TableCell>
+                      <TranslationStatusBadge status={calculateTranslationStatus(service.title_lt, service.title_en)} />
+                    </TableCell>
                     <TableCell>
                       {service.is_published ? (
                         <Badge

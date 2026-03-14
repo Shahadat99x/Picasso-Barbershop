@@ -210,3 +210,15 @@ Phase 5 keeps Lithuanian as the default without a prefix (e.g., /paslaugos not /
 
 Reason:
 The existing Lithuanian site is already live. Adding /en prefix for English while keeping LT paths unchanged maintains SEO and avoids redirects or broken links.
+
+## Decision 030
+
+Phase 5a implements translation status tracking for admin content modules to help identify missing English translations.
+
+Reason:
+Admin users need visibility into which content items have complete English translations vs. Lithuanian-only content. This enables targeted translation work and maintains bilingual data quality. The implementation includes:
+
+- TranslationStatusBadge component showing "Complete", "LT only", or "Empty" states
+- Translation status columns added to all admin list views
+- Translation completeness helper functions in src/i18n/get-content.ts
+- Fields tracked: title_lt/title_en, quote_lt/quote_en, role_lt/role_en, etc.
