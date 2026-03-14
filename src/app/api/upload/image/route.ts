@@ -62,8 +62,15 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Cloudinary upload error:', errorText);
+      let errorMessage = 'Failed to upload image';
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.error?.message || errorData.error || errorMessage;
+      } catch {
+        // Keep default error message
+      }
       return NextResponse.json(
-        { error: 'Failed to upload image' },
+        { error: errorMessage },
         { status: 500 }
       );
     }
