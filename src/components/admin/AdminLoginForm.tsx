@@ -47,7 +47,7 @@ export function AdminLoginForm() {
         </div>
       ) : null}
 
-      <PrimaryButton className="w-full" disabled={isPending}>
+      <PrimaryButton type="submit" className="w-full" disabled={isPending}>
         {isPending ? "Signing in..." : "Sign in to admin"}
       </PrimaryButton>
     </form>

@@ -14,6 +14,20 @@ export interface AdminAuthActionState {
   error: string | null;
 }
 
+function getReadableAuthError(message: string) {
+  const normalized = message.toLowerCase();
+
+  if (normalized.includes("invalid login credentials")) {
+    return "Invalid email or password.";
+  }
+
+  if (normalized.includes("email not confirmed")) {
+    return "This Supabase user exists, but the email is not confirmed yet.";
+  }
+
+  return message;
+}
+
 export async function signInAdminAction(
   _prevState: AdminAuthActionState,
   formData: FormData,
@@ -34,22 +48,32 @@ export async function signInAdminAction(
     };
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPassword = password.trim();
+
+  if (!normalizedEmail || !normalizedPassword) {
+    return {
+      error: "Email and password are required.",
+    };
+  }
+
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
+    email: normalizedEmail,
+    password: normalizedPassword,
   });
 
   if (error || !data.session || !data.user) {
     return {
-      error: "Unable to sign in with those credentials.",
+      error: error
+        ? getReadableAuthError(error.message)
+        : "Unable to sign in with those credentials.",
     };
   }
 
   if (!isSuperadminEmail(data.user.email)) {
     return {
-      error:
-        "This account is authenticated but is not allowed to access the admin area.",
+      error: `This account signed in as ${data.user.email ?? "an unknown email"}, but that email is not included in SUPABASE_SUPERADMIN_EMAILS.`,
     };
   }
 

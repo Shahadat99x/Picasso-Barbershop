@@ -81,9 +81,8 @@ export async function getAdminSession(): Promise<AdminSessionResult> {
 
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ADMIN_ACCESS_COOKIE)?.value;
-  const refreshToken = cookieStore.get(ADMIN_REFRESH_COOKIE)?.value;
 
-  if (!accessToken && !refreshToken) {
+  if (!accessToken) {
     return {
       user: null,
       session: null,
@@ -104,23 +103,6 @@ export async function getAdminSession(): Promise<AdminSessionResult> {
     }
   }
 
-  if (refreshToken) {
-    const { data, error } = await supabase.auth.refreshSession({
-      refresh_token: refreshToken,
-    });
-
-    if (!error && data.session && data.user) {
-      await persistAdminSession(data.session);
-
-      return {
-        user: data.user,
-        session: data.session,
-      };
-    }
-  }
-
-  await clearAdminSessionCookies();
-
   return {
     user: null,
     session: null,
@@ -131,12 +113,7 @@ export async function getAdminSession(): Promise<AdminSessionResult> {
 export async function getAuthenticatedAdminUser() {
   const { user } = await getAdminSession();
 
-  if (!user || !isSuperadminEmail(user.email)) {
-    await clearAdminSessionCookies();
-    return null;
-  }
-
-  return user;
+  return user && isSuperadminEmail(user.email) ? user : null;
 }
 
 export async function requireAuthenticatedAdminUser() {

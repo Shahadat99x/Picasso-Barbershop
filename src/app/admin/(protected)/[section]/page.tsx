@@ -6,9 +6,6 @@ import { getAdminSection } from "@/config/admin-navigation";
 
 export function generateStaticParams() {
   return [
-    { section: "branches" },
-    { section: "services" },
-    { section: "specialists" },
     { section: "gallery" },
     { section: "promotions" },
     { section: "blog" },
