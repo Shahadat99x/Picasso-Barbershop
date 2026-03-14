@@ -12,7 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { TranslationStatusBadge, calculateTranslationStatus } from "@/components/admin/TranslationStatusBadge";
+import { TranslationStatusBadge } from "@/components/admin/TranslationStatusBadge";
+import { calculateTranslationStatus } from "@/i18n/get-content";
 
 export const dynamic = "force-dynamic";
 
