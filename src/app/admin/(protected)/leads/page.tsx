@@ -12,8 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -85,7 +83,7 @@ export default async function LeadsPage() {
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={cn("hover:bg-opacity-100", STATUS_COLORS[lead.status] || STATUS_COLORS.new)}
+                        className={`hover:bg-opacity-100 ${STATUS_COLORS[lead.status] || STATUS_COLORS.new}`}
                       >
                         {STATUS_LABELS[lead.status] || lead.status}
                       </Badge>
@@ -96,10 +94,7 @@ export default async function LeadsPage() {
                     <TableCell className="text-right">
                       <Link
                         href={`/admin/leads/${lead.id}`}
-                        className={cn(
-                          buttonVariants({ variant: "ghost", size: "icon" }),
-                          "h-8 w-8 text-slate-400 hover:text-slate-900"
-                        )}
+                        className="inline-flex size-8 items-center justify-center rounded-lg border border-transparent text-sm font-medium text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-900"
                       >
                         <ChevronRight className="h-4 w-4" />
                         <span className="sr-only">View lead</span>

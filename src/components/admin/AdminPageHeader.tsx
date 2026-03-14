@@ -1,8 +1,7 @@
+"use client";
+
 import Link from "next/link";
 import { Plus } from "lucide-react";
-
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 interface AdminPageHeaderProps {
   title: string;
@@ -23,12 +22,9 @@ export function AdminPageHeader({ title, description, action }: AdminPageHeaderP
       {action && (
         <Link
           href={action.href}
-          className={cn(
-            buttonVariants({ variant: "default" }),
-            "shrink-0 bg-slate-900 transition-colors hover:bg-slate-800"
-          )}
+          className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg border border-transparent bg-primary px-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/80"
         >
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="h-4 w-4" />
           {action.label}
         </Link>
       )}

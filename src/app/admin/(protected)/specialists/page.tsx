@@ -12,8 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -99,10 +97,7 @@ export default async function SpecialistsPage() {
                     <TableCell className="text-right">
                       <Link
                         href={`/admin/specialists/${specialist.id}`}
-                        className={cn(
-                          buttonVariants({ variant: "ghost", size: "icon" }),
-                          "h-8 w-8 text-slate-400 hover:text-slate-900"
-                        )}
+                        className="inline-flex size-8 items-center justify-center rounded-lg border border-transparent text-sm font-medium text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-900"
                       >
                         <Edit2 className="h-4 w-4" />
                         <span className="sr-only">Edit specialist</span>
