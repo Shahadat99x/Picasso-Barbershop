@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +31,6 @@ export async function POST(request: NextRequest) {
     }
 
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
     if (!cloudName) {
       console.error('Cloudinary cloud name not configured');
@@ -49,37 +47,12 @@ export async function POST(request: NextRequest) {
     // Create base64 data URI
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`;
 
-    // Generate timestamp and signature for signed upload
-    const timestamp = Math.round(new Date().getTime() / 1000);
-    
-    // Create signature using api_secret if available, otherwise use unsigned
-    let uploadUrl: string;
-    let uploadFormData: FormData;
-    
-    if (apiSecret) {
-      // Signed upload
-      const signature = crypto
-        .createHash('sha256')
-        .update(`folder=picasso-barbershop&timestamp=${timestamp}&upload_preset=ml_default${apiSecret}`)
-        .digest('hex');
-      
-      uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-      uploadFormData = new FormData();
-      uploadFormData.append('file', base64);
-      uploadFormData.append('timestamp', timestamp.toString());
-      uploadFormData.append('folder', 'picasso-barbershop');
-      uploadFormData.append('signature', signature);
-      uploadFormData.append('api_key', process.env.CLOUDINARY_API_KEY || '');
-    } else {
-      // Use Cloudinary's auto-upload feature - just pass the image URL
-      // We'll upload via data URL directly
-      uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-      uploadFormData = new FormData();
-      uploadFormData.append('file', base64);
-      uploadFormData.append('timestamp', timestamp.toString());
-      uploadFormData.append('folder', 'picasso-barbershop');
-      uploadFormData.append('upload_preset', 'ml_default'); // Cloudinary's default unsigned preset
-    }
+    // Upload to Cloudinary - using "incoming" preset which allows direct uploads
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', base64);
+    uploadFormData.append('timestamp', Math.round(new Date().getTime() / 1000).toString());
+    uploadFormData.append('folder', 'picasso-barbershop');
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
