@@ -8,7 +8,8 @@ import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import { Clock, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/config/navigation";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
 import { mockServices, getServiceBySlug } from "@/data/services";
 import {
@@ -43,10 +44,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     };
   }
 
-  return createPageMetadata({
+  return createLocalizedPageMetadata({
     title: service.title,
     description: service.shortDescription,
     path: `/paslaugos/${service.slug}`,
+    locale: defaultLocale,
   });
 }
 

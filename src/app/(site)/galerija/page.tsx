@@ -24,13 +24,15 @@ import {
 import { getBranchById, mockBranches } from "@/data/branches";
 import { getServiceBySlug } from "@/data/services";
 import { siteConfig } from "@/config/navigation";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Gallery",
+export const metadata = createLocalizedPageMetadata({
+  title: "Galerija",
   description:
     "Explore premium salon imagery, signature cuts, beard work, and interior details across our Vilnius locations.",
   path: "/galerija",
+  locale: defaultLocale,
 });
 
 const categoryIcons = {

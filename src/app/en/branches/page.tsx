@@ -5,13 +5,15 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { BranchCard } from "@/components/shared/BranchCard";
 import { mockBranches } from "@/data/mock";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { Locale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Branches - Picasso Barbershop",
+export const metadata = createLocalizedPageMetadata({
+  title: "Our Locations",
   description:
     "Find your nearest Picasso Barbershop location in Vilnius. Three branches: Old Town, Žvėrynas, and City Center.",
   path: "/en/branches",
+  locale: "en" as Locale,
 });
 
 export default function EnBranchesPage() {

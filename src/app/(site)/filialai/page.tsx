@@ -4,14 +4,15 @@ import { Section } from "@/components/layout/Section";
 import { mockBranches } from "@/data/branches";
 import { BranchCard } from "@/components/shared/BranchCard";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
-import { Metadata } from "next";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Branches",
+export const metadata = createLocalizedPageMetadata({
+  title: "Filialai",
   description:
     "Compare all Picasso Barbershop branches in Vilnius, including atmosphere, hours, and contact details.",
   path: "/filialai",
+  locale: defaultLocale,
 });
 
 export default function BranchesIndexPage() {

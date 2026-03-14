@@ -6,7 +6,8 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { ServiceFaqSection } from "@/components/sections/ServiceFaqSection";
 import { mockServices, ServiceData } from "@/data/services";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { Locale, defaultLocale } from "@/i18n/locales";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -21,19 +22,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = mockServices.find((s) => s.slug === slug);
+  const locale: Locale = "en";
   
   if (!service) {
-    return createPageMetadata({
+    return createLocalizedPageMetadata({
       title: "Service Not Found",
       description: "The requested service could not be found.",
       path: "/en/services",
+      locale,
     });
   }
   
-  return createPageMetadata({
-    title: `${service.title} - Picasso Barbershop`,
+  return createLocalizedPageMetadata({
+    title: service.title,
     description: service.shortDescription,
     path: `/en/services/${service.slug}`,
+    locale,
   });
 }
 

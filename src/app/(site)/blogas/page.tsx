@@ -19,13 +19,15 @@ import {
   formatBlogDate,
 } from "@/data/blog";
 import { siteConfig } from "@/config/navigation";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata, getCanonicalUrl } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Blog",
+export const metadata = createLocalizedPageMetadata({
+  title: "Blogas",
   description:
     "Read editorial articles from Picasso Barbershop covering grooming advice, branch guides, and premium salon rituals in Vilnius.",
   path: "/blogas",
+  locale: defaultLocale,
 });
 
 const categoryIcons = [

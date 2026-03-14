@@ -17,13 +17,15 @@ import {
 } from "@/data/contact";
 import { mockBranches } from "@/data/branches";
 import { siteConfig } from "@/config/navigation";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Contact",
+export const metadata = createLocalizedPageMetadata({
+  title: "Kontaktai",
   description:
     "Find branch contact details, opening hours, directions, and booking guidance for Picasso Barbershop in Vilnius.",
   path: "/kontaktai",
+  locale: defaultLocale,
 });
 
 const highlightIcons = [

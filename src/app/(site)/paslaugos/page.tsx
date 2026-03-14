@@ -5,14 +5,15 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { serviceCategories, getServicesByCategory } from "@/data/services";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
-import { Metadata } from "next";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Services",
+export const metadata = createLocalizedPageMetadata({
+  title: "Paslaugos",
   description:
     "Explore premium haircuts, beard care, shaves, and signature grooming packages available across our Vilnius branches.",
   path: "/paslaugos",
+  locale: defaultLocale,
 });
 
 export default function ServicesIndexPage() {
