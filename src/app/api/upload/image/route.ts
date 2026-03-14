@@ -31,11 +31,9 @@ export async function POST(request: NextRequest) {
     }
 
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-    if (!cloudName || !apiKey || !apiSecret) {
-      console.error('Cloudinary configuration missing');
+    if (!cloudName) {
+      console.error('Cloudinary cloud name not configured');
       return NextResponse.json(
         { error: 'Upload configuration error' },
         { status: 500 }
