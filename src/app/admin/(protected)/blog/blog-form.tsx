@@ -15,6 +15,20 @@ import type { Database } from "@/lib/supabase/types";
 
 type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
 
+// Helper to convert body textarea string to JSON array for DB
+function toBodyArray(value: string | null): string[] | null {
+  if (!value || !value.trim()) return null;
+  return [value.trim()];
+}
+
+// Helper to convert DB JSON array back to textarea string
+function fromBodyArray(value: unknown): string {
+  if (Array.isArray(value) && value.length > 0) {
+    return value[0];
+  }
+  return "";
+}
+
 export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -33,8 +47,8 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
       slug_en: (formData.get("slug_en") as string) || null,
       excerpt_lt: formData.get("excerpt_lt") as string,
       excerpt_en: (formData.get("excerpt_en") as string) || null,
-      body_lt: formData.get("body_lt") as string,
-      body_en: (formData.get("body_en") as string) || null,
+      body_lt: toBodyArray(formData.get("body_lt") as string),
+      body_en: toBodyArray(formData.get("body_en") as string) || null,
       cover_image_url: (formData.get("cover_image_url") as string) || null,
       cover_alt_text_lt: (formData.get("cover_alt_text_lt") as string) || null,
       cover_alt_text_en: (formData.get("cover_alt_text_en") as string) || null,
@@ -164,7 +178,7 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
           <Textarea
             id="body_lt"
             name="body_lt"
-            defaultValue={typeof initialData?.body_lt === "string" ? initialData.body_lt : ""}
+            defaultValue={fromBodyArray(initialData?.body_lt)}
             required
             rows={10}
             placeholder="Full article content in Lithuanian..."
@@ -176,7 +190,7 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
           <Textarea
             id="body_en"
             name="body_en"
-            defaultValue={typeof initialData?.body_en === "string" ? initialData.body_en : ""}
+            defaultValue={fromBodyArray(initialData?.body_en)}
             rows={10}
             placeholder="Full article content in English..."
           />
