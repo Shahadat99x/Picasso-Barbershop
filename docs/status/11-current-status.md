@@ -1,7 +1,7 @@
 # Current Status
 
 ## Current Phase
-Phase 4a — Admin auth and admin shell (Completed)
+Phase 4b — Admin content modules I (Completed)
 
 ## Completed Phases
 - Phase 0 — Foundation and repo bootstrap
@@ -16,12 +16,13 @@ Phase 4a — Admin auth and admin shell (Completed)
 - Phase 3c — Core SEO implementation
 - Phase 4 — Supabase schema and content architecture
 - Phase 4a — Admin auth and admin shell
+- Phase 4b — Admin content modules I
 
 ## In Progress
 - none
 
 ## Next Planned Phase
-Phase 4b — Admin content modules I
+Phase 4c — Admin content modules II
 
 ## Known Decisions Already Confirmed
 - Lithuanian is the primary language
@@ -77,4 +78,5 @@ Admin foundation delivered in this phase:
 - superadmin allowlist via `SUPABASE_SUPERADMIN_EMAILS`
 - reusable admin shell with sidebar, top bar, and dashboard cards
 - placeholder module routes for upcoming CRUD phases
+- CRUD modules for Branches, Services, and Specialists using React Server Actions and shadcn/ui forms
 Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.

@@ -144,3 +144,9 @@ Public website routes now live inside a `(site)` route group so the `/admin` are
 Reason:
 This keeps the public and admin experiences cleanly separated in the App Router and makes future admin expansion easier to maintain.
 
+## Decision 025
+Phase 4b replaces placeholder `[section]` routes for Branches, Services, and Specialists with real CRUD interfaces using Next.js Server Actions and shadcn/ui forms.
+
+Reason:
+Server actions provide a secure mechanism for executing Supabase service-role mutations without exposing admin credentials to the client, while keeping form implementations lightweight and production-minded.
+
