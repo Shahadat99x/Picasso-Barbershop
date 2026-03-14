@@ -1,9 +1,11 @@
 # Current Status
 
 ## Current Phase
-Phase 4a — Admin auth and admin shell (Completed)
+
+Phase 5 — Localization system (Completed)
 
 ## Completed Phases
+
 - Phase 0 — Foundation and repo bootstrap
 - Phase 1 — Design system and UI foundation
 - Phase 2 — Public shell and global layout
@@ -16,14 +18,20 @@ Phase 4a — Admin auth and admin shell (Completed)
 - Phase 3c — Core SEO implementation
 - Phase 4 — Supabase schema and content architecture
 - Phase 4a — Admin auth and admin shell
+- Phase 4b — Admin content modules I
+- Phase 4c — Admin content modules II
+- Phase 5 — Localization system
 
 ## In Progress
+
 - none
 
 ## Next Planned Phase
-Phase 4b — Admin content modules I
+
+Phase 5a — Translation operations and bilingual QA
 
 ## Known Decisions Already Confirmed
+
 - Lithuanian is the primary language
 - English is the secondary language
 - public site should be built before full admin modules
@@ -33,20 +41,19 @@ Phase 4b — Admin content modules I
 - premium frontend is the highest priority
 
 ## Current Risks
+
 - real brand identity may still need refinement
 - real service list may evolve
 - branch-specific content may not yet be final
 - gallery assets may not yet be finalized
 - blog article topics and production imagery may still evolve
 - booking provider details may still need final confirmation
-- Lithuanian content layer is still structurally deferred until the localization phase
 - hreflang and CMS-managed SEO controls are still deferred to later phases
-- public pages still read local mock data until the later content-wiring phases begin
-- RLS is enabled as a safe baseline, but public/admin policies still need deliberate implementation
-- the admin shell is in place, but CRUD modules still need to replace the current placeholder routes
 
 ## Notes for Next AI Session
+
 Read these files first:
+
 - `/docs/foundation/01-project-overview.md`
 - `/docs/foundation/03-information-architecture.md`
 - `/docs/foundation/04-content-model.md`
@@ -56,25 +63,37 @@ Read these files first:
 Implement only one phase at a time.
 Do not overbuild admin before public templates are proven.
 Current public routes delivered in this phase:
+
+### Lithuanian (LT) - Default
+
+- `/`
+- `/paslaugos`
+- `/paslaugos/[slug]`
+- `/filialai`
+- `/filialai/[slug]`
 - `/galerija`
 - `/apie-mus`
-- `/kontaktai`
 - `/blogas`
 - `/blogas/[slug]`
-SEO foundation delivered in this phase:
-- refined root and page metadata
-- `/sitemap.xml`
-- `/robots.txt`
-- base JSON-LD on homepage, service pages, branch pages, and blog articles
-Supabase foundation delivered in this phase:
-- `supabase/migrations` for the core relational content model
-- `supabase/seed.sql` starter seed scaffold
-- `src/lib/supabase` helpers and typed database interface
-Admin foundation delivered in this phase:
-- `/admin/login`
-- protected `/admin`
-- server-managed admin session cookies backed by Supabase auth
-- superadmin allowlist via `SUPABASE_SUPERADMIN_EMAILS`
-- reusable admin shell with sidebar, top bar, and dashboard cards
-- placeholder module routes for upcoming CRUD phases
-Booking CTAs currently funnel to `/kontaktai#rezervacija` as the public fallback until the final booking provider link is wired.
+- `/kontaktai`
+
+### English (EN)
+
+- `/en`
+- `/en/services`
+- `/en/services/[slug]`
+- `/en/branches`
+- `/en/gallery`
+- `/en/about`
+- `/en/blog`
+- `/en/blog/[slug]`
+- `/en/contact`
+
+Localization system delivered in this phase:
+
+- i18n locale configuration (`src/i18n/locales.ts`)
+- UI dictionaries for navigation and common elements (`src/i18n/dictionaries/ui.ts`)
+- Bilingual content helpers (`src/i18n/get-content.ts`)
+- Language switcher component with actual routing
+- English versions of all public pages
+- Navigation config updated with locale-aware paths

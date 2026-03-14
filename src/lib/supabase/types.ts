@@ -8,7 +8,7 @@ export type Json =
 
 export type LeadStatus = "new" | "in_progress" | "answered" | "closed";
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       branches: {
@@ -91,6 +91,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["branches"]["Insert"]>;
+        Relationships: [];
       };
       services: {
         Row: {
@@ -158,6 +159,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["services"]["Insert"]>;
+        Relationships: [];
       };
       service_branch_availability: {
         Row: {
@@ -181,6 +183,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["service_branch_availability"]["Insert"]>;
+        Relationships: [];
       };
       specialists: {
         Row: {
@@ -220,6 +223,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["specialists"]["Insert"]>;
+        Relationships: [];
       };
       gallery_items: {
         Row: {
@@ -499,6 +503,18 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["site_settings"]["Insert"]>;
       };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
     };
   };
 }

@@ -1,0 +1,111 @@
+import { Locale } from "../locales";
+
+export const navDictionary = {
+  lt: {
+    home: "Pradžia",
+    services: "Paslaugos",
+    branches: "Filialai",
+    gallery: "Galerija",
+    about: "Apie mus",
+    blog: "Blogas",
+    contact: "Kontaktai",
+    book: "Užsakyti",
+  },
+  en: {
+    home: "Home",
+    services: "Services",
+    branches: "Branches",
+    gallery: "Gallery",
+    about: "About",
+    blog: "Blog",
+    contact: "Contact",
+    book: "Book",
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+export const footerDictionary = {
+  lt: {
+    explore: "Naršyti",
+    services: "Paslaugos",
+    branches: "Filialai",
+    gallery: "Galerija",
+    about: "Apie mus",
+    blog: "Blogas",
+    contact: "Kontaktai",
+    legal: "Teisinė informacija",
+    privacyPolicy: "Privatumo politika",
+    termsOfService: "Paslaugų teikimo sąlygos",
+    allRightsReserved: "Visos teisės saugomos",
+    followUs: "Sekite mus",
+  },
+  en: {
+    explore: "Explore",
+    services: "Services",
+    branches: "Branches",
+    gallery: "Gallery",
+    about: "About Us",
+    blog: "Blog",
+    contact: "Contact",
+    legal: "Legal",
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    allRightsReserved: "All rights reserved",
+    followUs: "Follow us",
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+export const commonDictionary = {
+  lt: {
+    readMore: "Skaityti daugiau",
+    viewAll: "Žiūrėti visus",
+    bookNow: "Užsakyti dabar",
+    learnMore: "Sužinoti daugiau",
+    contactUs: "Susisiekti",
+    hours: "Darbo valandas",
+    address: "Adresas",
+    phone: "Telefonas",
+    email: "El. paštas",
+    featured: "Rekomenduojama",
+    new: "Nauja",
+    popular: "Populiaru",
+    loading: "Kraunama...",
+    error: "Įvyko klaida",
+    noResults: "Nieko nerasta",
+  },
+  en: {
+    readMore: "Read more",
+    viewAll: "View all",
+    bookNow: "Book now",
+    learnMore: "Learn more",
+    contactUs: "Contact us",
+    hours: "Hours",
+    address: "Address",
+    phone: "Phone",
+    email: "Email",
+    featured: "Featured",
+    new: "New",
+    popular: "Popular",
+    loading: "Loading...",
+    error: "An error occurred",
+    noResults: "No results found",
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+export const ctaDictionary = {
+  lt: {
+    heroTitle: "Premium kirpimas ir barzdaskirtis Vilniuje",
+    heroSubtitle: "Trys filialai, profesionalūs meistrai, Jūsų stilius",
+    heroCta: "Užsakyti vizitą",
+    finalCtaTitle: "Pasiruošęs pokyčiams?",
+    finalCtaSubtitle: "Užsakykite vizitą jau šiandien ir pakelkite savo stilių į naują lygį",
+    finalCta: "Užsakyti dabar",
+  },
+  en: {
+    heroTitle: "Premium haircut and beard grooming in Vilnius",
+    heroSubtitle: "Three branches, professional masters, your style",
+    heroCta: "Book appointment",
+    finalCtaTitle: "Ready for a change?",
+    finalCtaSubtitle: "Book your visit today and elevate your style to the next level",
+    finalCta: "Book now",
+  },
+} satisfies Record<Locale, Record<string, string>>;
