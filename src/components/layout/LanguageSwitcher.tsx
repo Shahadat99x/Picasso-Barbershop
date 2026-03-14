@@ -1,33 +1,67 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Locale, localeLabels, getLocaleFromPath, isLocale } from "@/i18n/locales";
 
 type LanguageSwitcherProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function LanguageSwitcher({ className, ...props }: LanguageSwitcherProps) {
-  const [lang, setLang] = useState<"LT" | "EN">("LT");
-
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  const currentLocale = getLocaleFromPath(pathname);
+  
+  const switchLocale = (newLocale: Locale) => {
+    // Build the new path
+    let newPath: string;
+    
+    if (newLocale === "lt") {
+      // Switching to LT: remove /en prefix if present
+      if (pathname.startsWith("/en")) {
+        newPath = pathname.replace(/^\/en/, "") || "/";
+      } else {
+        newPath = pathname;
+      }
+    } else {
+      // Switching to EN: add /en prefix if not present
+      if (pathname.startsWith("/en")) {
+        newPath = pathname;
+      } else {
+        newPath = `/en${pathname}`;
+      }
+    }
+    
+    router.push(newPath);
+  };
+  
   return (
     <div className={cn("flex items-center gap-1", className)} {...props}>
       <button
-        onClick={() => setLang("LT")}
+        onClick={() => switchLocale("lt")}
         className={cn(
           "px-2 py-1 text-sm font-medium transition-colors",
-          lang === "LT" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+          currentLocale === "lt" 
+            ? "text-foreground" 
+            : "text-muted-foreground hover:text-foreground"
         )}
+        aria-label="Switch to Lithuanian"
       >
-        LT
+        {localeLabels.lt}
       </button>
       <span className="text-muted-foreground/30">|</span>
       <button
-        onClick={() => setLang("EN")}
+        onClick={() => switchLocale("en")}
         className={cn(
           "px-2 py-1 text-sm font-medium transition-colors",
-          lang === "EN" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+          currentLocale === "en" 
+            ? "text-foreground" 
+            : "text-muted-foreground hover:text-foreground"
         )}
+        aria-label="Switch to English"
       >
-        EN
+        {localeLabels.en}
       </button>
     </div>
   );

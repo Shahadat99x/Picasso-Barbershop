@@ -179,3 +179,34 @@ Phase 4c implements real CRUD admin modules for Gallery, Promotions, Blog, Testi
 
 Reason:
 This completes the admin content management capabilities for V1, allowing the owner to manage all core content entities (gallery, promotions, blog, testimonials, leads, and global settings) directly from the admin panel.
+
+## Decision 027
+
+Phase 5 implements a bilingual localization system with Lithuanian as the default language and English as secondary.
+
+Reason:
+The website targets a primarily Lithuanian audience in Vilnius, but needs English support for tourists and expats. The approach uses:
+
+- Clean locale routing (/en prefix for English pages)
+- UI dictionaries for static text
+- Bilingual content helpers for database content with LT-first fallback
+- Language switcher that preserves page context
+
+## Decision 028
+
+Phase 5 uses URL-based locale detection rather than cookies or headers for simplicity and SEO-friendliness.
+
+Reason:
+URL-based locale is the most reliable for:
+
+- SEO (search engines can crawl both locales)
+- User bookmarking and sharing
+- No dependency on cookie consent
+- Clear user experience with visible locale in URL
+
+## Decision 029
+
+Phase 5 keeps Lithuanian as the default without a prefix (e.g., /paslaugos not /lt/paslaugos) to maintain backward compatibility with existing URLs.
+
+Reason:
+The existing Lithuanian site is already live. Adding /en prefix for English while keeping LT paths unchanged maintains SEO and avoids redirects or broken links.
