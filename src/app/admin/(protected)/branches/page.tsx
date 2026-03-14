@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TranslationStatusBadge, calculateTranslationStatus } from "@/components/admin/TranslationStatusBadge";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +38,7 @@ export default async function BranchesPage() {
                 <TableHead className="font-medium text-slate-500">Name (LT)</TableHead>
                 <TableHead className="font-medium text-slate-500">Slug</TableHead>
                 <TableHead className="font-medium text-slate-500">City</TableHead>
+                <TableHead className="font-medium text-slate-500">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -47,51 +49,61 @@ export default async function BranchesPage() {
               {branches.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={5}
+                    colSpan={6}
                     className="h-32 text-center text-sm text-slate-500"
                   >
                     No branches found. Create your first branch to get started.
                   </TableCell>
                 </TableRow>
               ) : (
-                branches.map((branch) => (
-                  <TableRow
-                    key={branch.id}
-                    className="border-slate-100 transition-colors hover:bg-slate-50"
-                  >
-                    <TableCell className="font-medium text-slate-900">
-                      {branch.name_lt}
-                    </TableCell>
-                    <TableCell className="text-slate-500">{branch.slug_lt}</TableCell>
-                    <TableCell className="text-slate-500">{branch.city}</TableCell>
-                    <TableCell>
-                      {branch.is_active ? (
-                        <Badge
-                          variant="secondary"
-                          className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100"
+                branches.map((branch) => {
+                  const translationStatus = calculateTranslationStatus(
+                    branch.name_lt,
+                    branch.name_en
+                  );
+                  
+                  return (
+                    <TableRow
+                      key={branch.id}
+                      className="border-slate-100 transition-colors hover:bg-slate-50"
+                    >
+                      <TableCell className="font-medium text-slate-900">
+                        {branch.name_lt}
+                      </TableCell>
+                      <TableCell className="text-slate-500">{branch.slug_lt}</TableCell>
+                      <TableCell className="text-slate-500">{branch.city}</TableCell>
+                      <TableCell>
+                        <TranslationStatusBadge status={translationStatus} />
+                      </TableCell>
+                      <TableCell>
+                        {branch.is_active ? (
+                          <Badge
+                            variant="secondary"
+                            className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100"
+                          >
+                            Active
+                          </Badge>
+                        ) : (
+                          <Badge
+                            variant="secondary"
+                            className="bg-slate-100 text-slate-600 hover:bg-slate-100"
+                          >
+                            Inactive
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Link
+                          href={`/admin/branches/${branch.id}`}
+                          className="inline-flex size-8 items-center justify-center rounded-lg border border-transparent text-sm font-medium text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-900"
                         >
-                          Active
-                        </Badge>
-                      ) : (
-                        <Badge
-                          variant="secondary"
-                          className="bg-slate-100 text-slate-600 hover:bg-slate-100"
-                        >
-                          Inactive
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Link
-                        href={`/admin/branches/${branch.id}`}
-                        className="inline-flex size-8 items-center justify-center rounded-lg border border-transparent text-sm font-medium text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-900"
-                      >
-                        <Edit2 className="h-4 w-4" />
-                        <span className="sr-only">Edit branch</span>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))
+                          <Edit2 className="h-4 w-4" />
+                          <span className="sr-only">Edit branch</span>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               )}
             </TableBody>
           </Table>

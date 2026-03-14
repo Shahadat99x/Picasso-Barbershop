@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TranslationStatusBadge, calculateTranslationStatus } from "@/components/admin/TranslationStatusBadge";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +38,7 @@ export default async function GalleryPage() {
                 <TableHead className="font-medium text-slate-500">Image</TableHead>
                 <TableHead className="font-medium text-slate-500">Title (LT)</TableHead>
                 <TableHead className="font-medium text-slate-500">Category</TableHead>
+                <TableHead className="font-medium text-slate-500">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -47,7 +49,7 @@ export default async function GalleryPage() {
               {galleryItems.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={5}
+                    colSpan={6}
                     className="h-32 text-center text-sm text-slate-500"
                   >
                     No gallery items found. Create your first gallery item to get started.
@@ -77,6 +79,9 @@ export default async function GalleryPage() {
                     </TableCell>
                     <TableCell className="text-slate-500">
                       {item.category || "-"}
+                    </TableCell>
+                    <TableCell>
+                      <TranslationStatusBadge status={calculateTranslationStatus(item.title_lt, item.title_en)} />
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">
