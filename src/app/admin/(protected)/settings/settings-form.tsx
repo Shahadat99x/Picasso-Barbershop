@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { updateSiteSettings } from "@/app/admin/actions/settings";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { Database } from "@/lib/supabase/types";
 
 type SiteSettings = Database["public"]["Tables"]["site_settings"]["Row"];
@@ -18,6 +19,8 @@ export function SettingsForm({ initialData }: { initialData?: SiteSettings | nul
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [logoUrl, setLogoUrl] = useState(initialData?.logo_url || "");
+  const [faviconUrl, setFaviconUrl] = useState(initialData?.favicon_url || "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,23 +120,23 @@ export function SettingsForm({ initialData }: { initialData?: SiteSettings | nul
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="logo_url">Logo URL</Label>
-          <Input
-            id="logo_url"
-            name="logo_url"
-            defaultValue={initialData?.logo_url || ""}
+          <ImageUpload
+            label="Logo"
+            value={logoUrl}
+            onChange={setLogoUrl}
             placeholder="https://res.cloudinary.com/.../logo.png"
           />
+          <input type="hidden" name="logo_url" value={logoUrl} />
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="favicon_url">Favicon URL</Label>
-          <Input
-            id="favicon_url"
-            name="favicon_url"
-            defaultValue={initialData?.favicon_url || ""}
+          <ImageUpload
+            label="Favicon"
+            value={faviconUrl}
+            onChange={setFaviconUrl}
             placeholder="https://res.cloudinary.com/.../favicon.ico"
           />
+          <input type="hidden" name="favicon_url" value={faviconUrl} />
         </div>
 
         <div className="space-y-2">

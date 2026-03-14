@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createGalleryItem, updateGalleryItem } from "@/app/admin/actions/gallery";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { Database } from "@/lib/supabase/types";
 
 type GalleryItem = Database["public"]["Tables"]["gallery_items"]["Row"];
@@ -18,6 +19,7 @@ export function GalleryItemForm({ initialData }: { initialData?: GalleryItem }) 
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState(initialData?.image_url || "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -108,17 +110,13 @@ export function GalleryItemForm({ initialData }: { initialData?: GalleryItem }) 
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="image_url">Image URL</Label>
-          <Input
-            id="image_url"
-            name="image_url"
-            defaultValue={initialData?.image_url || ""}
-            required
+          <ImageUpload
+            label="Image"
+            value={imageUrl}
+            onChange={setImageUrl}
             placeholder="https://res.cloudinary.com/.../image.jpg"
           />
-          <p className="text-xs text-slate-500">
-            Enter the full Cloudinary URL for the image
-          </p>
+          <input type="hidden" name="image_url" value={imageUrl} />
         </div>
 
         <div className="space-y-2">

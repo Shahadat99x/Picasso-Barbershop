@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createPromotion, updatePromotion } from "@/app/admin/actions/promotions";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { Database } from "@/lib/supabase/types";
 
 type Promotion = Database["public"]["Tables"]["promotions"]["Row"];
@@ -18,6 +19,7 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [bannerImageUrl, setBannerImageUrl] = useState(initialData?.banner_image_url || "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -113,13 +115,13 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="banner_image_url">Banner Image URL</Label>
-          <Input
-            id="banner_image_url"
-            name="banner_image_url"
-            defaultValue={initialData?.banner_image_url || ""}
+          <ImageUpload
+            label="Banner Image"
+            value={bannerImageUrl}
+            onChange={setBannerImageUrl}
             placeholder="https://res.cloudinary.com/.../banner.jpg"
           />
+          <input type="hidden" name="banner_image_url" value={bannerImageUrl} />
         </div>
 
         <div className="space-y-2">

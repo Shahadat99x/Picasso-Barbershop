@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createSpecialist, updateSpecialist } from "@/app/admin/actions/specialists";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { Database } from "@/lib/supabase/types";
 import {
   Select,
@@ -32,6 +33,7 @@ export function SpecialistForm({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [photoUrl, setPhotoUrl] = useState(initialData?.photo_url || "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,13 +124,13 @@ export function SpecialistForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="photo_url">Photo URL (Cloudinary)</Label>
-          <Input
-            id="photo_url"
-            name="photo_url"
-            defaultValue={initialData?.photo_url || ""}
+          <ImageUpload
+            label="Photo"
+            value={photoUrl}
+            onChange={setPhotoUrl}
             placeholder="https://res.cloudinary.com/..."
           />
+          <input type="hidden" name="photo_url" value={photoUrl} />
         </div>
 
         <div className="space-y-2">

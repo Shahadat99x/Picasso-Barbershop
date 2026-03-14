@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createBlogPost, updateBlogPost } from "@/app/admin/actions/blog";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { Database } from "@/lib/supabase/types";
 
 type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
@@ -18,6 +19,7 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [coverImageUrl, setCoverImageUrl] = useState(initialData?.cover_image_url || "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -181,13 +183,13 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="cover_image_url">Cover Image URL</Label>
-          <Input
-            id="cover_image_url"
-            name="cover_image_url"
-            defaultValue={initialData?.cover_image_url || ""}
+          <ImageUpload
+            label="Cover Image"
+            value={coverImageUrl}
+            onChange={setCoverImageUrl}
             placeholder="https://res.cloudinary.com/.../cover.jpg"
           />
+          <input type="hidden" name="cover_image_url" value={coverImageUrl} />
         </div>
 
         <div className="space-y-2">
