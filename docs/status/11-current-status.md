@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 5 — Localization system (Completed)
+Phase 5a — Translation operations and bilingual QA (In Progress)
 
 ## Completed Phases
 
@@ -24,11 +24,14 @@ Phase 5 — Localization system (Completed)
 
 ## In Progress
 
-- none
+- Phase 5a — Translation operations and bilingual QA
+  - Added TranslationStatusBadge component for admin list views
+  - Added translation status column to all admin content modules (branches, services, specialists, gallery, promotions, blog, testimonials)
+  - Translation completeness helpers in src/i18n/get-content.ts
 
 ## Next Planned Phase
 
-Phase 5a — Translation operations and bilingual QA
+Phase 5b — Content population and QA
 
 ## Known Decisions Already Confirmed
 
