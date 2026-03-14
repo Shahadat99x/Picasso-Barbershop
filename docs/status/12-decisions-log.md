@@ -222,3 +222,29 @@ Admin users need visibility into which content items have complete English trans
 - Translation status columns added to all admin list views
 - Translation completeness helper functions in src/i18n/get-content.ts
 - Fields tracked: title_lt/title_en, quote_lt/quote_en, role_lt/role_en, etc.
+
+## Decision 031
+
+Phase 5b implements hreflang support for bilingual SEO with proper canonical URLs.
+
+Reason:
+The website needs proper international SEO signals for both Lithuanian and English versions. The implementation includes:
+
+- hreflang tags with lt, en, and x-default values in metadata alternates
+- Locale-aware canonical URLs that correctly point to LT or EN versions
+- createLocalizedPageMetadata helper function in src/lib/metadata.ts
+- generateHreflangAlternates for generating language tag mappings
+- Sitemap updated to include both LT and EN routes
+- Key pages (homepage, services, branches, blog, gallery, about, contact) updated with localized metadata
+
+## Decision 032
+
+Phase 5b uses URL-based locale routing without subdirectory prefix for LT (default) and /en prefix for English.
+
+Reason:
+
+- Maintains backward compatibility with existing LT URLs
+- Clear visual distinction for English pages
+- SEO-friendly (search engines can crawl both versions)
+- User-friendly (visible locale in URL)
+- Consistent with Phase 5 localization approach

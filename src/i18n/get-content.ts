@@ -97,6 +97,107 @@ export function getTranslationStatus(
 }
 
 /**
+ * Get a bilingual value from separate LT/EN columns (database pattern)
+ * Falls back to LT if EN is missing/empty
+ */
+export function getBilingualValue<T>(
+  ltValue: T | null | undefined,
+  enValue: T | null | undefined,
+  locale: Locale,
+  fallbackToLt = true
+): T | null {
+  // For LT, always return LT value
+  if (locale === defaultLocale) {
+    return ltValue ?? null;
+  }
+  
+  // For EN, try EN first, then fallback to LT
+  if (enValue) {
+    return enValue;
+  }
+  
+  if (fallbackToLt && ltValue) {
+    return ltValue;
+  }
+  
+  return enValue ?? null;
+}
+
+/**
+ * Calculate translation status from separate LT/EN columns
+ */
+export function calculateTranslationStatus(
+  ltValue: unknown,
+  enValue: unknown
+): TranslationStatus {
+  if (ltValue && enValue) return "complete";
+  if (ltValue) return "lt-only";
+  return "empty";
+}
+
+/**
+ * Get title with fallback - handles both object and column patterns
+ */
+export function getTitle<T>(
+  obj: { title_lt?: T; title_en?: T } | { title?: T } | null | undefined,
+  locale: Locale,
+  fallbackToLt = true
+): T | null {
+  if (!obj) return null;
+  
+  // Check for bilingual pattern (title_lt / title_en)
+  if ("title_lt" in obj) {
+    return getBilingualValue(obj.title_lt, obj.title_en, locale, fallbackToLt);
+  }
+  
+  // Check for simple pattern (title)
+  if ("title" in obj && obj.title) {
+    return obj.title;
+  }
+  
+  return null;
+}
+
+/**
+ * Get description with fallback - handles both object and column patterns
+ */
+export function getDescription<T>(
+  obj: { description_lt?: T; description_en?: T } | { description?: T } | null | undefined,
+  locale: Locale,
+  fallbackToLt = true
+): T | null {
+  if (!obj) return null;
+  
+  // Check for bilingual pattern (description_lt / description_en)
+  if ("description_lt" in obj) {
+    return getBilingualValue(obj.description_lt, obj.description_en, locale, fallbackToLt);
+  }
+  
+  // Check for simple pattern (description)
+  if ("description" in obj && obj.description) {
+    return obj.description;
+  }
+  
+  return null;
+}
+
+/**
+ * Get slug with fallback - prefers matching locale slug
+ */
+export function getSlug(
+  obj: { slug_lt?: string; slug_en?: string } | null | undefined,
+  locale: Locale
+): string | null {
+  if (!obj) return null;
+  
+  if (locale === defaultLocale) {
+    return obj.slug_lt ?? null;
+  }
+  
+  return obj.slug_en ?? obj.slug_lt ?? null;
+}
+
+/**
  * Type for database row with bilingual fields
  */
 export type BilingualColumns<T> = {

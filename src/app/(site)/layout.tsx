@@ -9,7 +9,7 @@ export default function SiteLayout({
 }>) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <SiteHeader />
+      <SiteHeader locale="lt" />
       <div className="flex-1">{children}</div>
       <SiteFooter />
       <StickyMobileBookingCTA />

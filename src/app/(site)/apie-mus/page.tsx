@@ -20,13 +20,15 @@ import {
 } from "@/data/about";
 import { getBranchById } from "@/data/branches";
 import { siteConfig } from "@/config/navigation";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "About",
+export const metadata = createLocalizedPageMetadata({
+  title: "Apie mus",
   description:
     "Learn the story, service philosophy, and specialists behind Picasso Barbershop in Vilnius.",
   path: "/apie-mus",
+  locale: defaultLocale,
 });
 
 const valueIcons = [<Scissors key="cut" className="h-5 w-5" />, <ShieldCheck key="shield" className="h-5 w-5" />, <MapPin key="map" className="h-5 w-5" />, <CheckCircle2 key="check" className="h-5 w-5" />];

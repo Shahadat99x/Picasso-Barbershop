@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { mainNav, siteConfig } from "@/config/navigation";
+import { getMainNav, siteConfig } from "@/config/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  
+  // Detect locale from pathname
+  const locale = pathname?.startsWith("/en") ? "en" : "lt";
+  const nav = getMainNav(locale);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -44,7 +50,7 @@ export function MobileNav() {
         </div>
 
         <nav className="flex flex-col gap-6 text-lg font-medium">
-          {mainNav.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}

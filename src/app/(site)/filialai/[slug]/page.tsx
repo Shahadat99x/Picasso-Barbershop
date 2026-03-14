@@ -8,7 +8,8 @@ import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { MapPin, Phone, Mail, Clock, Car, Bus, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/config/navigation";
-import { createPageMetadata } from "@/lib/metadata";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/locales";
 
 import { mockBranches, getBranchBySlug } from "@/data/branches";
 import { getServiceBySlug, ServiceData } from "@/data/services";
@@ -43,10 +44,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     };
   }
 
-  return createPageMetadata({
+  return createLocalizedPageMetadata({
     title: branch.name,
     description: branch.intro,
     path: `/filialai/${branch.slug}`,
+    locale: defaultLocale,
   });
 }
 

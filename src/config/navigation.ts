@@ -44,6 +44,10 @@ export function getFooterNav(locale: Locale = defaultLocale) {
       { label: t.privacyPolicy, href: "/privacy-policy" },
       { label: t.termsOfService, href: "/terms" },
     ],
+    social: [
+      { label: "Instagram", href: "https://instagram.com" },
+      { label: "Facebook", href: "https://facebook.com" },
+    ],
   };
 }
 
