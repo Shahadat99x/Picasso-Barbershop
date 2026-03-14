@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createBlogPost, updateBlogPost } from "@/app/admin/actions/blog";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { SlugInput } from "@/components/admin/SlugInput";
+import { generateSlug } from "@/lib/utils/slug";
 import type { Database } from "@/lib/supabase/types";
 
 type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
@@ -34,6 +36,47 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [coverImageUrl, setCoverImageUrl] = useState(initialData?.cover_image_url || "");
+
+  // Slug state for LT
+  const [titleLt, setTitleLt] = useState(initialData?.title_lt || "");
+  const [slugLt, setSlugLt] = useState(initialData?.slug_lt || "");
+  const [slugLtEdited, setSlugLtEdited] = useState(false);
+
+  // Slug state for EN
+  const [titleEn, setTitleEn] = useState(initialData?.title_en || "");
+  const [slugEn, setSlugEn] = useState(initialData?.slug_en || "");
+  const [slugEnEdited, setSlugEnEdited] = useState(false);
+
+  // Handle slug changes
+  const handleTitleLtChange = (value: string) => {
+    setTitleLt(value);
+    if (!slugLtEdited && value) {
+      setSlugLt(generateSlug(value));
+    }
+  };
+  const handleSlugLtChange = (value: string) => {
+    setSlugLtEdited(true);
+    setSlugLt(value);
+  };
+  const handleRegenerateLt = () => {
+    setSlugLtEdited(false);
+    setSlugLt(generateSlug(titleLt));
+  };
+
+  const handleTitleEnChange = (value: string) => {
+    setTitleEn(value);
+    if (!slugEnEdited && value) {
+      setSlugEn(generateSlug(value));
+    }
+  };
+  const handleSlugEnChange = (value: string) => {
+    setSlugEnEdited(true);
+    setSlugEn(value);
+  };
+  const handleRegenerateEn = () => {
+    setSlugEnEdited(false);
+    setSlugEn(generateSlug(titleEn));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,45 +131,36 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="title_lt">Title (LT)</Label>
-          <Input
-            id="title_lt"
-            name="title_lt"
-            defaultValue={initialData?.title_lt || ""}
-            required
+          <SlugInput
+            sourceLabel="Title (LT)"
+            slugLabel="Slug (LT)"
+            sourceValue={titleLt}
+            slugValue={slugLt}
+            onSourceChange={handleTitleLtChange}
+            onSlugChange={handleSlugLtChange}
+            editState={slugLtEdited ? 'manual' : 'auto'}
+            onRegenerate={handleRegenerateLt}
             placeholder="e.g. Kaip prižiūrėti barzdą"
+            required
           />
+          <input type="hidden" name="slug_lt" value={slugLt} />
+          <input type="hidden" name="title_lt" value={titleLt} />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="title_en">Title (EN)</Label>
-          <Input
-            id="title_en"
-            name="title_en"
-            defaultValue={initialData?.title_en || ""}
+          <SlugInput
+            sourceLabel="Title (EN)"
+            slugLabel="Slug (EN)"
+            sourceValue={titleEn}
+            slugValue={slugEn}
+            onSourceChange={handleTitleEnChange}
+            onSlugChange={handleSlugEnChange}
+            editState={slugEnEdited ? 'manual' : 'auto'}
+            onRegenerate={handleRegenerateEn}
             placeholder="e.g. How to care for your beard"
           />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="slug_lt">Slug (LT)</Label>
-          <Input
-            id="slug_lt"
-            name="slug_lt"
-            defaultValue={initialData?.slug_lt || ""}
-            required
-            placeholder="e.g. kaip-priziureti-barzda"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="slug_en">Slug (EN)</Label>
-          <Input
-            id="slug_en"
-            name="slug_en"
-            defaultValue={initialData?.slug_en || ""}
-            placeholder="e.g. how-to-care-for-beard"
-          />
+          <input type="hidden" name="slug_en" value={slugEn} />
+          <input type="hidden" name="title_en" value={titleEn} />
         </div>
 
         <div className="space-y-2">
