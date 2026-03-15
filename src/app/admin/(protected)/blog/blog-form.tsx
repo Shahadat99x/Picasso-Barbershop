@@ -10,14 +10,73 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createBlogPost, updateBlogPost } from "@/app/admin/actions/blog";
+import { ImageUpload } from "@/components/admin/ImageUpload";
+import { SlugInput } from "@/components/admin/SlugInput";
+import { generateSlug } from "@/lib/utils/slug";
 import type { Database } from "@/lib/supabase/types";
 
 type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
+
+// Helper to convert body textarea string to JSON array for DB
+function toBodyArray(value: string | null): string[] | null {
+  if (!value || !value.trim()) return null;
+  return [value.trim()];
+}
+
+// Helper to convert DB JSON array back to textarea string
+function fromBodyArray(value: unknown): string {
+  if (Array.isArray(value) && value.length > 0) {
+    return value[0];
+  }
+  return "";
+}
 
 export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [coverImageUrl, setCoverImageUrl] = useState(initialData?.cover_image_url || "");
+
+  // Slug state for LT
+  const [titleLt, setTitleLt] = useState(initialData?.title_lt || "");
+  const [slugLt, setSlugLt] = useState(initialData?.slug_lt || "");
+  const [slugLtEdited, setSlugLtEdited] = useState(false);
+
+  // Slug state for EN
+  const [titleEn, setTitleEn] = useState(initialData?.title_en || "");
+  const [slugEn, setSlugEn] = useState(initialData?.slug_en || "");
+  const [slugEnEdited, setSlugEnEdited] = useState(false);
+
+  // Handle slug changes
+  const handleTitleLtChange = (value: string) => {
+    setTitleLt(value);
+    if (!slugLtEdited && value) {
+      setSlugLt(generateSlug(value));
+    }
+  };
+  const handleSlugLtChange = (value: string) => {
+    setSlugLtEdited(true);
+    setSlugLt(value);
+  };
+  const handleRegenerateLt = () => {
+    setSlugLtEdited(false);
+    setSlugLt(generateSlug(titleLt));
+  };
+
+  const handleTitleEnChange = (value: string) => {
+    setTitleEn(value);
+    if (!slugEnEdited && value) {
+      setSlugEn(generateSlug(value));
+    }
+  };
+  const handleSlugEnChange = (value: string) => {
+    setSlugEnEdited(true);
+    setSlugEn(value);
+  };
+  const handleRegenerateEn = () => {
+    setSlugEnEdited(false);
+    setSlugEn(generateSlug(titleEn));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,8 +90,8 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
       slug_en: (formData.get("slug_en") as string) || null,
       excerpt_lt: formData.get("excerpt_lt") as string,
       excerpt_en: (formData.get("excerpt_en") as string) || null,
-      body_lt: formData.get("body_lt") as string,
-      body_en: (formData.get("body_en") as string) || null,
+      body_lt: toBodyArray(formData.get("body_lt") as string),
+      body_en: toBodyArray(formData.get("body_en") as string) || null,
       cover_image_url: (formData.get("cover_image_url") as string) || null,
       cover_alt_text_lt: (formData.get("cover_alt_text_lt") as string) || null,
       cover_alt_text_en: (formData.get("cover_alt_text_en") as string) || null,
@@ -72,45 +131,36 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="title_lt">Title (LT)</Label>
-          <Input
-            id="title_lt"
-            name="title_lt"
-            defaultValue={initialData?.title_lt || ""}
-            required
+          <SlugInput
+            sourceLabel="Title (LT)"
+            slugLabel="Slug (LT)"
+            sourceValue={titleLt}
+            slugValue={slugLt}
+            onSourceChange={handleTitleLtChange}
+            onSlugChange={handleSlugLtChange}
+            editState={slugLtEdited ? 'manual' : 'auto'}
+            onRegenerate={handleRegenerateLt}
             placeholder="e.g. Kaip prižiūrėti barzdą"
+            required
           />
+          <input type="hidden" name="slug_lt" value={slugLt} />
+          <input type="hidden" name="title_lt" value={titleLt} />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="title_en">Title (EN)</Label>
-          <Input
-            id="title_en"
-            name="title_en"
-            defaultValue={initialData?.title_en || ""}
+          <SlugInput
+            sourceLabel="Title (EN)"
+            slugLabel="Slug (EN)"
+            sourceValue={titleEn}
+            slugValue={slugEn}
+            onSourceChange={handleTitleEnChange}
+            onSlugChange={handleSlugEnChange}
+            editState={slugEnEdited ? 'manual' : 'auto'}
+            onRegenerate={handleRegenerateEn}
             placeholder="e.g. How to care for your beard"
           />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="slug_lt">Slug (LT)</Label>
-          <Input
-            id="slug_lt"
-            name="slug_lt"
-            defaultValue={initialData?.slug_lt || ""}
-            required
-            placeholder="e.g. kaip-priziureti-barzda"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="slug_en">Slug (EN)</Label>
-          <Input
-            id="slug_en"
-            name="slug_en"
-            defaultValue={initialData?.slug_en || ""}
-            placeholder="e.g. how-to-care-for-beard"
-          />
+          <input type="hidden" name="slug_en" value={slugEn} />
+          <input type="hidden" name="title_en" value={titleEn} />
         </div>
 
         <div className="space-y-2">
@@ -162,7 +212,7 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
           <Textarea
             id="body_lt"
             name="body_lt"
-            defaultValue={typeof initialData?.body_lt === "string" ? initialData.body_lt : ""}
+            defaultValue={fromBodyArray(initialData?.body_lt)}
             required
             rows={10}
             placeholder="Full article content in Lithuanian..."
@@ -174,20 +224,20 @@ export function BlogPostForm({ initialData }: { initialData?: BlogPost }) {
           <Textarea
             id="body_en"
             name="body_en"
-            defaultValue={typeof initialData?.body_en === "string" ? initialData.body_en : ""}
+            defaultValue={fromBodyArray(initialData?.body_en)}
             rows={10}
             placeholder="Full article content in English..."
           />
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="cover_image_url">Cover Image URL</Label>
-          <Input
-            id="cover_image_url"
-            name="cover_image_url"
-            defaultValue={initialData?.cover_image_url || ""}
+          <ImageUpload
+            label="Cover Image"
+            value={coverImageUrl}
+            onChange={setCoverImageUrl}
             placeholder="https://res.cloudinary.com/.../cover.jpg"
           />
+          <input type="hidden" name="cover_image_url" value={coverImageUrl} />
         </div>
 
         <div className="space-y-2">

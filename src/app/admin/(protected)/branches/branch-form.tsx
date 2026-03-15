@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { createBranch, updateBranch } from "@/app/admin/actions/branches";
+import { SlugInput } from "@/components/admin/SlugInput";
+import { generateSlug } from "@/lib/utils/slug";
 import type { Database } from "@/lib/supabase/types";
 
 type Branch = Database["public"]["Tables"]["branches"]["Row"];
@@ -18,6 +20,26 @@ export function BranchForm({ initialData }: { initialData?: Branch }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  // Slug state
+  const [nameLt, setNameLt] = useState(initialData?.name_lt || "");
+  const [slugLt, setSlugLt] = useState(initialData?.slug_lt || "");
+  const [slugLtEdited, setSlugLtEdited] = useState(false);
+
+  const handleNameLtChange = (value: string) => {
+    setNameLt(value);
+    if (!slugLtEdited && value) {
+      setSlugLt(generateSlug(value));
+    }
+  };
+  const handleSlugLtChange = (value: string) => {
+    setSlugLtEdited(true);
+    setSlugLt(value);
+  };
+  const handleRegenerateLt = () => {
+    setSlugLtEdited(false);
+    setSlugLt(generateSlug(nameLt));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,25 +88,20 @@ export function BranchForm({ initialData }: { initialData?: Branch }) {
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name_lt">Name (LT)</Label>
-          <Input
-            id="name_lt"
-            name="name_lt"
-            defaultValue={initialData?.name_lt || ""}
-            required
+          <SlugInput
+            sourceLabel="Name (LT)"
+            slugLabel="Slug (LT)"
+            sourceValue={nameLt}
+            slugValue={slugLt}
+            onSourceChange={handleNameLtChange}
+            onSlugChange={handleSlugLtChange}
+            editState={slugLtEdited ? 'manual' : 'auto'}
+            onRegenerate={handleRegenerateLt}
             placeholder="e.g. Centro filialas"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="slug_lt">Slug (LT)</Label>
-          <Input
-            id="slug_lt"
-            name="slug_lt"
-            defaultValue={initialData?.slug_lt || ""}
             required
-            placeholder="e.g. centro-filialas"
           />
+          <input type="hidden" name="slug_lt" value={slugLt} />
+          <input type="hidden" name="name_lt" value={nameLt} />
         </div>
 
         <div className="space-y-2 sm:col-span-2">

@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 5b — Localized SEO expansion (In Progress)
+Phase 4d — Admin Media Upload UX (In Progress)
 
 ## Completed Phases
 
@@ -22,10 +22,11 @@ Phase 5b — Localized SEO expansion (In Progress)
 - Phase 4c — Admin content modules II
 - Phase 5 — Localization system
 - Phase 5a — Translation operations and bilingual QA
+- Phase 5b — Localized SEO expansion
 
 ## In Progress
 
-- Phase 5b — Localized SEO expansion
+- Phase 4d — Admin Media Upload UX
 
 ## Next Planned Phase
 
@@ -69,6 +70,29 @@ Localized SEO delivered in this phase:
 - generateHreflangAlternates for language tag generation
 - Sitemap includes both LT and EN routes
 - Key pages updated with localized metadata (homepage, services, branches, blog, gallery, about, contact)
+
+## Phase 4d - Admin Media Upload UX
+
+Admin media upload UX improvements delivered in this phase:
+
+- ImageUpload reusable component (`src/components/admin/ImageUpload.tsx`)
+  - Drag-and-drop upload zone
+  - Click to upload
+  - Manual URL paste fallback
+  - Image preview with remove action
+  - File type and size validation (max 10MB)
+  - Upload progress state
+- Cloudinary upload API route (`src/app/api/upload/image/route.ts`)
+  - Server-side upload handling
+  - File type validation
+  - Secure server-side secrets
+  - Returns uploaded URL, public ID, and dimensions
+- Updated admin modules with ImageUpload component:
+  - Blog post cover image
+  - Gallery item image
+  - Specialist photo
+  - Promotion banner
+  - Settings logo and favicon
 
 ## Notes for Next AI Session
 

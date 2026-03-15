@@ -248,3 +248,18 @@ Reason:
 - SEO-friendly (search engines can crawl both versions)
 - User-friendly (visible locale in URL)
 - Consistent with Phase 5 localization approach
+
+## Decision 033
+
+Phase 4d implements a reusable ImageUpload component with Cloudinary integration for admin media management.
+
+Reason:
+
+The admin forms previously used raw URL text inputs for images, which required manual Cloudinary uploads and copy-pasting URLs. This created a poor UX. The solution includes:
+
+- ImageUpload component with drag-and-drop, click-to-upload, and URL paste fallback
+- Server-side Cloudinary upload API route that keeps secrets secure
+- Integration in Blog, Gallery, Specialists, Promotions, and Settings modules
+- File validation (type: JPEG/PNG/WebP/GIF, max 10MB)
+- Image preview with remove functionality
+- Hidden input fields to maintain FormData compatibility
