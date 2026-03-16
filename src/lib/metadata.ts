@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { Locale, defaultLocale } from "@/i18n/locales";
 import { siteConfig } from "@/config/navigation";
+import { localizePath } from "@/lib/site-routes";
 
 interface PageMetadataInput {
   title: string;
@@ -13,9 +14,7 @@ interface PageMetadataInput {
 }
 
 export function getCanonicalUrl(path: string, locale: Locale = defaultLocale) {
-  // For EN locale, prepend /en to the path
-  const basePath = locale === defaultLocale ? path : `/en${path}`;
-  return new URL(basePath, siteConfig.siteUrl).toString();
+  return new URL(localizePath(path, locale), siteConfig.siteUrl).toString();
 }
 
 /**
@@ -23,11 +22,7 @@ export function getCanonicalUrl(path: string, locale: Locale = defaultLocale) {
  */
 export function getAlternateLocalePath(path: string, currentLocale: Locale): string {
   const alternateLocale: Locale = currentLocale === defaultLocale ? "en" : defaultLocale;
-  
-  // Remove existing locale prefix if present
-  const cleanPath = path.replace(/^\/en/, "") || "/";
-  
-  return alternateLocale === defaultLocale ? cleanPath : `/en${cleanPath}`;
+  return localizePath(path, alternateLocale);
 }
 
 /**
@@ -36,16 +31,11 @@ export function getAlternateLocalePath(path: string, currentLocale: Locale): str
  */
 export function generateHreflangAlternates(path: string): Record<string, string> {
   const alternates: Record<string, string> = {};
-  
-  // LT (x-default)
-  const ltPath = path.startsWith("/en") ? path.slice(3) || "/" : path;
-  alternates["lt"] = new URL(ltPath === "/" ? "/" : ltPath, siteConfig.siteUrl).toString();
+
+  alternates["lt"] = new URL(localizePath(path, "lt"), siteConfig.siteUrl).toString();
   alternates["x-default"] = alternates["lt"];
-  
-  // EN
-  const enPath = path.startsWith("/en") ? path : `/en${path === "/" ? "" : path}`;
-  alternates["en"] = new URL(enPath, siteConfig.siteUrl).toString();
-  
+  alternates["en"] = new URL(localizePath(path, "en"), siteConfig.siteUrl).toString();
+
   return alternates;
 }
 

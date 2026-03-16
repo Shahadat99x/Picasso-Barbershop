@@ -5,38 +5,53 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 import { siteConfig } from "@/config/navigation";
+import { getSiteSettingsWithDefaults } from "@/lib/public-data";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.siteUrl),
-  title: {
-    default: "Premium Salon in Vilnius",
-    template: `%s | ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  applicationName: siteConfig.name,
-  alternates: {
-    canonical: "/",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    type: "website",
-    locale: "lt_LT",
-    url: siteConfig.siteUrl,
-    siteName: siteConfig.name,
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [{ url: siteConfig.defaultOgImage }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [siteConfig.defaultOgImage],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettingsWithDefaults();
+  const defaultTitle = settings.default_meta_title_lt || siteConfig.name;
+  const defaultDescription =
+    settings.default_meta_description_lt || siteConfig.description;
+
+  return {
+    metadataBase: new URL(siteConfig.siteUrl),
+    title: {
+      default: defaultTitle,
+      template: `%s | ${settings.business_name}`,
+    },
+    description: defaultDescription,
+    applicationName: settings.business_name,
+    alternates: {
+      canonical: "/",
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      type: "website",
+      locale: "lt_LT",
+      url: siteConfig.siteUrl,
+      siteName: settings.business_name,
+      title: settings.business_name,
+      description: defaultDescription,
+      images: [{ url: siteConfig.defaultOgImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: settings.business_name,
+      description: defaultDescription,
+      images: [siteConfig.defaultOgImage],
+    },
+    icons: settings.favicon_url
+      ? {
+          icon: settings.favicon_url,
+          shortcut: settings.favicon_url,
+          apple: settings.favicon_url,
+        }
+      : undefined,
+  };
+}
 
 export default function RootLayout({
   children,
