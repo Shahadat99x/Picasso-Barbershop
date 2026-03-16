@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateBranchPublicPaths } from "./revalidate-public";
 
 type BranchInsert = Database["public"]["Tables"]["branches"]["Insert"];
 type BranchUpdate = Database["public"]["Tables"]["branches"]["Update"];
@@ -50,6 +51,7 @@ export async function createBranch(input: BranchInsert) {
   }
 
   revalidatePath("/admin/branches");
+  revalidateBranchPublicPaths(data);
   return { data };
 }
 
@@ -69,6 +71,7 @@ export async function updateBranch(id: string, input: BranchUpdate) {
   }
 
   revalidatePath("/admin/branches");
+  revalidateBranchPublicPaths(data);
   return { data };
 }
 
@@ -76,6 +79,7 @@ export async function deleteBranch(id: string) {
   await requireAuthenticatedAdminUser();
   const supabase = createSupabaseAdminClient();
 
+  const existing = await getBranch(id);
   const { error } = await supabase.from("branches").delete().eq("id", id);
 
   if (error) {
@@ -83,5 +87,6 @@ export async function deleteBranch(id: string) {
   }
 
   revalidatePath("/admin/branches");
+  revalidateBranchPublicPaths(existing);
   return { success: true };
 }

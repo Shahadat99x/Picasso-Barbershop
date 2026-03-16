@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateSpecialistPublicPaths } from "./revalidate-public";
 
 type SpecialistInsert = Database["public"]["Tables"]["specialists"]["Insert"];
 type SpecialistUpdate = Database["public"]["Tables"]["specialists"]["Update"];
@@ -50,6 +51,7 @@ export async function createSpecialist(input: SpecialistInsert) {
   }
 
   revalidatePath("/admin/specialists");
+  revalidateSpecialistPublicPaths(data);
   return { data };
 }
 
@@ -69,6 +71,7 @@ export async function updateSpecialist(id: string, input: SpecialistUpdate) {
   }
 
   revalidatePath("/admin/specialists");
+  revalidateSpecialistPublicPaths(data);
   return { data };
 }
 
@@ -76,6 +79,7 @@ export async function deleteSpecialist(id: string) {
   await requireAuthenticatedAdminUser();
   const supabase = createSupabaseAdminClient();
 
+  const existing = await getSpecialist(id);
   const { error } = await supabase.from("specialists").delete().eq("id", id);
 
   if (error) {
@@ -83,5 +87,6 @@ export async function deleteSpecialist(id: string) {
   }
 
   revalidatePath("/admin/specialists");
+  revalidateSpecialistPublicPaths(existing);
   return { success: true };
 }

@@ -38,7 +38,6 @@ export function SlugInput({
 }: SlugInputProps) {
   // Track if source has been changed from initial value
   const [sourceEdited, setSourceEdited] = useState(false);
-  const [initialSource, setInitialSource] = useState(sourceValue);
 
   // Update slug when source changes (only if in auto mode and source was edited)
   useEffect(() => {
@@ -83,6 +82,7 @@ export function SlugInput({
             value={sourceValue}
             onChange={handleSourceChange}
             placeholder={placeholder}
+            required={required}
             disabled={disabled}
           />
         </div>
@@ -117,11 +117,12 @@ export function SlugInput({
             value={slugValue}
             onChange={handleSlugChange}
             placeholder={sourceValue ? generateSlug(sourceValue) : 'url-friendly-slug'}
+            required={required}
             disabled={disabled}
           />
           {editState === 'manual' && (
             <p className="text-xs text-muted-foreground">
-              Manual override - click "Sync" to regenerate from {sourceLabel.toLowerCase()}
+              Manual override - click &quot;Sync&quot; to regenerate from {sourceLabel.toLowerCase()}
             </p>
           )}
         </div>

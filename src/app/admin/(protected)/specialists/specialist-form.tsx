@@ -1,17 +1,15 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
+import { createSpecialist, updateSpecialist } from "@/app/admin/actions/specialists";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { createSpecialist, updateSpecialist } from "@/app/admin/actions/specialists";
-import { ImageUpload } from "@/components/admin/ImageUpload";
-import type { Database } from "@/lib/supabase/types";
 import {
   Select,
   SelectContent,
@@ -19,9 +17,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { formatStringList, parseStringList } from "@/lib/admin/form-content";
+import type { Database } from "@/lib/supabase/types";
 
 type Specialist = Database["public"]["Tables"]["specialists"]["Row"];
-type Branch = Pick<Database["public"]["Tables"]["branches"]["Row"], "id" | "name_lt">;
+type Branch = Pick<Database["public"]["Tables"]["branches"]["Row"], "id" | "name_lt" | "name_en">;
+
+function LocaleSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-6 rounded-[1.75rem] border border-slate-200 bg-slate-50/60 p-5">
+      <div>
+        <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{description}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export function SpecialistForm({
   initialData,
@@ -40,20 +62,20 @@ export function SpecialistForm({
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    
-    // Parse numeric fields safely
     const rawYears = formData.get("years_experience") as string;
     const years_experience = rawYears ? parseInt(rawYears, 10) : null;
-
     const rawSortOrder = formData.get("sort_order") as string;
     const sort_order = rawSortOrder ? parseInt(rawSortOrder, 10) : 0;
-
     const branch_id = (formData.get("branch_id") as string) || null;
 
     const data = {
       full_name: formData.get("full_name") as string,
       role_lt: formData.get("role_lt") as string,
+      role_en: (formData.get("role_en") as string) || null,
       bio_lt: (formData.get("bio_lt") as string) || null,
+      bio_en: (formData.get("bio_en") as string) || null,
+      specialties_lt: parseStringList(formData.get("specialties_lt") as string),
+      specialties_en: parseStringList(formData.get("specialties_en") as string),
       photo_url: (formData.get("photo_url") as string) || null,
       years_experience,
       branch_id,
@@ -66,11 +88,16 @@ export function SpecialistForm({
       try {
         if (initialData?.id) {
           const res = await updateSpecialist(initialData.id, data);
-          if (res.error) throw new Error(res.error);
+          if (res.error) {
+            throw new Error(res.error);
+          }
         } else {
           const res = await createSpecialist(data);
-          if (res.error) throw new Error(res.error);
+          if (res.error) {
+            throw new Error(res.error);
+          }
         }
+
         router.push("/admin/specialists");
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred while saving.");
@@ -83,13 +110,18 @@ export function SpecialistForm({
       onSubmit={handleSubmit}
       className="space-y-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
-      {error && (
-        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600">
-          {error}
-        </div>
-      )}
+      {error ? (
+        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600">{error}</div>
+      ) : null}
 
-      <div className="grid gap-6 sm:grid-cols-2">
+      <section className="grid gap-6 rounded-[1.75rem] border border-slate-200 bg-slate-50/60 p-5 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <h2 className="text-lg font-semibold text-slate-900">Shared specialist settings</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            These values are shared across both locales.
+          </p>
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="full_name">Full Name</Label>
           <Input
@@ -98,28 +130,6 @@ export function SpecialistForm({
             defaultValue={initialData?.full_name || ""}
             required
             placeholder="John Doe"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="role_lt">Role (LT)</Label>
-          <Input
-            id="role_lt"
-            name="role_lt"
-            defaultValue={initialData?.role_lt || ""}
-            required
-            placeholder="Vyriausiasis kirpėjas"
-          />
-        </div>
-
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="bio_lt">Bio (LT)</Label>
-          <Textarea
-            id="bio_lt"
-            name="bio_lt"
-            defaultValue={initialData?.bio_lt || ""}
-            rows={3}
-            placeholder="Optional biography..."
           />
         </div>
 
@@ -154,6 +164,7 @@ export function SpecialistForm({
               {branches.map((branch) => (
                 <SelectItem key={branch.id} value={branch.id}>
                   {branch.name_lt}
+                  {branch.name_en ? ` / ${branch.name_en}` : ""}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -171,7 +182,7 @@ export function SpecialistForm({
           />
         </div>
 
-        <div className="sm:col-span-2 pt-4 flex gap-8">
+        <div className="sm:col-span-2 flex flex-wrap gap-8 pt-4">
           <div className="flex items-center space-x-2">
             <Switch
               id="is_active"
@@ -190,6 +201,85 @@ export function SpecialistForm({
             <Label htmlFor="is_featured">Featured on Homepage</Label>
           </div>
         </div>
+      </section>
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <LocaleSection
+          title="Lithuanian"
+          description="Primary public content for LT routes."
+        >
+          <div className="space-y-2">
+            <Label htmlFor="role_lt">Role (LT)</Label>
+            <Input
+              id="role_lt"
+              name="role_lt"
+              defaultValue={initialData?.role_lt || ""}
+              required
+              placeholder="Vyriausiasis kirpejas"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="bio_lt">Bio (LT)</Label>
+            <Textarea
+              id="bio_lt"
+              name="bio_lt"
+              defaultValue={initialData?.bio_lt || ""}
+              rows={4}
+              placeholder="Trumpas specialisto aprasas..."
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="specialties_lt">Specialties (LT)</Label>
+            <Textarea
+              id="specialties_lt"
+              name="specialties_lt"
+              defaultValue={formatStringList(initialData?.specialties_lt)}
+              rows={4}
+              placeholder={"One specialty per line\nFade kirpimai\nBarzdos formavimas"}
+            />
+            <p className="text-xs text-slate-500">One specialty per line.</p>
+          </div>
+        </LocaleSection>
+
+        <LocaleSection
+          title="English"
+          description="Secondary public content for EN routes. Falls back to LT only when empty."
+        >
+          <div className="space-y-2">
+            <Label htmlFor="role_en">Role (EN)</Label>
+            <Input
+              id="role_en"
+              name="role_en"
+              defaultValue={initialData?.role_en || ""}
+              placeholder="Senior barber"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="bio_en">Bio (EN)</Label>
+            <Textarea
+              id="bio_en"
+              name="bio_en"
+              defaultValue={initialData?.bio_en || ""}
+              rows={4}
+              placeholder="Short specialist summary..."
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="specialties_en">Specialties (EN)</Label>
+            <Textarea
+              id="specialties_en"
+              name="specialties_en"
+              defaultValue={formatStringList(initialData?.specialties_en)}
+              rows={4}
+              placeholder={"One specialty per line\nFade cuts\nBeard shaping"}
+            />
+            <p className="text-xs text-slate-500">One specialty per line.</p>
+          </div>
+        </LocaleSection>
       </div>
 
       <div className="flex justify-end gap-3 pt-4">
@@ -201,7 +291,7 @@ export function SpecialistForm({
           Cancel
         </Button>
         <Button type="submit" disabled={isPending} className="bg-slate-900 text-white">
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           {initialData ? "Update Specialist" : "Create Specialist"}
         </Button>
       </div>

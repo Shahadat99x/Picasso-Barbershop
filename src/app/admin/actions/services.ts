@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateServicePublicPaths } from "./revalidate-public";
 
 type ServiceInsert = Database["public"]["Tables"]["services"]["Insert"];
 type ServiceUpdate = Database["public"]["Tables"]["services"]["Update"];
@@ -50,6 +51,7 @@ export async function createService(input: ServiceInsert) {
   }
 
   revalidatePath("/admin/services");
+  revalidateServicePublicPaths(data);
   return { data };
 }
 
@@ -69,6 +71,7 @@ export async function updateService(id: string, input: ServiceUpdate) {
   }
 
   revalidatePath("/admin/services");
+  revalidateServicePublicPaths(data);
   return { data };
 }
 
@@ -76,6 +79,7 @@ export async function deleteService(id: string) {
   await requireAuthenticatedAdminUser();
   const supabase = createSupabaseAdminClient();
 
+  const existing = await getService(id);
   const { error } = await supabase.from("services").delete().eq("id", id);
 
   if (error) {
@@ -83,5 +87,6 @@ export async function deleteService(id: string) {
   }
 
   revalidatePath("/admin/services");
+  revalidateServicePublicPaths(existing);
   return { success: true };
 }
