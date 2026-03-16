@@ -3,37 +3,28 @@
 import React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Locale, localeLabels, getLocaleFromPath, isLocale } from "@/i18n/locales";
+import { Locale, localeLabels, getLocaleFromPath } from "@/i18n/locales";
+import { localizePath } from "@/lib/site-routes";
 
 type LanguageSwitcherProps = React.HTMLAttributes<HTMLDivElement>;
 
-export function LanguageSwitcher({ className, ...props }: LanguageSwitcherProps) {
+interface ExtendedLanguageSwitcherProps extends LanguageSwitcherProps {
+  onSwitch?: () => void;
+}
+
+export function LanguageSwitcher({
+  className,
+  onSwitch,
+  ...props
+}: ExtendedLanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
   
   const currentLocale = getLocaleFromPath(pathname);
   
   const switchLocale = (newLocale: Locale) => {
-    // Build the new path
-    let newPath: string;
-    
-    if (newLocale === "lt") {
-      // Switching to LT: remove /en prefix if present
-      if (pathname.startsWith("/en")) {
-        newPath = pathname.replace(/^\/en/, "") || "/";
-      } else {
-        newPath = pathname;
-      }
-    } else {
-      // Switching to EN: add /en prefix if not present
-      if (pathname.startsWith("/en")) {
-        newPath = pathname;
-      } else {
-        newPath = `/en${pathname}`;
-      }
-    }
-    
-    router.push(newPath);
+    onSwitch?.();
+    router.push(localizePath(pathname, newLocale));
   };
   
   return (

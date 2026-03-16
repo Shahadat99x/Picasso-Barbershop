@@ -136,8 +136,20 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html:has(body[data-mobile-nav-open="true"]) {
+    overflow: hidden;
+  }
   body {
     @apply bg-background text-foreground antialiased selection:bg-secondary selection:text-secondary-foreground;
+  }
+  body[data-mobile-nav-open="true"] {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  body[data-mobile-nav-open="true"] .mobile-booking-cta {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(calc(100% + 1rem));
   }
   html {
     @apply font-sans;
