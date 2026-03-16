@@ -44,24 +44,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!branch) {
     return createLocalizedPageMetadata({
-      title: "Filialas nerastas",
-      description: "Nepavyko rasti pasirinkto filialo.",
-      path: getLocalizedRoute("branches", "lt"),
-      locale: "lt",
+      title: "Branch not found",
+      description: "The requested branch could not be found.",
+      path: getLocalizedRoute("branches", "en"),
+      locale: "en",
       noIndex: true,
     });
   }
 
   return createLocalizedPageMetadata({
-    title: getLocalizedContent(branch, "name", "lt"),
-    description: getLocalizedContent(branch, "short_description", "lt"),
-    path: getLocalizedDetailRoute("branches", slug, "lt"),
-    locale: "lt",
+    title: getLocalizedContent(branch, "name", "en"),
+    description: getLocalizedContent(branch, "short_description", "en"),
+    path: getLocalizedDetailRoute("branches", slug, "en"),
+    locale: "en",
     image: branch.cover_image_url || branch.gallery_preview_image_url || undefined,
   });
 }
 
-export default async function BranchDetailPage({ params }: PageProps) {
+export default async function EnBranchDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const branch = await getBranchBySlug(slug);
 
@@ -75,21 +75,21 @@ export default async function BranchDetailPage({ params }: PageProps) {
     getBlogPostsForBranch(branch.id),
   ]);
 
-  const openingHours = getLocalizedOpeningHours(branch.opening_hours_json, "lt");
-  const trustPoints = getBranchTrustPoints(branch, "lt");
-  const serviceCards = services.map((service) => transformServiceForCard(service, "lt"));
+  const openingHours = getLocalizedOpeningHours(branch.opening_hours_json, "en");
+  const trustPoints = getBranchTrustPoints(branch, "en");
+  const serviceCards = services.map((service) => transformServiceForCard(service, "en"));
   const galleryMosaicItems = galleryItems.map((item, index) =>
-    transformGalleryItemForMosaic(item, "lt", index),
+    transformGalleryItemForMosaic(item, "en", index),
   );
-  const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "lt"));
+  const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "en"));
   const featuredPost = blogCards[0];
   const remainingPosts = blogCards.slice(1);
-  const resolvedSlug = getLocalizedSlug(branch, "lt");
-  const bookingHref = branch.booking_url || getBookingPath("lt");
-  const name = getLocalizedContent(branch, "name", "lt");
-  const shortDescription = getLocalizedContent(branch, "short_description", "lt");
-  const address = getLocalizedContent(branch, "address", "lt");
-  const primaryHours = getPrimaryOpeningHours(branch, "lt");
+  const resolvedSlug = getLocalizedSlug(branch, "en");
+  const bookingHref = branch.booking_url || getBookingPath("en");
+  const name = getLocalizedContent(branch, "name", "en");
+  const shortDescription = getLocalizedContent(branch, "short_description", "en");
+  const address = getLocalizedContent(branch, "address", "en");
+  const primaryHours = getPrimaryOpeningHours(branch, "en");
   const bookingIsExternal =
     bookingHref.startsWith("http") || bookingHref.startsWith("mailto:") || bookingHref.startsWith("tel:");
 
@@ -97,45 +97,45 @@ export default async function BranchDetailPage({ params }: PageProps) {
     <main>
       <StructuredData
         data={createBreadcrumbSchema([
-          { name: "Pradzia", path: "/" },
-          { name: "Filialai", path: getLocalizedRoute("branches", "lt") },
+          { name: "Home", path: getLocalizedRoute("home", "en") },
+          { name: "Branches", path: getLocalizedRoute("branches", "en") },
           {
             name,
-            path: getLocalizedDetailRoute("branches", resolvedSlug, "lt"),
+            path: getLocalizedDetailRoute("branches", resolvedSlug, "en"),
           },
         ])}
       />
 
       <PublicDetailHero
-        backHref={getLocalizedRoute("branches", "lt")}
-        backLabel="< Atgal i visus filialus"
-        eyebrow="Filialo profilis"
+        backHref={getLocalizedRoute("branches", "en")}
+        backLabel="< Back to all branches"
+        eyebrow="Branch profile"
         title={name}
         description={shortDescription}
         meta={[
-          { label: "Darbo laikas", value: primaryHours },
-          { label: "Telefonas", value: branch.phone },
-          { label: "Paslaugos", value: serviceCards.length > 0 ? String(serviceCards.length) : "Ruoshiama" },
+          { label: "Hours", value: primaryHours },
+          { label: "Phone", value: branch.phone },
+          { label: "Services", value: serviceCards.length > 0 ? String(serviceCards.length) : "Coming soon" },
         ]}
         actions={
           <>
             {bookingIsExternal ? (
               <a href={bookingHref} target="_blank" rel="noreferrer">
                 <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                  Rezervuoti siame filiale
+                  Book at this branch
                 </PrimaryButton>
               </a>
             ) : (
               <Link href={bookingHref}>
                 <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                  Rezervuoti siame filiale
+                  Book at this branch
                 </PrimaryButton>
               </Link>
             )}
             {branch.map_url ? (
               <a href={branch.map_url} target="_blank" rel="noreferrer">
                 <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                  Atidaryti zemelapyje
+                  Open map
                 </SecondaryButton>
               </a>
             ) : null}
@@ -154,7 +154,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
-                Filialo vaizdas bus rodomas, kai admin sistemoje bus prideta nuotrauka.
+                A branch visual will appear here once an image is added in the admin.
               </div>
             )}
           </div>
@@ -167,26 +167,26 @@ export default async function BranchDetailPage({ params }: PageProps) {
             <div className="space-y-8">
               <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
                 <SectionHeading
-                  title="Apie si filiala"
-                  subtitle="Lokacijos apzvalga"
-                  description="Svarbiausia informacija apie vieta, atmosfera ir tai, kaip sis filialas isipaiso i jusu kasdienio ritmo pasirinkima."
+                  title="About this branch"
+                  subtitle="Location overview"
+                  description="A concise view of the setting, atmosphere, and why this location may be the right fit for your routine."
                   align="left"
                 />
                 <div className="space-y-5 text-base leading-8 text-muted-foreground md:text-lg">
                   <p>{shortDescription}</p>
                   <p>
                     {serviceCards.length > 0
-                      ? `Siame filiale siuo metu galite rinktis is ${serviceCards.length} publikuotu paslaugu, o rezervacijos kelias paliktas aiskus ir tiesioginis.`
-                      : "Paslaugu sarasas siame filiale dar pildomas, taciau kontaktai ir rezervacijos kelias jau yra parengti."}
+                      ? `This branch currently offers ${serviceCards.length} published services, with a clear path from browsing to booking.`
+                      : "The service selection for this branch is still being expanded, while the contact and booking path are already in place."}
                   </p>
                 </div>
               </div>
 
               <div className="rounded-[2rem] border border-border/60 bg-[linear-gradient(180deg,#f7f1ea_0%,#fcf8f4_100%)] p-8 shadow-sm shadow-black/5 md:p-10">
                 <SectionHeading
-                  title="Atvykimas ir patogumas"
-                  subtitle="Pries vizita"
-                  description="Praktine informacija apie parkavima ir atvykima viesuoju transportu, kad kelias i vizita butu sklandus."
+                  title="Arrival and convenience"
+                  subtitle="Before your visit"
+                  description="Practical guidance around parking and public transport so getting to your appointment feels straightforward."
                   align="left"
                   className="max-w-3xl"
                 />
@@ -196,11 +196,11 @@ export default async function BranchDetailPage({ params }: PageProps) {
                       <Car className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                       <div>
                         <div className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground">
-                          Parkavimas
+                          Parking
                         </div>
                         <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                          {getLocalizedContent(branch, "parking_info", "lt") ||
-                            "Parkavimo informacija bus atnaujinta netrukus."}
+                          {getLocalizedContent(branch, "parking_info", "en") ||
+                            "Parking information will be added soon."}
                         </p>
                       </div>
                     </div>
@@ -210,11 +210,11 @@ export default async function BranchDetailPage({ params }: PageProps) {
                       <Bus className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                       <div>
                         <div className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground">
-                          Viesasis transportas
+                          Public transport
                         </div>
                         <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                          {getLocalizedContent(branch, "transport_info", "lt") ||
-                            "Atvykimo viesuoju transportu informacija bus atnaujinta netrukus."}
+                          {getLocalizedContent(branch, "transport_info", "en") ||
+                            "Public transport guidance will be added soon."}
                         </p>
                       </div>
                     </div>
@@ -226,10 +226,10 @@ export default async function BranchDetailPage({ params }: PageProps) {
             <div className="lg:sticky lg:top-28 lg:self-start">
               <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
-                  Kontaktai ir darbo laikas
+                  Contact and opening hours
                 </span>
                 <h3 className="mt-4 text-2xl font-medium tracking-tight">
-                  Visa svarbiausia informacija vienoje vietoje.
+                  Everything essential in one place.
                 </h3>
 
                 <div className="mt-8 space-y-5 text-sm text-[#d9cfc5]">
@@ -237,7 +237,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
                     <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
                     <div>
                       <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
-                        Adresas
+                        Address
                       </div>
                       <address className="mt-2 not-italic leading-7 text-[#f5efe7]">{address}</address>
                     </div>
@@ -247,7 +247,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
                     <Phone className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
                     <div>
                       <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
-                        Telefonas
+                        Phone
                       </div>
                       <a
                         href={`tel:${branch.phone.replace(/\s+/g, "")}`}
@@ -263,7 +263,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
                       <Mail className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
                       <div>
                         <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
-                          El. pastas
+                          Email
                         </div>
                         <a
                           href={`mailto:${branch.email}`}
@@ -281,7 +281,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
                     <div className="mb-4 flex items-center gap-3">
                       <Clock className="h-5 w-5 text-[#d2af88]" />
                       <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#bba998]">
-                        Darbo laikas
+                        Opening hours
                       </span>
                     </div>
                     <ul className="space-y-3 text-sm text-[#d9cfc5]">
@@ -302,20 +302,20 @@ export default async function BranchDetailPage({ params }: PageProps) {
                   {bookingIsExternal ? (
                     <a href={bookingHref} target="_blank" rel="noreferrer">
                       <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                        Rezervuoti vizita
+                        Book appointment
                       </PrimaryButton>
                     </a>
                   ) : (
                     <Link href={bookingHref}>
                       <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                        Rezervuoti vizita
+                        Book appointment
                       </PrimaryButton>
                     </Link>
                   )}
                   {branch.map_url ? (
                     <a href={branch.map_url} target="_blank" rel="noreferrer">
                       <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                        Atidaryti zemelapyje
+                        Open map
                       </SecondaryButton>
                     </a>
                   ) : null}
@@ -330,9 +330,9 @@ export default async function BranchDetailPage({ params }: PageProps) {
         <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
             <SectionHeading
-              title="Kodel klientai renkasi sia lokacija"
-              subtitle="Pasitikejimo akcentai"
-              description="Trumpi signalai, kurie padeda ivertinti filialo patoguma, aptarnavimo lygi ir bendra patirti."
+              title="Why clients choose this location"
+              subtitle="Trust signals"
+              description="Short proof points that help communicate convenience, service quality, and the tone of the branch experience."
               align="left"
               className="max-w-3xl"
             />
@@ -354,9 +354,9 @@ export default async function BranchDetailPage({ params }: PageProps) {
         <Section className="bg-background">
           <Container>
             <SectionHeading
-              title="Paslaugos siame filiale"
-              subtitle="Paslaugu pasirinkimas"
-              description="Perziurekite siuo metu siam filialui priskirtas paslaugas ir pasirinkite jusu vizito tikslui tinkamiausia varianta."
+              title="Services at this branch"
+              subtitle="Service selection"
+              description="Browse the services currently assigned to this branch and move directly into the option that matches your visit goal."
               align="left"
               className="max-w-3xl"
             />
@@ -369,8 +369,8 @@ export default async function BranchDetailPage({ params }: PageProps) {
                   price={service.price}
                   duration={service.duration}
                   href={service.href}
-                  startingLabel="Nuo"
-                  detailLabel="Placiau"
+                  startingLabel="From"
+                  detailLabel="Details"
                 />
               ))}
             </div>
@@ -378,15 +378,15 @@ export default async function BranchDetailPage({ params }: PageProps) {
         </Section>
       ) : null}
 
-      <GallerySection items={galleryMosaicItems} locale="lt" />
+      <GallerySection items={galleryMosaicItems} locale="en" />
 
       {blogCards.length > 0 ? (
         <Section className="bg-background">
           <Container>
             <SectionHeading
-              title="Susije straipsniai apie sia lokacija"
-              subtitle="Tinklarastis"
-              description="Papildomas kontekstas apie prieziura, stiliu ir lokacijos aktualijas, susijusias su sia vieta."
+              title="Editorial related to this branch"
+              subtitle="Blog"
+              description="Extra context around care, style, and location-specific stories connected to this branch."
               align="left"
               className="max-w-3xl"
             />
@@ -402,8 +402,8 @@ export default async function BranchDetailPage({ params }: PageProps) {
                   imageUrl={featuredPost.imageUrl || "/images/hero/picasso-team-hero.jpg"}
                   imageAlt={featuredPost.imageAlt}
                   href={featuredPost.href}
-                  featuredLabel="Teminis straipsnis"
-                  readLabel="Skaityti"
+                  featuredLabel="Featured article"
+                  readLabel="Read"
                 />
 
                 {remainingPosts.length > 0 ? (
@@ -428,7 +428,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
         </Section>
       ) : null}
 
-      <FinalCtaSection locale="lt" />
+      <FinalCtaSection locale="en" />
     </main>
   );
 }

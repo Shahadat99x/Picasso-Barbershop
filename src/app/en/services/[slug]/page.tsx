@@ -1,143 +1,354 @@
-import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import { notFound } from "next/navigation";
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
+import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
+import { BlogCard } from "@/components/shared/BlogCard";
+import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
+import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
+import { StructuredData } from "@/components/shared/StructuredData";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { GallerySection } from "@/components/sections/GallerySection";
 import { ServiceFaqSection } from "@/components/sections/ServiceFaqSection";
-import { mockServices, ServiceData } from "@/data/services";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { SecondaryButton } from "@/components/ui/SecondaryButton";
+import {
+  formatDuration,
+  formatPrice,
+  getAvailableBranchesForService,
+  getBlogPostsForService,
+  getGalleryItemsForService,
+  getLocalizedContent,
+  getLocalizedSlug,
+  getPrimaryOpeningHours,
+  getServiceBenefits,
+  getServiceBySlug,
+  getServiceFaqs,
+  transformBlogPostForCard,
+  transformGalleryItemForMosaic,
+} from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { Locale, defaultLocale } from "@/i18n/locales";
+import { createBreadcrumbSchema, createFaqSchema } from "@/lib/schema";
+import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
-type Props = {
+type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
-  return mockServices.map((service) => ({
-    slug: service.slug,
-  }));
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = mockServices.find((s) => s.slug === slug);
-  const locale: Locale = "en";
-  
+  const service = await getServiceBySlug(slug);
+
   if (!service) {
     return createLocalizedPageMetadata({
-      title: "Service Not Found",
+      title: "Service not found",
       description: "The requested service could not be found.",
-      path: "/en/services",
-      locale,
+      path: getLocalizedRoute("services", "en"),
+      locale: "en",
+      noIndex: true,
     });
   }
-  
+
   return createLocalizedPageMetadata({
-    title: service.title,
-    description: service.shortDescription,
-    path: `/en/services/${service.slug}`,
-    locale,
+    title: getLocalizedContent(service, "title", "en"),
+    description: getLocalizedContent(service, "short_description", "en"),
+    path: getLocalizedDetailRoute("services", slug, "en"),
+    locale: "en",
+    image: service.cover_image_url || undefined,
   });
 }
 
-export default async function EnServiceDetailPage({ params }: Props) {
+export default async function EnServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const service = mockServices.find((s) => s.slug === slug);
-  
+  const service = await getServiceBySlug(slug);
+
   if (!service) {
     notFound();
   }
 
+  const [availableBranches, galleryItems, relatedPosts] = await Promise.all([
+    getAvailableBranchesForService(service.id),
+    getGalleryItemsForService(service.id),
+    getBlogPostsForService(service.id),
+  ]);
+
+  const benefits = getServiceBenefits(service, "en");
+  const faqs = getServiceFaqs(service, "en");
+  const galleryMosaicItems = galleryItems.map((item, index) =>
+    transformGalleryItemForMosaic(item, "en", index),
+  );
+  const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "en"));
+  const featuredPost = blogCards[0];
+  const remainingPosts = blogCards.slice(1);
+  const resolvedSlug = getLocalizedSlug(service, "en");
+  const title = getLocalizedContent(service, "title", "en");
+  const shortDescription = getLocalizedContent(service, "short_description", "en");
+  const fullDescription = getLocalizedContent(service, "full_description", "en");
+  const structuredData = [
+    createBreadcrumbSchema([
+      { name: "Home", path: getLocalizedRoute("home", "en") },
+      { name: "Services", path: getLocalizedRoute("services", "en") },
+      {
+        name: title,
+        path: getLocalizedDetailRoute("services", resolvedSlug, "en"),
+      },
+    ]),
+    ...(faqs.length > 0 ? [createFaqSchema(faqs)] : []),
+  ];
+
   return (
     <main>
-      <Section className="!pb-0">
-        <div className="relative flex min-h-[30vh] flex-col justify-center overflow-hidden bg-[#F5F2ED] py-16">
-          <Container className="relative z-10">
-            <Link
-              href="/en/services"
-              className="text-sm text-muted-foreground hover:text-foreground mb-4 inline-flex items-center"
-            >
-              ← Back to Services
+      <StructuredData data={structuredData} />
+
+      <PublicDetailHero
+        backHref={getLocalizedRoute("services", "en")}
+        backLabel="< Back to all services"
+        eyebrow="Service details"
+        title={title}
+        description={shortDescription}
+        meta={[
+          {
+            label: "From",
+            value: formatPrice(service.starting_price, service.currency_code, "en"),
+          },
+          {
+            label: "Duration",
+            value: formatDuration(service.duration_minutes, "en"),
+          },
+          {
+            label: "Branches",
+            value: availableBranches.length > 0 ? String(availableBranches.length) : "On request",
+          },
+        ]}
+        actions={
+          <>
+            <Link href={getBookingPath("en")}>
+              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
+                Book this service
+              </PrimaryButton>
             </Link>
-            <span className="text-sm font-medium text-primary block mb-2">
-              {service.categoryId}
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1a1a1a]">
-              {service.title}
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-xl">
-              {service.shortDescription}
-            </p>
-            <div className="mt-8 flex items-center gap-6">
-              <div>
-                <span className="text-3xl font-bold text-[#1a1a1a]">{service.price}</span>
+            <Link href={getLocalizedRoute("branches", "en")}>
+              <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
+                View branches
+              </SecondaryButton>
+            </Link>
+          </>
+        }
+        visual={
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
+            {service.cover_image_url ? (
+              <Image
+                src={service.cover_image_url}
+                alt={title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 34vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
+                A service visual will appear here once an image is assigned in the admin.
               </div>
-              <div className="text-muted-foreground">
-                <span className="font-medium">Duration:</span> {service.duration}
+            )}
+          </div>
+        }
+      />
+
+      <Section className="bg-background">
+        <Container>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
+            <div className="space-y-8">
+              <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+                <SectionHeading
+                  title="About this service"
+                  subtitle="Editorial overview"
+                  description="A clear summary of who this service is for, how the appointment flows, and what kind of result clients can expect."
+                  align="left"
+                />
+                <p className="text-base leading-8 text-muted-foreground md:text-lg">
+                  {fullDescription}
+                </p>
               </div>
+
+              {benefits.length > 0 ? (
+                <div className="rounded-[2rem] border border-border/60 bg-[linear-gradient(180deg,#f7f1ea_0%,#fcf8f4_100%)] p-8 shadow-sm shadow-black/5 md:p-10">
+                  <SectionHeading
+                    title="What to expect during the visit"
+                    subtitle="Value points"
+                    description="The practical details that help frame the service level, the finish, and the overall appointment experience."
+                    align="left"
+                    className="max-w-3xl"
+                  />
+                  <ul className="grid gap-4 md:grid-cols-2">
+                    {benefits.map((benefit) => (
+                      <li
+                        key={benefit}
+                        className="rounded-[1.4rem] border border-[#ddcfbf]/60 bg-background/75 p-5"
+                      >
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                          <span className="text-sm leading-7 text-muted-foreground">{benefit}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                  Booking path
+                </span>
+                <h3 className="mt-4 text-2xl font-medium tracking-tight">
+                  Choose your time and the branch that fits best.
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
+                  {availableBranches.length > 0
+                    ? "This service is already connected to the branches below, so you can move from review to booking without friction."
+                    : "Branch availability has not been configured yet. Contact us and we will help you choose the best timing."}
+                </p>
+                <div className="mt-8 flex flex-col gap-3">
+                  <Link href={getBookingPath("en")}>
+                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                      Book appointment
+                    </PrimaryButton>
+                  </Link>
+                  <Link href={getLocalizedRoute("branches", "en")}>
+                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                      Browse branches
+                    </SecondaryButton>
+                  </Link>
+                </div>
+
+                <div className="mt-8 border-t border-white/10 pt-6">
+                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#bba998]">
+                    At a glance
+                  </div>
+                  <div className="mt-4 space-y-4 text-sm text-[#d9cfc5]">
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Price</span>
+                      <span className="font-medium text-[#faf5ee]">
+                        {formatPrice(service.starting_price, service.currency_code, "en")}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Duration</span>
+                      <span className="font-medium text-[#faf5ee]">
+                        {formatDuration(service.duration_minutes, "en")}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Branches</span>
+                      <span className="font-medium text-[#faf5ee]">
+                        {availableBranches.length > 0 ? availableBranches.length : "On request"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {availableBranches.length > 0 ? (
+        <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
+          <Container>
+            <SectionHeading
+              title="Where you can book this service"
+              subtitle="Branches"
+              description="The locations where this service is already available, with a direct path to branch details or booking."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+              {availableBranches.map((branch) => (
+                <BranchSummaryCard
+                  key={branch.id}
+                  name={getLocalizedContent(branch, "name", "en")}
+                  address={getLocalizedContent(branch, "address", "en")}
+                  phone={branch.phone}
+                  hoursSummary={getPrimaryOpeningHours(branch, "en")}
+                  mapUrl={branch.map_url || undefined}
+                  branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "en"), "en")}
+                  bookingHref={branch.booking_url || getBookingPath("en")}
+                  eyebrow="Branch"
+                  branchLabel="View branch"
+                  bookingLabel="Book here"
+                  mapAriaLabel={`Open map for ${getLocalizedContent(branch, "name", "en")}`}
+                />
+              ))}
             </div>
           </Container>
-          <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-[#e8e4dc] opacity-50 blur-3xl" />
-        </div>
-      </Section>
+        </Section>
+      ) : null}
 
-      <Section className="bg-background pt-12">
-        <Container>
-          <div className="max-w-3xl">
-            <h2 className="text-2xl font-bold mb-6">About this service</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {service.fullDescription}
-            </p>
-          </div>
+      <GallerySection items={galleryMosaicItems} locale="en" />
 
-          {service.benefits && service.benefits.length > 0 && (
-            <div className="mt-12 max-w-3xl">
-              <h2 className="text-2xl font-bold mb-6">What's included</h2>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {service.benefits.map((benefit, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm flex-shrink-0">
-                      ✓
-                    </span>
-                    <span className="text-muted-foreground">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+      {faqs.length > 0 ? (
+        <ServiceFaqSection
+          faqs={faqs}
+          title="Common questions"
+          subtitle="FAQ"
+        />
+      ) : null}
 
-          <div className="mt-12">
-            <Link
-              href="/en/contact#rezervacija"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Book this service
-            </Link>
-          </div>
-        </Container>
-      </Section>
+      {blogCards.length > 0 ? (
+        <Section className="bg-background">
+          <Container>
+            <SectionHeading
+              title="Articles related to this service"
+              subtitle="Editorial"
+              description="Additional context around maintenance, style choices, and how to keep the result looking sharp between appointments."
+              align="left"
+              className="max-w-3xl"
+            />
 
-      {service.faqs && service.faqs.length > 0 && (
-        <ServiceFaqSection faqs={service.faqs} />
-      )}
+            {featuredPost ? (
+              <div className="space-y-6">
+                <FeaturedArticleCard
+                  title={featuredPost.title}
+                  excerpt={featuredPost.excerpt}
+                  category={featuredPost.category}
+                  date={featuredPost.date}
+                  readingTime={featuredPost.readingTime}
+                  imageUrl={featuredPost.imageUrl || "/images/hero/picasso-team-hero.jpg"}
+                  imageAlt={featuredPost.imageAlt}
+                  href={featuredPost.href}
+                  featuredLabel="Featured article"
+                  readLabel="Read"
+                />
 
-      <Section className="bg-secondary/10">
-        <Container>
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-4">Have questions?</h2>
-            <p className="text-muted-foreground mb-8">
-              Our team is happy to help you choose the right service for you.
-            </p>
-            <Link
-              href="/en/contact"
-              className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-background px-8 text-sm font-medium transition-colors hover:bg-secondary"
-            >
-              Contact us
-            </Link>
-          </div>
-        </Container>
-      </Section>
+                {remainingPosts.length > 0 ? (
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {remainingPosts.map((post) => (
+                      <BlogCard
+                        key={post.id}
+                        title={post.title}
+                        excerpt={post.excerpt}
+                        date={post.date}
+                        readingTime={post.readingTime}
+                        category={post.category}
+                        imageUrl={post.imageUrl}
+                        href={post.href}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
+
+      <FinalCtaSection locale="en" />
     </main>
   );
 }

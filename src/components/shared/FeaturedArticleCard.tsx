@@ -11,6 +11,8 @@ interface FeaturedArticleCardProps {
   imageUrl: string;
   imageAlt: string;
   href: string;
+  featuredLabel?: string;
+  readLabel?: string;
 }
 
 export function FeaturedArticleCard({
@@ -22,6 +24,8 @@ export function FeaturedArticleCard({
   imageUrl,
   imageAlt,
   href,
+  featuredLabel = "Featured",
+  readLabel = "Read article",
 }: FeaturedArticleCardProps) {
   return (
     <Link href={href} className="group block">
@@ -40,7 +44,7 @@ export function FeaturedArticleCard({
           <div className="flex flex-col justify-between p-8 md:p-10">
             <div>
               <span className="inline-flex rounded-full border border-border/60 bg-background px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                Featured · {category}
+                {featuredLabel} · {category}
               </span>
               <h2 className="mt-5 text-3xl font-medium tracking-tight md:text-4xl">
                 {title}
@@ -55,7 +59,7 @@ export function FeaturedArticleCard({
                 <time>{date}</time>
                 <span>{readingTime}</span>
               </div>
-              <span className="font-medium text-primary">Read article</span>
+              <span className="font-medium text-primary">{readLabel}</span>
             </div>
           </div>
         </div>

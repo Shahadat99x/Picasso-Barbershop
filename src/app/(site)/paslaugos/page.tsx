@@ -1,83 +1,99 @@
-import React from "react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-import { serviceCategories, getServicesByCategory } from "@/data/services";
-import { ServiceCard } from "@/components/shared/ServiceCard";
+import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { ServiceCard } from "@/components/shared/ServiceCard";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { defaultLocale } from "@/i18n/locales";
+import {
+  getPublishedServices,
+  transformServiceForCard,
+} from "@/lib/public-data";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Paslaugos",
   description:
-    "Explore premium haircuts, beard care, shaves, and signature grooming packages available across our Vilnius branches.",
-  path: "/paslaugos",
-  locale: defaultLocale,
+    "Atraskite realiu laiku valdomas Picasso Barbershop paslaugas, kainas ir trukmes visuose Vilniaus filialuose.",
+  path: getLocalizedRoute("services", "lt"),
+  locale: "lt",
 });
 
-export default function ServicesIndexPage() {
+export default async function ServicesIndexPage() {
+  const services = await getPublishedServices();
+  const groupedServices = services.reduce<Record<string, ReturnType<typeof transformServiceForCard>[]>>(
+    (accumulator, service) => {
+      const category = service.category || "Kitos paslaugos";
+      const transformed = transformServiceForCard(service, "lt");
+      const current = accumulator[category] || [];
+      accumulator[category] = [...current, transformed];
+      return accumulator;
+    },
+    {},
+  );
+  const categoryEntries = Object.entries(groupedServices);
+
   return (
     <main>
-      {/* Intro Header */}
-      <Section className="bg-secondary/10 border-b border-border/50 pb-16 md:pb-24 pt-24 md:pt-32">
-        <Container>
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-medium tracking-tight mb-6">
-              Our Services
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              We offer a curated selection of premium grooming services designed for the modern gentleman. Every appointment is tailored to your unique style and crafted with meticulous attention to detail.
-            </p>
-          </div>
-        </Container>
-      </Section>
+      <PublicPageIntro
+        eyebrow="Paslaugu kolekcija"
+        title="Paslaugos, sudeliotos aiskiai ir uztikrintai."
+        description="Rinkitės is realiai administruojamo Picasso Barbershop paslaugu katalogo, kuriame svarbiausios kainos, trukmes ir aiškus kelias i rezervacija."
+        stats={[
+          { label: "Publikuota paslaugu", value: String(services.length) },
+          { label: "Kategorijos", value: String(categoryEntries.length) },
+          { label: "Miestas", value: "Vilnius" },
+        ]}
+      />
 
-      {/* Categories Loop */}
       <div className="bg-background">
-        {serviceCategories.map((category, index) => {
-          const categoryServices = getServicesByCategory(category.id);
-          
-          if (categoryServices.length === 0) return null;
+        {categoryEntries.map(([category, categoryServices], index) => (
+          <Section
+            key={category}
+            className={index % 2 === 0 ? "bg-background" : "bg-[linear-gradient(180deg,#f6f0e9_0%,#fbf8f4_100%)]"}
+          >
+            <Container>
+              <div className="rounded-[2rem] border border-border/60 bg-card/95 p-6 shadow-sm shadow-black/5 md:p-8 lg:p-10">
+                <SectionHeading
+                  title={category}
+                  subtitle="Kategorija"
+                  description={`Sioje grupeje rasite ${categoryServices.length} administruojamas paslaugas, kurias galima perziureti ir pasirinkti pagal trukme, kaina bei jusu norima rezultata.`}
+                  align="left"
+                  className="max-w-3xl"
+                />
 
-          return (
-            <Section 
-              key={category.id} 
-              id={category.id}
-              className={index % 2 !== 0 ? "bg-secondary/10" : "bg-background"}
-            >
-              <Container>
-                <div className="mb-12 md:mb-16">
-                  <SectionHeading 
-                    title={category.title} 
-                    subtitle="Category" 
-                    align="left"
-                  />
-                  <p className="text-muted-foreground max-w-2xl mt-4 leading-relaxed">
-                    {category.description}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {categoryServices.map((service) => (
                     <ServiceCard
-                      key={service.id}
+                      key={service.href}
                       title={service.title}
-                      description={service.shortDescription}
+                      description={service.description}
                       price={service.price}
                       duration={service.duration}
-                      href={`/paslaugos/${service.slug}`}
+                      href={service.href}
+                      startingLabel="Nuo"
+                      detailLabel="Placiau"
                     />
                   ))}
                 </div>
-              </Container>
-            </Section>
-          );
-        })}
+              </div>
+            </Container>
+          </Section>
+        ))}
+
+        {services.length === 0 ? (
+          <Section className="bg-background">
+            <Container>
+              <div className="rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
+                Paslaugu dar nepublikuota. Turinis pasirodys cia, kai jis bus aktyvuotas
+                admin sistemoje.
+              </div>
+            </Container>
+          </Section>
+        ) : null}
       </div>
 
-      {/* Global Booking CTA */}
-      <FinalCtaSection />
+      <FinalCtaSection locale="lt" />
     </main>
   );
 }

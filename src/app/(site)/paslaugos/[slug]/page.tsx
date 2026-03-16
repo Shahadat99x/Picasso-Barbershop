@@ -1,207 +1,354 @@
-import React from "react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
+import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
+import { BlogCard } from "@/components/shared/BlogCard";
+import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
+import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
+import { StructuredData } from "@/components/shared/StructuredData";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { GallerySection } from "@/components/sections/GallerySection";
+import { ServiceFaqSection } from "@/components/sections/ServiceFaqSection";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import { Clock, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
-import { siteConfig } from "@/config/navigation";
-import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { defaultLocale } from "@/i18n/locales";
-
-import { mockServices, getServiceBySlug } from "@/data/services";
 import {
-  formatBlogDate,
-  getBlogPostsByRelatedServiceSlug,
-} from "@/data/blog";
-import { ServiceFaqSection } from "@/components/sections/ServiceFaqSection";
-import { GallerySection } from "@/components/sections/GallerySection";
-import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
-import { BlogCard } from "@/components/shared/BlogCard";
-import { StructuredData } from "@/components/shared/StructuredData";
+  formatDuration,
+  formatPrice,
+  getAvailableBranchesForService,
+  getBlogPostsForService,
+  getGalleryItemsForService,
+  getLocalizedContent,
+  getLocalizedSlug,
+  getPrimaryOpeningHours,
+  getServiceBenefits,
+  getServiceBySlug,
+  getServiceFaqs,
+  transformBlogPostForCard,
+  transformGalleryItemForMosaic,
+} from "@/lib/public-data";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbSchema, createFaqSchema } from "@/lib/schema";
+import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
-// Next.js static params generation for mock data
-export function generateStaticParams() {
-  return mockServices.map((service) => ({
-    slug: service.slug,
-  }));
-}
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-// Dynamic metadata generation
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const service = getServiceBySlug(params.slug);
-  
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
+
   if (!service) {
-    return {
-      title: "Service Not Found",
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
+    return createLocalizedPageMetadata({
+      title: "Paslauga nerasta",
+      description: "Nepavyko rasti pasirinktos paslaugos.",
+      path: getLocalizedRoute("services", "lt"),
+      locale: "lt",
+      noIndex: true,
+    });
   }
 
   return createLocalizedPageMetadata({
-    title: service.title,
-    description: service.shortDescription,
-    path: `/paslaugos/${service.slug}`,
-    locale: defaultLocale,
+    title: getLocalizedContent(service, "title", "lt"),
+    description: getLocalizedContent(service, "short_description", "lt"),
+    path: getLocalizedDetailRoute("services", slug, "lt"),
+    locale: "lt",
+    image: service.cover_image_url || undefined,
   });
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const service = getServiceBySlug(params.slug);
+export default async function ServiceDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
 
   if (!service) {
     notFound();
   }
 
-  const relatedArticles = getBlogPostsByRelatedServiceSlug(service.slug);
+  const [availableBranches, galleryItems, relatedPosts] = await Promise.all([
+    getAvailableBranchesForService(service.id),
+    getGalleryItemsForService(service.id),
+    getBlogPostsForService(service.id),
+  ]);
+
+  const benefits = getServiceBenefits(service, "lt");
+  const faqs = getServiceFaqs(service, "lt");
+  const galleryMosaicItems = galleryItems.map((item, index) =>
+    transformGalleryItemForMosaic(item, "lt", index),
+  );
+  const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "lt"));
+  const featuredPost = blogCards[0];
+  const remainingPosts = blogCards.slice(1);
+  const resolvedSlug = getLocalizedSlug(service, "lt");
+  const title = getLocalizedContent(service, "title", "lt");
+  const shortDescription = getLocalizedContent(service, "short_description", "lt");
+  const fullDescription = getLocalizedContent(service, "full_description", "lt");
   const structuredData = [
     createBreadcrumbSchema([
-      { name: "Home", path: "/" },
-      { name: "Services", path: "/paslaugos" },
-      { name: service.title, path: `/paslaugos/${service.slug}` },
+      { name: "Pradzia", path: "/" },
+      { name: "Paslaugos", path: getLocalizedRoute("services", "lt") },
+      {
+        name: title,
+        path: getLocalizedDetailRoute("services", resolvedSlug, "lt"),
+      },
     ]),
-    ...(service.faqs.length > 0 ? [createFaqSchema(service.faqs)] : []),
+    ...(faqs.length > 0 ? [createFaqSchema(faqs)] : []),
   ];
 
   return (
     <main>
       <StructuredData data={structuredData} />
-      {/* Service Hero */}
-      <Section className="bg-secondary/10 border-b border-border/50 pb-16 md:pb-24 pt-24 md:pt-32">
-        <Container>
-          <div className="max-w-4xl">
-            <Link href="/paslaugos" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8 inline-block">
-              ← Back to all services
+
+      <PublicDetailHero
+        backHref={getLocalizedRoute("services", "lt")}
+        backLabel="< Atgal i visas paslaugas"
+        eyebrow="Paslaugos detales"
+        title={title}
+        description={shortDescription}
+        meta={[
+          {
+            label: "Kaina nuo",
+            value: formatPrice(service.starting_price, service.currency_code, "lt"),
+          },
+          {
+            label: "Trukme",
+            value: formatDuration(service.duration_minutes, "lt"),
+          },
+          {
+            label: "Filialai",
+            value: availableBranches.length > 0 ? String(availableBranches.length) : "Pagal uzklausa",
+          },
+        ]}
+        actions={
+          <>
+            <Link href={getBookingPath("lt")}>
+              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
+                Rezervuoti sia paslauga
+              </PrimaryButton>
             </Link>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6">
-              {service.title}
-            </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl">
-              {service.shortDescription}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-6 mb-10 pb-10 border-b border-border/50">
-              <div className="flex flex-col">
-                <span className="text-sm text-muted-foreground uppercase tracking-wider mb-1">Starting from</span>
-                <span className="text-2xl font-semibold">{service.price}</span>
+            <Link href={getLocalizedRoute("branches", "lt")}>
+              <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
+                Perziureti filialus
+              </SecondaryButton>
+            </Link>
+          </>
+        }
+        visual={
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
+            {service.cover_image_url ? (
+              <Image
+                src={service.cover_image_url}
+                alt={title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 34vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
+                Vaizdas bus rodomas, kai paslaugai priskirsite nuotrauka admin sistemoje.
               </div>
-              
-              <div className="h-10 w-px bg-border/50 hidden sm:block" />
-              
-              <div className="flex flex-col">
-                <span className="text-sm text-muted-foreground uppercase tracking-wider mb-1">Duration</span>
-                <div className="flex items-center text-foreground font-medium text-lg">
-                  <Clock className="w-5 h-5 mr-2 text-muted-foreground" />
-                  {service.duration}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href={siteConfig.bookingUrl}>
-                <PrimaryButton className="w-full sm:w-auto px-8 text-base h-12">
-                  Book This Service
-                </PrimaryButton>
-              </Link>
-            </div>
+            )}
           </div>
-        </Container>
-      </Section>
+        }
+      />
 
-      {/* Service Details & Highlights */}
       <Section className="bg-background">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-            {/* Main Description */}
-            <div className="lg:col-span-7">
-              <h2 className="text-2xl font-medium mb-6 tracking-tight">About The Service</h2>
-              <div className="prose prose-neutral max-w-none text-muted-foreground">
-                <p className="leading-relaxed text-lg mb-6">
-                  {service.fullDescription}
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
+            <div className="space-y-8">
+              <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+                <SectionHeading
+                  title="Apie paslauga"
+                  subtitle="Redakcinis aprasas"
+                  description="Trumpai ir aiskiai apie tai, kam si paslauga skirta, kaip ji atliekama ir kokio rezultato tiketis po vizito."
+                  align="left"
+                />
+                <p className="text-base leading-8 text-muted-foreground md:text-lg">
+                  {fullDescription}
                 </p>
-                {/* Visual placeholder for the service specifically */}
-                <div className="aspect-video bg-muted rounded-xl w-full flex items-center justify-center mt-10 text-muted-foreground border border-border/50">
-                  Service Specific Image Placeholder
-                </div>
               </div>
+
+              {benefits.length > 0 ? (
+                <div className="rounded-[2rem] border border-border/60 bg-[linear-gradient(180deg,#f7f1ea_0%,#fcf8f4_100%)] p-8 shadow-sm shadow-black/5 md:p-10">
+                  <SectionHeading
+                    title="Ko tiketis vizito metu"
+                    subtitle="Vertes"
+                    description="Pagrindiniai akcentai, kurie padeda suprasti paslaugos eiga, rezultato kokybe ir aptarnavimo lygi."
+                    align="left"
+                    className="max-w-3xl"
+                  />
+                  <ul className="grid gap-4 md:grid-cols-2">
+                    {benefits.map((benefit) => (
+                      <li
+                        key={benefit}
+                        className="rounded-[1.4rem] border border-[#ddcfbf]/60 bg-background/75 p-5"
+                      >
+                        <div className="flex items-start gap-3">
+                          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                          <span className="text-sm leading-7 text-muted-foreground">{benefit}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
             </div>
 
-            {/* Benefits Sidebar */}
-            <div className="lg:col-span-5">
-              <div className="bg-secondary/10 rounded-2xl p-8 border border-border/50 sticky top-32">
-                <h3 className="text-xl font-medium mb-6">What to expect</h3>
-                <ul className="space-y-4">
-                  {service.benefits.map((benefit, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <CheckCircle2 className="w-6 h-6 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                      <span className="text-muted-foreground leading-relaxed">{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <div className="mt-10 pt-8 border-t border-border/50">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Available at all Vilnius locations. Subject to specialist availability.
-                  </p>
-                  <Link href="/filialai">
-                    <SecondaryButton className="w-full">
-                      View Locations
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                  Rezervacijos kelias
+                </span>
+                <h3 className="mt-4 text-2xl font-medium tracking-tight">
+                  Pasirinkite laika ir tinkamiausia filiala.
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
+                  {availableBranches.length > 0
+                    ? "Si paslauga jau susieta su filialais zemiau, todel galite greitai pereiti nuo perziuros prie rezervacijos."
+                    : "Filialu priskyrimas dar nesukonfiguruotas. Susisiekite ir padėsime parinkti artimiausia laika."}
+                </p>
+                <div className="mt-8 flex flex-col gap-3">
+                  <Link href={getBookingPath("lt")}>
+                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                      Rezervuoti vizita
+                    </PrimaryButton>
+                  </Link>
+                  <Link href={getLocalizedRoute("branches", "lt")}>
+                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                      Ziureti filialus
                     </SecondaryButton>
                   </Link>
                 </div>
+
+                <div className="mt-8 border-t border-white/10 pt-6">
+                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#bba998]">
+                    Trumpai
+                  </div>
+                  <div className="mt-4 space-y-4 text-sm text-[#d9cfc5]">
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Kaina</span>
+                      <span className="font-medium text-[#faf5ee]">
+                        {formatPrice(service.starting_price, service.currency_code, "lt")}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Trukme</span>
+                      <span className="font-medium text-[#faf5ee]">
+                        {formatDuration(service.duration_minutes, "lt")}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Filialai</span>
+                      <span className="font-medium text-[#faf5ee]">
+                        {availableBranches.length > 0 ? availableBranches.length : "Pagal uzklausa"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </Container>
       </Section>
 
-      {/* Shared Visual Context */}
-      <GallerySection />
-
-      {/* Service Specific FAQ */}
-      {service.faqs && service.faqs.length > 0 && (
-        <ServiceFaqSection faqs={service.faqs} />
-      )}
-
-      {relatedArticles.length > 0 && (
-        <Section className="bg-background">
+      {availableBranches.length > 0 ? (
+        <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
-            <div className="mb-10 max-w-2xl">
-              <span className="mb-3 block text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Editorial
-              </span>
-              <h2 className="text-3xl font-medium tracking-tight md:text-4xl">
-                Read before you book
-              </h2>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {relatedArticles.map((article) => (
-                <BlogCard
-                  key={article.id}
-                  title={article.title}
-                  excerpt={article.excerpt}
-                  date={formatBlogDate(article.publishedAt)}
-                  readingTime={article.readingTime}
-                  imageUrl={article.coverImageSrc}
-                  category={article.category}
-                  href={`/blogas/${article.slug}`}
+            <SectionHeading
+              title="Kur galite rezervuoti"
+              subtitle="Filialai"
+              description="Filialai, kuriuose si paslauga jau yra prieinama ir is kuriu galite tiesiogiai pasirinkti tolimesni zingsni."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+              {availableBranches.map((branch) => (
+                <BranchSummaryCard
+                  key={branch.id}
+                  name={getLocalizedContent(branch, "name", "lt")}
+                  address={getLocalizedContent(branch, "address", "lt")}
+                  phone={branch.phone}
+                  hoursSummary={getPrimaryOpeningHours(branch, "lt")}
+                  mapUrl={branch.map_url || undefined}
+                  branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "lt"), "lt")}
+                  bookingHref={branch.booking_url || getBookingPath("lt")}
+                  eyebrow="Filialas"
+                  branchLabel="Ziureti filiala"
+                  bookingLabel="Rezervuoti cia"
+                  mapAriaLabel={`Atidaryti zemelapi ${getLocalizedContent(branch, "name", "lt")}`}
                 />
               ))}
             </div>
           </Container>
         </Section>
-      )}
+      ) : null}
 
-      {/* Global Booking CTA */}
-      <FinalCtaSection />
+      <GallerySection items={galleryMosaicItems} locale="lt" />
+
+      {faqs.length > 0 ? (
+        <ServiceFaqSection
+          faqs={faqs}
+          title="Dazniausi klausimai"
+          subtitle="DUK"
+        />
+      ) : null}
+
+      {blogCards.length > 0 ? (
+        <Section className="bg-background">
+          <Container>
+            <SectionHeading
+              title="Straipsniai, susije su sia paslauga"
+              subtitle="Tinklarastis"
+              description="Papildomas kontekstas apie prieziura, stiliu ir tai, kaip rezultatas islaikomas tarp vizitu."
+              align="left"
+              className="max-w-3xl"
+            />
+
+            {featuredPost ? (
+              <div className="space-y-6">
+                <FeaturedArticleCard
+                  title={featuredPost.title}
+                  excerpt={featuredPost.excerpt}
+                  category={featuredPost.category}
+                  date={featuredPost.date}
+                  readingTime={featuredPost.readingTime}
+                  imageUrl={featuredPost.imageUrl || "/images/hero/picasso-team-hero.jpg"}
+                  imageAlt={featuredPost.imageAlt}
+                  href={featuredPost.href}
+                  featuredLabel="Teminis straipsnis"
+                  readLabel="Skaityti"
+                />
+
+                {remainingPosts.length > 0 ? (
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {remainingPosts.map((post) => (
+                      <BlogCard
+                        key={post.id}
+                        title={post.title}
+                        excerpt={post.excerpt}
+                        date={post.date}
+                        readingTime={post.readingTime}
+                        category={post.category}
+                        imageUrl={post.imageUrl}
+                        href={post.href}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
+
+      <FinalCtaSection locale="lt" />
     </main>
   );
 }
