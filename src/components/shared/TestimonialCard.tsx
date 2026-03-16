@@ -20,12 +20,12 @@ export function TestimonialCard({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-secondary/30 p-8 shadow-sm transition-all text-center flex flex-col items-center justify-center",
+        "flex h-full flex-col rounded-[1.85rem] border border-[#d7c5b4]/50 bg-[linear-gradient(180deg,#fbf8f4_0%,#f3ede6_100%)] p-8 text-left shadow-sm shadow-black/5 transition-all",
         className
       )}
       {...props}
     >
-      <div className="flex gap-1 mb-6 text-yellow-500">
+      <div className="mb-6 flex gap-1 text-[#b38855]">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
             key={i}
@@ -33,10 +33,10 @@ export function TestimonialCard({
           />
         ))}
       </div>
-      <p className="text-lg italic leading-relaxed text-foreground mb-8">&quot;{content}&quot;</p>
-      <div>
+      <p className="mb-8 text-lg italic leading-8 text-foreground">&quot;{content}&quot;</p>
+      <div className="mt-auto border-t border-[#dbcbbb]/60 pt-5">
         <div className="font-medium text-foreground">{author}</div>
-        {role && <div className="text-sm text-muted-foreground mt-1">{role}</div>}
+        {role && <div className="mt-1 text-sm text-muted-foreground">{role}</div>}
       </div>
     </div>
   );

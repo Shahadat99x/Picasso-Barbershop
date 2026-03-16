@@ -1,188 +1,237 @@
-import React from "react";
 import Link from "next/link";
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-
-// Core Mock Data
-import { 
-  mockFeaturedServices, 
-  mockBranches, 
-  mockSpecialists, 
-  mockTestimonials 
-} from "@/data/mock";
-import { blogPosts, formatBlogDate } from "@/data/blog";
-
-// UI Cards
-import { ServiceCard } from "@/components/shared/ServiceCard";
-import { BranchCard } from "@/components/shared/BranchCard";
-import { SpecialistCard } from "@/components/shared/SpecialistCard";
-import { TestimonialCard } from "@/components/shared/TestimonialCard";
-import { BlogCard } from "@/components/shared/BlogCard";
-import { PromoBanner } from "@/components/shared/PromoBanner";
-import { StructuredData } from "@/components/shared/StructuredData";
-
-// Page Sections
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { GallerySection } from "@/components/sections/GallerySection";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
-import { GallerySection } from "@/components/sections/GallerySection";
-import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { BlogCard } from "@/components/shared/BlogCard";
+import { BranchCard } from "@/components/shared/BranchCard";
+import { PromoBanner } from "@/components/shared/PromoBanner";
+import { ServiceCard } from "@/components/shared/ServiceCard";
+import { SpecialistCard } from "@/components/shared/SpecialistCard";
+import { StructuredData } from "@/components/shared/StructuredData";
+import { TestimonialCard } from "@/components/shared/TestimonialCard";
+import {
+  getActiveBranches,
+  getActivePromotions,
+  getFeaturedGalleryItems,
+  getFeaturedServices,
+  getFeaturedSpecialists,
+  getPromotionCtaText,
+  getPublishedBlogPosts,
+  getVisibleTestimonials,
+  getLocalizedContent,
+  transformBlogPostForCard,
+  transformBranchForCard,
+  transformGalleryItemForMosaic,
+  transformServiceForCard,
+  transformSpecialistForCard,
+  transformTestimonialForCard,
+} from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 import { createLocalBusinessSchema } from "@/lib/schema";
-import { defaultLocale } from "@/i18n/locales";
 
 export const metadata = createLocalizedPageMetadata({
-  title: "Premium Salon in Vilnius",
+  title: "Premium grozio salonas Vilniuje",
   description:
-    "Discover premium grooming services, three Vilnius branches, editorial inspiration, and easy booking with Picasso Barbershop.",
+    "Atraskite premium paslaugas, tris Vilniaus filialus, tikrus klientu atsiliepimus ir patogu rezervacijos kelia su Picasso Barbershop.",
   path: "/",
-  locale: defaultLocale,
+  locale: "lt",
 });
 
-export default function Home() {
+export default async function HomePage() {
+  const [services, branches, specialists, galleryItems, testimonials, blogPosts, promotions] =
+    await Promise.all([
+      getFeaturedServices(3),
+      getActiveBranches(3),
+      getFeaturedSpecialists(4),
+      getFeaturedGalleryItems(6),
+      getVisibleTestimonials(2),
+      getPublishedBlogPosts(3),
+      getActivePromotions(1),
+    ]);
+
+  const serviceCards = services.map((service) => transformServiceForCard(service, "lt"));
+  const branchCards = branches.map((branch) => transformBranchForCard(branch, "lt"));
+  const specialistCards = specialists.map((specialist) =>
+    transformSpecialistForCard(specialist, "lt"),
+  );
+  const testimonialCards = testimonials.map((testimonial) =>
+    transformTestimonialForCard(testimonial, "lt"),
+  );
+  const blogCards = blogPosts.map((post) => transformBlogPostForCard(post, "lt"));
+  const galleryMosaicItems = galleryItems.map((item, index) =>
+    transformGalleryItemForMosaic(item, "lt", index),
+  );
+
   return (
     <main>
       <StructuredData data={createLocalBusinessSchema()} />
-      {/* 1. Hero */}
-      <HeroSection />
+      <HeroSection locale="lt" />
 
-      {/* 2. Featured Services */}
-      <Section id="services" className="bg-background">
-        <Container>
-          <SectionHeading 
-            title="Signature Services" 
-            subtitle="Tailored for the modern gentleman" 
-            align="left"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockFeaturedServices.map((service, idx) => (
-              <ServiceCard 
-                key={idx}
-                title={service.title}
-                description={service.description}
-                price={service.price}
-                duration={service.duration}
-              />
-            ))}
-          </div>
-        </Container>
-      </Section>
+      {serviceCards.length > 0 ? (
+        <Section id="services" className="border-t border-border/60 bg-background">
+          <Container>
+            <SectionHeading
+              title="Pagrindines paslaugos"
+              subtitle="Pasirinktos pagal tai, ka klientai renkasi dazniausiai"
+              description="Trumpa atranka is realiai administruojamu paslaugu, kur meistriskumas, tempas ir rezultato kokybe svarbiausi nuo pirmo zvilgsnio."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {serviceCards.map((service) => (
+                <ServiceCard
+                  key={service.href}
+                  title={service.title}
+                  description={service.description}
+                  price={service.price}
+                  duration={service.duration}
+                  href={service.href}
+                  startingLabel="Nuo"
+                  detailLabel="Placiau"
+                />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
-      {/* 3. Branches Preview */}
-      <Section id="branches" className="bg-secondary/10">
-        <Container>
-          <SectionHeading 
-            title="Our Locations" 
-            subtitle="Find a salon near you" 
-            align="center"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {mockBranches.map((branch, idx) => (
-              <BranchCard 
-                key={idx}
-                name={branch.name}
-                address={branch.address}
-                hours={branch.hours}
-              />
-            ))}
-          </div>
-        </Container>
-      </Section>
+      {branchCards.length > 0 ? (
+        <Section id="branches" className="bg-[linear-gradient(180deg,#f5f0ea_0%,#f8f5f0_100%)]">
+          <Container>
+            <SectionHeading
+              title="Filialai Vilniuje"
+              subtitle="Raskite jums patogiausia lokacija"
+              description="Kiekviena lokacija islaiko ta pati premium aptarnavimo lygi, bet skirtingai prisitaiko prie miesto ritmo ir jusu dienotvarkes."
+              align="center"
+              className="max-w-3xl"
+            />
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              {branchCards.map((branch) => (
+                <BranchCard
+                  key={branch.href}
+                  name={branch.name}
+                  address={branch.address}
+                  hours={branch.hours}
+                  imageUrl={branch.imageUrl}
+                  href={branch.href}
+                  detailLabel="Ziureti filiala"
+                />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
-      {/* 4. Why Choose Us */}
-      <WhyChooseUsSection />
+      <WhyChooseUsSection locale="lt" />
 
-      {/* 5. Specialists Preview */}
-      <Section className="bg-background" variant="padded">
-        <Container>
-          <SectionHeading 
-            title="Meet The Team" 
-            subtitle="Master Specialists" 
-            align="left"
-          />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {mockSpecialists.map((specialist, idx) => (
-              <SpecialistCard 
-                key={idx}
-                name={specialist.name}
-                title={specialist.title}
-              />
-            ))}
-          </div>
-        </Container>
-      </Section>
+      {specialistCards.length > 0 ? (
+        <Section className="bg-background" variant="padded">
+          <Container>
+            <SectionHeading
+              title="Musu komanda"
+              subtitle="Patyre specialistai"
+              description="Meistrai, kuriu darbas remiasi konsultacija, tikslumu ir nuosekliu rezultatu, prie kurio lengva noreti grizti."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+              {specialistCards.map((specialist) => (
+                <SpecialistCard
+                  key={`${specialist.name}-${specialist.title}`}
+                  name={specialist.name}
+                  title={specialist.title}
+                  imageUrl={specialist.imageUrl}
+                  eyebrowLabel="Komanda"
+                />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
-      {/* 6. Gallery Preview */}
-      <GallerySection />
+      <GallerySection items={galleryMosaicItems} locale="lt" />
 
-      {/* 7. Testimonials */}
-      <Section className="bg-secondary/10">
-        <Container>
-          <SectionHeading 
-            title="Client Experiences" 
-            subtitle="Testimonials" 
-            align="center"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {mockTestimonials.map((testimonial, idx) => (
-              <TestimonialCard 
-                key={idx}
-                content={testimonial.content}
-                author={testimonial.author}
-                role={testimonial.role}
-                rating={testimonial.rating}
-              />
-            ))}
-          </div>
-        </Container>
-      </Section>
+      {testimonialCards.length > 0 ? (
+        <Section className="bg-[linear-gradient(180deg,#f7f2eb_0%,#fdfaf6_100%)]">
+          <Container>
+            <SectionHeading
+              title="Klientu patirtys"
+              subtitle="Tikri atsiliepimai"
+              description="Trumpi atsiliepimai is klientu, kurie grizta ne tik del kirpimo, bet ir del visos uztikrintos patirties."
+              align="center"
+              className="max-w-3xl"
+            />
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
+              {testimonialCards.map((testimonial) => (
+                <TestimonialCard
+                  key={`${testimonial.author}-${testimonial.content}`}
+                  content={testimonial.content}
+                  author={testimonial.author}
+                  rating={testimonial.rating}
+                />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
-      {/* 8. Promotions / Featured Offer */}
-      <Section className="bg-background !py-0 -mt-10 relative z-10">
-        <Container>
-          <PromoBanner 
-            title="First Visit Privilege"
-            description="Experience our premium barbering services with an exclusive 15% discount on your first appointment. Use code WELCOME15 when booking."
-            ctaText="Claim Offer"
-          />
-        </Container>
-      </Section>
+      {promotions[0] ? (
+        <Section className="bg-background !py-0 -mt-10 relative z-10">
+          <Container>
+            <PromoBanner
+              eyebrow="Aktualus pasiulymas"
+              title={getLocalizedContent(promotions[0], "title", "lt")}
+              description={getLocalizedContent(promotions[0], "description", "lt")}
+              ctaText={getPromotionCtaText(promotions[0], "lt")}
+              ctaHref={promotions[0].cta_url || getBookingPath("lt")}
+            />
+          </Container>
+        </Section>
+      ) : null}
 
-      {/* 9. Latest Blog Preview */}
-      <Section id="blog" className="bg-background pt-24">
-        <Container>
-          <SectionHeading 
-            title="Editorial" 
-            subtitle="Journal & Trends" 
-            align="left"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {blogPosts.slice(0, 3).map((post) => (
-              <BlogCard 
-                key={post.id}
-                title={post.title}
-                excerpt={post.excerpt}
-                date={formatBlogDate(post.publishedAt)}
-                readingTime={post.readingTime}
-                category={post.category}
-                imageUrl={post.coverImageSrc}
-                href={`/blogas/${post.slug}`}
-              />
-            ))}
-          </div>
-          <div className="mt-10 text-center md:text-left">
-            <Link
-              href="/blogas"
-              className="text-primary font-medium hover:underline underline-offset-4"
-            >
-              Explore all editorial articles →
-            </Link>
-          </div>
-        </Container>
-      </Section>
+      {blogCards.length > 0 ? (
+        <Section id="blog" className="bg-background pt-24">
+          <Container>
+            <SectionHeading
+              title="Naujienos ir idejos"
+              subtitle="Tinklarastis"
+              description="Redakciniai straipsniai apie prieziura, stiliu ir kasdienius pasirinkimus, kurie padeda islaikyti tvarkinga rezultata tarp vizitu."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {blogCards.map((post) => (
+                <BlogCard
+                  key={post.id}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  date={post.date}
+                  readingTime={post.readingTime}
+                  category={post.category}
+                  imageUrl={post.imageUrl}
+                  href={post.href}
+                />
+              ))}
+            </div>
+            <div className="mt-10 text-center md:text-left">
+              <Link
+                href={getLocalizedRoute("blog", "lt")}
+                className="text-sm font-semibold uppercase tracking-[0.22em] text-primary hover:underline underline-offset-4"
+              >
+                Skaityti visus straipsnius {"->"}
+              </Link>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
-      {/* 10. Final CTA */}
-      <FinalCtaSection />
+      <FinalCtaSection locale="lt" />
     </main>
   );
 }

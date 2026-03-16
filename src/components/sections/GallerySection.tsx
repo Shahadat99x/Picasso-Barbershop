@@ -6,23 +6,44 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { GalleryMosaic } from "@/components/shared/GalleryMosaic";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import { featuredGalleryItems } from "@/data/gallery";
+import { Locale, defaultLocale } from "@/i18n/locales";
+import type { GalleryMosaicItem } from "@/lib/public-data";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
-export function GallerySection() {
+interface GallerySectionProps {
+  items: GalleryMosaicItem[];
+  locale?: Locale;
+}
+
+export function GallerySection({
+  items,
+  locale = defaultLocale,
+}: GallerySectionProps) {
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <Section id="gallery" className="bg-background">
       <Container>
         <SectionHeading
-          title="Inside The Salon"
-          subtitle="Gallery"
+          title={locale === "en" ? "Inside the salon" : "Salono akimirkos"}
+          subtitle={locale === "en" ? "Gallery" : "Galerija"}
+          description={
+            locale === "en"
+              ? "A curated look inside the atmosphere, finish quality, and real in-salon moments behind the chair."
+              : "Atrinktas zvilgsnis i atmosfera, rezultato kokybe ir tikras salono akimirkas prie kedes."
+          }
           align="center"
         />
 
-        <GalleryMosaic items={featuredGalleryItems} className="mt-12" />
+        <GalleryMosaic items={items} className="mt-12" />
 
         <div className="mt-10 text-center">
-          <Link href="/galerija">
-            <SecondaryButton>Explore the full gallery</SecondaryButton>
+          <Link href={getLocalizedRoute("gallery", locale)}>
+            <SecondaryButton className="border-border/70 bg-background px-8">
+              {locale === "en" ? "Explore the full gallery" : "Ziureti visa galerija"}
+            </SecondaryButton>
           </Link>
         </div>
       </Container>
