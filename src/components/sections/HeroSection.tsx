@@ -1,42 +1,67 @@
 import React from "react";
-import { Container } from "@/components/layout/Container";
-import { Section } from "@/components/layout/Section";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import Link from "next/link";
-import { siteConfig } from "@/config/navigation";
+import { Locale, defaultLocale } from "@/i18n/locales";
+import { PublicHeroSignature } from "@/components/public/hero/public-hero-signature";
+import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 
-export function HeroSection() {
+const heroImage = {
+  src: "/images/hero/picasso-team-hero.jpg",
+  plaqueLabel: "Real Team. Real Craft.",
+};
+
+const heroContent: Record<
+  Locale,
+  {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: string;
+    secondaryCta: string;
+    imageAlt: string;
+  }
+> = {
+  lt: {
+    eyebrow: "Meistriskai kurta barberystes patirtis",
+    title: "Kur prieziura tampa jusu braizu.",
+    description:
+      "Preciziski kirpimai, astrus barzdos formavimas ir premium barbershop atmosfera, sukurta pasitikejimui ir detalems.",
+    cta: "Rezervuoti vizita",
+    secondaryCta: "Musu paslaugos",
+    imageAlt: "Picasso Barbershop komanda salone",
+  },
+  en: {
+    eyebrow: "Crafted barber experience",
+    title: "Where grooming becomes a signature.",
+    description:
+      "Expert cuts, sharp beard work, and a premium barbershop atmosphere designed around confidence and detail.",
+    cta: "Book Appointment",
+    secondaryCta: "Our Services",
+    imageAlt: "Picasso Barbershop team inside the salon",
+  },
+};
+
+interface HeroSectionProps {
+  locale?: Locale;
+}
+
+export function HeroSection({ locale = defaultLocale }: HeroSectionProps) {
+  const content = heroContent[locale];
+
   return (
-    <Section className="relative bg-secondary/10 overflow-hidden" variant="none">
-      {/* Optional: Add a subtle texture or gradient background here */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background/90 z-0 pointer-events-none" />
-      
-      <Container className="relative z-10 pt-24 pb-32 md:pt-32 md:pb-40">
-        <div className="max-w-3xl">
-          <span className="block mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-700">
-            Welcome to
-          </span>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-8 leading-[1.05] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-150 fill-mode-both">
-            Mastery in <br className="hidden md:block" /> Every Detail.
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300 fill-mode-both">
-            {siteConfig.description} Experience the city&apos;s finest traditional barbering combined with modern aesthetics.
-          </p>
-          <div className="flex flex-col sm:flex-row items-start gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 fill-mode-both">
-            <Link href={siteConfig.bookingUrl} className="w-full sm:w-auto">
-              <PrimaryButton className="w-full sm:w-auto h-12 px-8 text-base">
-                Book an Appointment
-              </PrimaryButton>
-            </Link>
-            <Link href="/#services" className="w-full sm:w-auto">
-              <SecondaryButton className="w-full sm:w-auto h-12 px-8 text-base">
-                View Services
-              </SecondaryButton>
-            </Link>
-          </div>
-        </div>
-      </Container>
-    </Section>
+    <PublicHeroSignature
+      eyebrow={content.eyebrow}
+      title={content.title}
+      description={content.description}
+      imageSrc={heroImage.src}
+      imageAlt={content.imageAlt}
+      plaqueLabel={heroImage.plaqueLabel}
+      primaryAction={{
+        href: getBookingPath(locale),
+        label: content.cta,
+      }}
+      secondaryAction={{
+        href: `${getLocalizedRoute("home", locale)}#services`,
+        label: content.secondaryCta,
+      }}
+    />
   );
 }
