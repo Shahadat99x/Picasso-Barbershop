@@ -1,103 +1,96 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarClock, Mail, MapPin, Phone } from "lucide-react";
+import { CalendarClock, Mail, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { PageHero } from "@/components/shared/PageHero";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import {
-  contactFormFields,
-  contactHighlights,
-  getMapSearchUrl,
-} from "@/data/contact";
-import { mockBranches } from "@/data/branches";
-import { siteConfig } from "@/config/navigation";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { defaultLocale } from "@/i18n/locales";
+import {
+  getActiveBranches,
+  getLocalizedContent,
+  getLocalizedSlug,
+  getPrimaryOpeningHours,
+  getSiteSettingsWithDefaults,
+} from "@/lib/public-data";
+import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Kontaktai",
   description:
-    "Find branch contact details, opening hours, directions, and booking guidance for Picasso Barbershop in Vilnius.",
-  path: "/kontaktai",
-  locale: defaultLocale,
+    "Raskite filialu kontaktus, darbo laika ir bendra Picasso Barbershop informacija is admin valdomu nustatymu.",
+  path: getLocalizedRoute("contact", "lt"),
+  locale: "lt",
 });
 
-const highlightIcons = [
-  <CalendarClock key="calendar" className="h-5 w-5" />,
-  <Phone key="phone" className="h-5 w-5" />,
-  <Mail key="mail" className="h-5 w-5" />,
-];
-
-function getPrimaryHours(hours: { day: string; time: string }[]) {
-  const first = hours[0];
-  return first ? `${first.day}: ${first.time}` : "Hours available on branch profile";
+function getMapUrl(address: string, mapUrl: string | null) {
+  return mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [settings, branches] = await Promise.all([
+    getSiteSettingsWithDefaults(),
+    getActiveBranches(),
+  ]);
+  const highlights = [
+    {
+      eyebrow: "Rezervacija",
+      title: "Greitas rezervacijos kelias",
+      description:
+        "Naudokite bendra rezervacijos marsruta arba pasirinkite konkretu filiala zemiau ir pereikite tiesiai i jo kelia.",
+      href: getBookingPath("lt"),
+      linkLabel: "Rezervuoti",
+      icon: <CalendarClock className="h-5 w-5" />,
+    },
+    {
+      eyebrow: "Telefonas",
+      title: "Skambutis del pagalbos",
+      description:
+        "Jei reikia pagalbos renkantis filiala ar paslauga, skambutis islieka greiciausias praktinis variantas.",
+      href: `tel:${settings.default_phone.replace(/\s+/g, "")}`,
+      linkLabel: settings.default_phone,
+      icon: <Phone className="h-5 w-5" />,
+    },
+    {
+      eyebrow: "El. pastas",
+      title: "Tiesioginis susisiekimas",
+      description:
+        "Detalesniems klausimams ar platesnei uzklausai galite rasyti i bendra salono pasto dezute.",
+      href: `mailto:${settings.default_email}`,
+      linkLabel: settings.default_email,
+      icon: <Mail className="h-5 w-5" />,
+    },
+  ];
+
   return (
     <main>
-      <PageHero
-        eyebrow="Contact"
-        title="Choose the branch that suits you best, or reach out directly for help."
-        description="The contact page is designed as the conversion fallback for the whole site: quick calls, clear branch access, opening hours, and a lightweight enquiry shell until the full backend lead flow is connected."
+      <PublicPageIntro
+        eyebrow="Kontaktai"
+        title="Pasirinkite filiala arba susisiekite tiesiogiai, jei reikia pagalbos."
+        description="Kontaktinis puslapis naudoja realius filialu ir nustatymu duomenis: telefonus, el. pasta, darbo laika, rezervacijos nuorodas ir zemelapiu kryptis."
         stats={[
-          { value: "3", label: "Vilnius branches" },
-          { value: "7 days", label: "Užupis branch availability" },
-          { value: "< 1 min", label: "to find a direct phone route" },
+          { label: "Aktyvus filialai", value: String(branches.length) },
+          { label: "Bendras telefonas", value: settings.default_phone },
+          { label: "Bendras el. pastas", value: settings.default_email },
         ]}
-        actions={
-          <>
-            <Link href="#rezervacija">
-              <PrimaryButton className="w-full sm:w-auto">Booking options</PrimaryButton>
-            </Link>
-            <a href={`tel:${siteConfig.contactPhone.replace(/\s+/g, "")}`}>
-              <SecondaryButton className="w-full sm:w-auto">Call master line</SecondaryButton>
-            </a>
-          </>
-        }
-        aside={
-          <div className="space-y-5">
-            <div>
-              <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                Master contact
-              </span>
-              <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-                <a href={`tel:${siteConfig.contactPhone.replace(/\s+/g, "")}`} className="block hover:text-foreground">
-                  {siteConfig.contactPhone}
-                </a>
-                <a href={`mailto:${siteConfig.contactEmail}`} className="block hover:text-foreground">
-                  {siteConfig.contactEmail}
-                </a>
-              </div>
-            </div>
-            <p className="border-t border-border/50 pt-5 text-sm leading-relaxed text-muted-foreground">
-              For the fastest response, call the branch directly or use the branch cards below
-              to choose the most convenient location.
-            </p>
-          </div>
-        }
       />
 
-      <Section className="border-b border-border/50 bg-background">
+      <Section className="border-b border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
         <Container>
           <div className="grid gap-6 lg:grid-cols-3">
-            {contactHighlights.map((highlight, index) => (
+            {highlights.map((highlight) => (
               <FeatureCard
-                key={highlight.id}
+                key={highlight.title}
+                eyebrow={highlight.eyebrow}
                 title={highlight.title}
                 description={highlight.description}
-                icon={highlightIcons[index]}
+                icon={highlight.icon}
                 footer={
-                  <a
-                    href={highlight.href}
-                    className="text-sm font-medium text-primary hover:underline"
-                  >
+                  <a href={highlight.href} className="text-sm font-medium text-primary hover:underline">
                     {highlight.linkLabel}
                   </a>
                 }
@@ -110,121 +103,150 @@ export default function ContactPage() {
       <Section className="bg-background">
         <Container>
           <SectionHeading
-            title="All branches at a glance"
-            subtitle="Quick access"
+            title="Visi filialai vienoje vietoje"
+            subtitle="Greita perziura"
+            description="Perziurekite lokacijas, darbo laika ir pagrindinius kontaktus, tada pasirinkite tiesiogini kelia i filialo puslapi arba rezervacija."
             align="left"
+            className="max-w-3xl"
           />
           <div className="grid gap-6 lg:grid-cols-3">
-            {mockBranches.map((branch) => (
+            {branches.map((branch) => (
               <BranchSummaryCard
                 key={branch.id}
-                name={branch.name}
-                address={branch.address}
+                name={getLocalizedContent(branch, "name", "lt")}
+                address={getLocalizedContent(branch, "address", "lt")}
                 phone={branch.phone}
-                hoursSummary={getPrimaryHours(branch.hours)}
-                mapUrl={getMapSearchUrl(branch.address)}
-                branchHref={`/filialai/${branch.slug}`}
-                bookingHref={`tel:${branch.phone.replace(/\s+/g, "")}`}
-                bookingLabel="Call to book"
+                hoursSummary={getPrimaryOpeningHours(branch, "lt")}
+                mapUrl={getMapUrl(getLocalizedContent(branch, "address", "lt"), branch.map_url)}
+                branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "lt"), "lt")}
+                bookingHref={branch.booking_url || `tel:${branch.phone.replace(/\s+/g, "")}`}
+                eyebrow="Filialas"
+                branchLabel="Ziureti filiala"
+                bookingLabel={branch.booking_url ? "Rezervuoti" : "Skambinti"}
+                mapAriaLabel={`Atidaryti zemelapi ${getLocalizedContent(branch, "name", "lt")}`}
               />
             ))}
           </div>
         </Container>
       </Section>
 
-      <Section id="rezervacija" className="border-t border-border/50 bg-secondary/10">
+      <Section id="rezervacija" className="border-t border-border/50 bg-background pt-0">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
-            <div className="rounded-[2rem] border border-border/60 bg-card p-7 shadow-sm shadow-black/5 md:p-8">
-              <div className="max-w-2xl">
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Contact form shell
-                </span>
-                <h2 className="mt-4 text-3xl font-medium tracking-tight">
-                  A clean enquiry flow is ready for backend wiring.
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                  This UI shell keeps the future contact lead flow visible in the layout
-                  without connecting Supabase in this phase.
-                </p>
-              </div>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem]">
+            <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+              <SectionHeading
+                title="Uzklausos forma kaip atsarginis kelias"
+                subtitle="Pagalba"
+                description="Pilnas uzklausos backend gali buti pleciamas velesniame etape, taciau si forma jau parodo aisku pagalbos marsruta ir saugu fallback scenariju."
+                align="left"
+                className="max-w-3xl"
+              />
 
               <form className="mt-8 grid gap-5 md:grid-cols-2">
-                {contactFormFields.map((field) => (
-                  <label
-                    key={field.id}
-                    className={field.type === "textarea" ? "md:col-span-2" : ""}
-                  >
-                    <span className="mb-2 block text-sm font-medium text-foreground">
-                      {field.label}
-                    </span>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        rows={5}
-                        placeholder={field.placeholder}
-                        className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
-                      />
-                    ) : (
-                      <input
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
-                      />
-                    )}
-                  </label>
-                ))}
+                <label>
+                  <span className="mb-2 block text-sm font-medium text-foreground">Vardas</span>
+                  <input
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="Jusu vardas"
+                  />
+                </label>
+                <label>
+                  <span className="mb-2 block text-sm font-medium text-foreground">Telefonas</span>
+                  <input
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="+370 6XX XXXXX"
+                  />
+                </label>
+                <label>
+                  <span className="mb-2 block text-sm font-medium text-foreground">El. pastas</span>
+                  <input
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="vardas@example.com"
+                  />
+                </label>
+                <label className="md:col-span-2">
+                  <span className="mb-2 block text-sm font-medium text-foreground">Zinute</span>
+                  <textarea
+                    rows={5}
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="Kuo galime padeti?"
+                  />
+                </label>
 
                 <div className="md:col-span-2">
                   <PrimaryButton className="w-full" disabled>
-                    Submission wiring in a later phase
+                    Siuntimo backend bus prijungtas atskirai
                   </PrimaryButton>
-                  <p className="mt-3 text-sm text-muted-foreground">
-                    Until then, use the branch cards above or email the salon directly.
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                    Kol kas naudokite auksciau esancias filialu korteles arba rasykite tiesiogiai
+                    el. pastu.
                   </p>
                 </div>
               </form>
             </div>
 
             <div className="space-y-6">
-              <div className="rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm shadow-black/5">
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Fastest booking route
+              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-6 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                  Greiciausias kelias
                 </span>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                  Choose a branch card above and call directly, or use the central contact
-                  line if you want help deciding where to go first.
+                <h2 className="mt-4 text-2xl font-medium tracking-tight">
+                  Skambinkite arba pereikite tiesiai i rezervacija.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
+                  Jei zinote, ko ieskote, bendras telefono numeris ir rezervacijos nuoroda lieka
+                  greiciausi veiksmai.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <a href={`tel:${siteConfig.contactPhone.replace(/\s+/g, "")}`}>
-                    <PrimaryButton className="w-full">Call master line</PrimaryButton>
+                  <a href={`tel:${settings.default_phone.replace(/\s+/g, "")}`}>
+                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                      Skambinti
+                    </PrimaryButton>
                   </a>
-                  <Link href="/filialai">
-                    <SecondaryButton className="w-full">Compare branches</SecondaryButton>
+                  <Link href={getBookingPath("lt")}>
+                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                      Rezervuoti
+                    </SecondaryButton>
                   </Link>
                 </div>
               </div>
 
               <div className="rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm shadow-black/5">
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Visit us
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  Socialiniai tinklai
                 </span>
-                <ul className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground">
-                  {mockBranches.map((branch) => (
-                    <li key={branch.id} className="border-b border-border/50 pb-4 last:border-b-0 last:pb-0">
-                      <div className="font-medium text-foreground">{branch.name}</div>
-                      <div>{branch.address}</div>
-                      <a
-                        href={getMapSearchUrl(branch.address)}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex items-center gap-2 text-primary hover:underline"
-                      >
-                        <MapPin className="h-4 w-4" />
-                        Open map placeholder
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  {settings.social_instagram ? (
+                    <a
+                      href={settings.social_instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                    >
+                      Instagram
+                    </a>
+                  ) : null}
+                  {settings.social_facebook ? (
+                    <a
+                      href={settings.social_facebook}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                    >
+                      Facebook
+                    </a>
+                  ) : null}
+                  {settings.social_tiktok ? (
+                    <a
+                      href={settings.social_tiktok}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                    >
+                      TikTok
+                    </a>
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>

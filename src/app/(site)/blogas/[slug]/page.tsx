@@ -6,99 +6,115 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
-import { BlogCard } from "@/components/shared/BlogCard";
+import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
 import { ArticleBody } from "@/components/shared/ArticleBody";
+import { BlogCard } from "@/components/shared/BlogCard";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { StructuredData } from "@/components/shared/StructuredData";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import { getBranchById } from "@/data/branches";
 import {
-  blogPosts,
-  formatBlogDate,
+  getBlogCoverAltText,
+  getBlogPostBody,
   getBlogPostBySlug,
-  getRelatedBlogPosts,
-} from "@/data/blog";
-import { getServiceBySlug } from "@/data/services";
-import { siteConfig } from "@/config/navigation";
-import { createPageMetadata, getCanonicalUrl } from "@/lib/metadata";
+  getBranchById,
+  getLocalizedContent,
+  getLocalizedSlug,
+  getPublishedBlogPosts,
+  getServiceById,
+  transformBlogPostForCard,
+} from "@/lib/public-data";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
 import { createArticleSchema, createBreadcrumbSchema } from "@/lib/schema";
+import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }));
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+function getReadingTime(body: ReturnType<typeof getBlogPostBody>) {
+  return Math.max(
+    1,
+    Math.ceil(
+      body
+        .map((block) => (block.type === "list" ? block.items.join(" ") : block.text))
+        .join(" ")
+        .split(/\s+/)
+        .filter(Boolean).length / 180,
+    ),
+  );
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
-    return {
-      title: "Article Not Found",
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
+    return createLocalizedPageMetadata({
+      title: "Straipsnis nerastas",
+      description: "Nepavyko rasti pasirinkto straipsnio.",
+      path: getLocalizedRoute("blog", "lt"),
+      locale: "lt",
+      noIndex: true,
+    });
   }
 
-  const metadata = createPageMetadata({
-    title: post.title,
-    description: post.excerpt,
-    path: `/blogas/${post.slug}`,
-    image: post.coverImageSrc,
+  return createLocalizedPageMetadata({
+    title: getLocalizedContent(post, "title", "lt"),
+    description: getLocalizedContent(post, "excerpt", "lt"),
+    path: getLocalizedDetailRoute("blog", slug, "lt"),
+    locale: "lt",
+    image: post.cover_image_url || undefined,
     type: "article",
   });
-
-  return {
-    ...metadata,
-    openGraph: {
-      type: "article",
-      url: getCanonicalUrl(`/blogas/${post.slug}`),
-      title: `${post.title} | ${siteConfig.name}`,
-      description: post.excerpt,
-      siteName: siteConfig.name,
-      locale: "lt_LT",
-      images: [
-        {
-          url: getCanonicalUrl(post.coverImageSrc),
-        },
-      ],
-      publishedTime: post.publishedAt,
-      authors: [post.authorName],
-      tags: post.tags,
-    },
-  };
 }
 
-export default function BlogArticlePage({ params }: { params: { slug: string } }) {
-  const post = getBlogPostBySlug(params.slug);
+export default async function BlogArticlePage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedBranch = post.relatedBranchId
-    ? getBranchById(post.relatedBranchId)
-    : undefined;
-  const relatedService = post.relatedServiceSlug
-    ? getServiceBySlug(post.relatedServiceSlug)
-    : undefined;
-  const relatedPosts = getRelatedBlogPosts(post.slug);
+  const [relatedService, relatedBranch, allPosts] = await Promise.all([
+    post.related_service_id ? getServiceById(post.related_service_id) : Promise.resolve(null),
+    post.related_branch_id ? getBranchById(post.related_branch_id) : Promise.resolve(null),
+    getPublishedBlogPosts(4),
+  ]);
+
+  const relatedPosts = allPosts
+    .filter((item) => item.id !== post.id)
+    .slice(0, 3)
+    .map((item) => transformBlogPostForCard(item, "lt"));
+  const body = getBlogPostBody(post, "lt");
+  const resolvedSlug = getLocalizedSlug(post, "lt");
+  const title = getLocalizedContent(post, "title", "lt");
+  const excerpt = getLocalizedContent(post, "excerpt", "lt");
+  const publishedDate = new Intl.DateTimeFormat("lt-LT", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(post.published_at || new Date().toISOString()));
+  const readingTime = getReadingTime(body);
   const structuredData = [
     createBreadcrumbSchema([
-      { name: "Home", path: "/" },
-      { name: "Blog", path: "/blogas" },
-      { name: post.title, path: `/blogas/${post.slug}` },
+      { name: "Pradzia", path: "/" },
+      { name: "Blogas", path: getLocalizedRoute("blog", "lt") },
+      {
+        name: title,
+        path: getLocalizedDetailRoute("blog", resolvedSlug, "lt"),
+      },
     ]),
     createArticleSchema({
-      title: post.title,
-      description: post.excerpt,
-      path: `/blogas/${post.slug}`,
-      image: post.coverImageSrc,
-      publishedAt: post.publishedAt,
-      authorName: post.authorName,
+      title,
+      description: excerpt,
+      path: getLocalizedDetailRoute("blog", resolvedSlug, "lt"),
+      image: post.cover_image_url || "/images/hero/picasso-team-hero.jpg",
+      publishedAt: post.published_at || new Date().toISOString(),
+      authorName: post.author_name,
       category: post.category,
     }),
   ];
@@ -106,89 +122,106 @@ export default function BlogArticlePage({ params }: { params: { slug: string } }
   return (
     <main>
       <StructuredData data={structuredData} />
-      <Section className="border-b border-border/50 bg-secondary/10 pb-14 pt-24 md:pb-20 md:pt-32">
-        <Container>
-          <div className="mx-auto max-w-4xl">
-            <Link
-              href="/blogas"
-              className="mb-8 inline-block text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-            >
-              ← Back to all articles
+
+      <PublicDetailHero
+        backHref={getLocalizedRoute("blog", "lt")}
+        backLabel="< Atgal i visus straipsnius"
+        eyebrow="Tinklarastis"
+        title={title}
+        description={excerpt}
+        meta={[
+          { label: "Kategorija", value: post.category },
+          { label: "Publikuota", value: publishedDate },
+          { label: "Skaitymas", value: `${readingTime} min` },
+        ]}
+        actions={
+          <>
+            <Link href={getBookingPath("lt")}>
+              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
+                Rezervuoti vizita
+              </PrimaryButton>
             </Link>
-
-            <span className="inline-flex rounded-full border border-border/60 bg-background/90 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-              {post.category}
-            </span>
-            <h1 className="mt-6 text-4xl font-medium tracking-tight md:text-5xl lg:text-6xl">
-              {post.title}
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-              {post.excerpt}
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <CalendarDays className="h-4 w-4" />
-                {formatBlogDate(post.publishedAt)}
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Clock3 className="h-4 w-4" />
-                {post.readingTime}
-              </span>
-              <span>{post.authorName}</span>
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs font-medium text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      <Section className="bg-background pb-8">
-        <Container>
-          <div className="mx-auto overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-sm shadow-black/5">
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted md:aspect-[16/8]">
+            {relatedService ? (
+              <Link
+                href={getLocalizedDetailRoute(
+                  "services",
+                  getLocalizedSlug(relatedService, "lt"),
+                  "lt",
+                )}
+              >
+                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
+                  Ziureti paslauga
+                </SecondaryButton>
+              </Link>
+            ) : (
+              <Link href={getLocalizedRoute("services", "lt")}>
+                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
+                  Ziureti paslaugas
+                </SecondaryButton>
+              </Link>
+            )}
+          </>
+        }
+        visual={
+          <div className="relative aspect-[5/4] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
+            {post.cover_image_url ? (
               <Image
-                src={post.coverImageSrc}
-                alt={post.coverImageAlt}
+                src={post.cover_image_url}
+                alt={getBlogCoverAltText(post, "lt")}
                 fill
                 priority
-                sizes="(max-width: 1200px) 100vw, 1200px"
+                sizes="(max-width: 1024px) 100vw, 38vw"
                 className="object-cover"
               />
-            </div>
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
+                Virselio vaizdas bus rodomas, kai straipsniui bus priskirta nuotrauka.
+              </div>
+            )}
           </div>
-        </Container>
-      </Section>
+        }
+      />
 
-      <Section className="bg-background pt-0">
+      <Section className="bg-background">
         <Container>
-          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
-            <article className="max-w-3xl">
-              <ArticleBody blocks={post.body} />
+          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+            <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+              <div className="mb-8 border-b border-border/50 pb-6">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  Straipsnio turinys
+                </span>
+                <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-2">
+                    <CalendarDays className="h-4 w-4" />
+                    {publishedDate}
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <Clock3 className="h-4 w-4" />
+                    {readingTime} min skaitymo
+                  </span>
+                  <span>{post.author_name}</span>
+                </div>
+              </div>
+              <ArticleBody blocks={body} />
             </article>
 
             <aside className="space-y-5 lg:sticky lg:top-28">
               {relatedService ? (
                 <FeatureCard
-                  eyebrow="Related service"
-                  title={relatedService.title}
-                  description={relatedService.shortDescription}
+                  eyebrow="Susijusi paslauga"
+                  title={getLocalizedContent(relatedService, "title", "lt")}
+                  description={getLocalizedContent(relatedService, "short_description", "lt")}
                   icon={<Scissors className="h-5 w-5" />}
                   footer={
                     <Link
-                      href={`/paslaugos/${relatedService.slug}`}
+                      href={getLocalizedDetailRoute(
+                        "services",
+                        getLocalizedSlug(relatedService, "lt"),
+                        "lt",
+                      )}
                       className="text-sm font-medium text-primary hover:underline"
                     >
-                      Explore service
+                      Ziureti paslauga
                     </Link>
                   }
                 />
@@ -196,85 +229,83 @@ export default function BlogArticlePage({ params }: { params: { slug: string } }
 
               {relatedBranch ? (
                 <FeatureCard
-                  eyebrow="Related branch"
-                  title={relatedBranch.name}
-                  description={relatedBranch.intro}
+                  eyebrow="Susijes filialas"
+                  title={getLocalizedContent(relatedBranch, "name", "lt")}
+                  description={getLocalizedContent(relatedBranch, "short_description", "lt")}
                   icon={<MapPin className="h-5 w-5" />}
                   footer={
                     <Link
-                      href={`/filialai/${relatedBranch.slug}`}
+                      href={getLocalizedDetailRoute(
+                        "branches",
+                        getLocalizedSlug(relatedBranch, "lt"),
+                        "lt",
+                      )}
                       className="text-sm font-medium text-primary hover:underline"
                     >
-                      Explore branch
+                      Ziureti filiala
                     </Link>
                   }
                 />
               ) : null}
+
+              <div className="rounded-[1.9rem] border border-border/60 bg-[#171311] p-6 text-[#f5efe7] shadow-[0_18px_40px_rgba(0,0,0,0.12)]">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#d1af89]">
+                  Kitas zingsnis
+                </span>
+                <h2 className="mt-4 text-2xl font-medium tracking-tight">
+                  Pereikite nuo skaitymo prie aiskaus veiksmo.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
+                  Jei straipsnis padejo apsispresti, pasirinkite paslauga, filiala arba iskart
+                  pereikite prie rezervacijos.
+                </p>
+                <div className="mt-6 flex flex-col gap-3">
+                  <Link href={getBookingPath("lt")}>
+                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                      Rezervuoti
+                    </PrimaryButton>
+                  </Link>
+                  <Link href={getLocalizedRoute("branches", "lt")}>
+                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                      Ziureti filialus
+                    </SecondaryButton>
+                  </Link>
+                </div>
+              </div>
             </aside>
           </div>
         </Container>
       </Section>
 
-      <Section className="border-y border-border/50 bg-secondary/10">
-        <Container>
-          <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Next step
-                </span>
-                <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                  Turn reading into a clear booking path.
-                </h2>
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-                  If this article helped you narrow down a service or location, continue into
-                  the practical pages and book from there.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                {relatedService ? (
-                  <Link href={`/paslaugos/${relatedService.slug}`}>
-                    <SecondaryButton className="w-full">View service</SecondaryButton>
-                  </Link>
-                ) : null}
-                <Link href={siteConfig.bookingUrl}>
-                  <PrimaryButton className="w-full">Book now</PrimaryButton>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
       {relatedPosts.length > 0 ? (
-        <Section className="bg-background">
+        <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
-            <div className="mb-10 max-w-2xl">
-              <span className="mb-3 block text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Related articles
-              </span>
-              <h2 className="text-3xl font-medium tracking-tight md:text-4xl">
-                Continue reading
-              </h2>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
+            <SectionHeading
+              title="Teskite skaityma"
+              subtitle="Susije straipsniai"
+              description="Papildomi straipsniai tiems, kurie nori gilinti tema ir toliau formuoti aiskesni pasirinkima pries vizita."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {relatedPosts.map((relatedPost) => (
                 <BlogCard
                   key={relatedPost.id}
                   title={relatedPost.title}
                   excerpt={relatedPost.excerpt}
-                  date={formatBlogDate(relatedPost.publishedAt)}
+                  date={relatedPost.date}
                   readingTime={relatedPost.readingTime}
-                  imageUrl={relatedPost.coverImageSrc}
                   category={relatedPost.category}
-                  href={`/blogas/${relatedPost.slug}`}
+                  imageUrl={relatedPost.imageUrl}
+                  href={relatedPost.href}
                 />
               ))}
             </div>
           </Container>
         </Section>
       ) : null}
+
+      <FinalCtaSection locale="lt" />
     </main>
   );
 }

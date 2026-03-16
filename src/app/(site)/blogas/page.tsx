@@ -1,169 +1,139 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpenText, MapPin, Scissors } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
-import { FeatureCard } from "@/components/shared/FeatureCard";
-import { PageHero } from "@/components/shared/PageHero";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import {
-  blogCategories,
-  blogPosts,
-  featuredBlogPost,
-  formatBlogDate,
-} from "@/data/blog";
-import { siteConfig } from "@/config/navigation";
-import { createLocalizedPageMetadata, getCanonicalUrl } from "@/lib/metadata";
-import { defaultLocale } from "@/i18n/locales";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import { getPublishedBlogPosts, transformBlogPostForCard } from "@/lib/public-data";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Blogas",
   description:
-    "Read editorial articles from Picasso Barbershop covering grooming advice, branch guides, and premium salon rituals in Vilnius.",
-  path: "/blogas",
-  locale: defaultLocale,
+    "Skaitykite administruojamus Picasso Barbershop straipsnius apie stiliu, prieziura ir pasirinkimus tarp paslaugu bei filialu.",
+  path: getLocalizedRoute("blog", "lt"),
+  locale: "lt",
 });
 
-const categoryIcons = [
-  <BookOpenText key="book" className="h-5 w-5" />,
-  <Scissors key="scissors" className="h-5 w-5" />,
-  <MapPin key="map" className="h-5 w-5" />,
-];
-
-export default function BlogIndexPage() {
-  const remainingPosts = blogPosts.filter((post) => post.slug !== featuredBlogPost.slug);
+export default async function BlogIndexPage() {
+  const posts = await getPublishedBlogPosts();
+  const transformedPosts = posts.map((post) => transformBlogPostForCard(post, "lt"));
+  const [featuredPost, ...remainingPosts] = transformedPosts;
 
   return (
     <main>
-      <PageHero
-        eyebrow="Blog"
-        title="Editorial reading built around grooming decisions, salon rituals, and Vilnius branch guidance."
-        description="Phase 3b introduces a CMS-ready blog structure with premium reading layouts, related content hooks, and stronger internal pathways toward services, branches, and booking."
+      <PublicPageIntro
+        eyebrow="Tinklarastis"
+        title="Redakciniai straipsniai apie stiliu, prieziura ir aiskesnius pasirinkimus."
+        description="Picasso Barbershop straipsniai dabar skaitomi is realaus CMS ir pateikiami tuo paciu premium ritmu kaip paslaugos, filialai ir pagrindinis puslapis."
         stats={[
-          { value: String(blogPosts.length), label: "mock editorial articles" },
-          { value: String(blogCategories.length), label: "lightweight categories" },
-          { value: "100%", label: "server-rendered article routes" },
+          { label: "Publikuota straipsniu", value: String(transformedPosts.length) },
+          {
+            label: "Kategorijos",
+            value: String(new Set(posts.map((post) => post.category)).size),
+          },
+          { label: "Lokalizacija", value: "LT/EN" },
         ]}
-        actions={
-          <>
-            <Link href={`/blogas/${featuredBlogPost.slug}`}>
-              <PrimaryButton className="w-full sm:w-auto">Read featured article</PrimaryButton>
-            </Link>
-            <Link href="/paslaugos">
-              <SecondaryButton className="w-full sm:w-auto">Explore services</SecondaryButton>
-            </Link>
-          </>
-        }
-        aside={
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-              Editorial direction
-            </span>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Articles are structured for future CMS mapping with categories, tags, cover
-              visuals, reading time, related services, and related branches already baked
-              into the local model.
-            </p>
-          </div>
-        }
       />
 
-      <Section className="bg-background">
-        <Container>
-          <FeaturedArticleCard
-            title={featuredBlogPost.title}
-            excerpt={featuredBlogPost.excerpt}
-            category={featuredBlogPost.category}
-            date={formatBlogDate(featuredBlogPost.publishedAt)}
-            readingTime={featuredBlogPost.readingTime}
-            imageUrl={featuredBlogPost.coverImageSrc}
-            imageAlt={featuredBlogPost.coverImageAlt}
-            href={`/blogas/${featuredBlogPost.slug}`}
-          />
-        </Container>
-      </Section>
+      {featuredPost ? (
+        <Section className="bg-background">
+          <Container>
+            <SectionHeading
+              title="Teminis straipsnis"
+              subtitle="Rekomendacija"
+              description="Pirmasis akcentas tiems, kurie nori pradeti nuo redakcinio turinio, kuris tiesiogiai siejasi su praktiniais pasirinkimais pries rezervacija."
+              align="left"
+              className="max-w-3xl"
+            />
+            <FeaturedArticleCard
+              title={featuredPost.title}
+              excerpt={featuredPost.excerpt}
+              category={featuredPost.category}
+              date={featuredPost.date}
+              readingTime={featuredPost.readingTime}
+              imageUrl={featuredPost.imageUrl || "/images/hero/picasso-team-hero.jpg"}
+              imageAlt={featuredPost.imageAlt}
+              href={featuredPost.href}
+              featuredLabel="Rekomenduojamas"
+              readLabel="Skaityti"
+            />
+          </Container>
+        </Section>
+      ) : null}
 
-      <Section className="border-y border-border/50 bg-secondary/10">
+      <Section className="border-t border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
         <Container>
-          <SectionHeading
-            title="Simple categories, kept lightweight"
-            subtitle="Browse by topic"
-            align="left"
-          />
-          <div className="grid gap-6 md:grid-cols-3">
-            {blogCategories.map((item, index) => (
-              <FeatureCard
-                key={item.category}
-                eyebrow={`${item.count} article${item.count > 1 ? "s" : ""}`}
-                title={item.category}
-                description="Editorial groupings stay intentionally simple for now so the page remains clean and mobile-friendly."
-                icon={categoryIcons[index % categoryIcons.length]}
-                footer={
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>Tag and filter expansion can come later</span>
-                    <ArrowRight className="h-4 w-4 text-primary" />
-                  </div>
-                }
-              />
-            ))}
-          </div>
-        </Container>
-      </Section>
+          <div className="rounded-[2rem] border border-border/60 bg-card/95 p-6 shadow-sm shadow-black/5 md:p-8 lg:p-10">
+            <SectionHeading
+              title="Visi straipsniai"
+              subtitle="Naujausi irasai"
+              description="Toliau rasite visus publikuotus irasus, skirtus prieziurai, ivaizdziui, filialu pasirinkimui ir bendram apsisprendimui pries vizita."
+              align="left"
+              className="max-w-3xl"
+            />
 
-      <Section className="bg-background">
-        <Container>
-          <SectionHeading
-            title="Latest articles"
-            subtitle="All posts"
-            align="left"
-          />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {remainingPosts.map((post) => (
-              <BlogCard
-                key={post.id}
-                title={post.title}
-                excerpt={post.excerpt}
-                date={formatBlogDate(post.publishedAt)}
-                readingTime={post.readingTime}
-                imageUrl={post.coverImageSrc}
-                category={post.category}
-                href={`/blogas/${post.slug}`}
-              />
-            ))}
+            {remainingPosts.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {remainingPosts.map((post) => (
+                  <BlogCard
+                    key={post.id}
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    date={post.date}
+                    readingTime={post.readingTime}
+                    imageUrl={post.imageUrl}
+                    category={post.category}
+                    href={post.href}
+                  />
+                ))}
+              </div>
+            ) : featuredPost ? (
+              <div className="rounded-[1.8rem] border border-border/60 bg-background px-6 py-8 text-center text-muted-foreground">
+                Kol kas publikuotas vienas straipsnis. Papildomi irasai atsiras cia, kai jie bus
+                aktyvuoti admin sistemoje.
+              </div>
+            ) : (
+              <div className="rounded-[1.8rem] border border-border/60 bg-background px-6 py-8 text-center text-muted-foreground">
+                Daugiau straipsniu atsiras, kai jie bus publikuoti admin sistemoje.
+              </div>
+            )}
           </div>
         </Container>
       </Section>
 
       <Section className="bg-background pt-0">
         <Container>
-          <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)] md:p-10">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Internal flow
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                  Toliau
                 </span>
                 <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                  Read, compare services, then choose the branch that fits your routine.
+                  Nuo redakcinio turinio prie aiskaus pasirinkimo.
                 </h2>
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-                  The blog should support discovery, not distract from conversion. Each
-                  article template already has room for related services, branch guidance,
-                  and booking follow-through.
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-[#c7b9ac] md:text-base">
+                  Jei ieskote praktinio kelio po skaitymo, pereikite i paslaugu arba filialu
+                  puslapius ir rinkites tolimesni zingsni be trukdziu.
                 </p>
               </div>
-
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link href="/filialai">
-                  <SecondaryButton className="w-full">Compare branches</SecondaryButton>
+                <Link href={getLocalizedRoute("services", "lt")}>
+                  <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                    Ziureti paslaugas
+                  </PrimaryButton>
                 </Link>
-                <Link href={siteConfig.bookingUrl}>
-                  <PrimaryButton className="w-full">Book now</PrimaryButton>
+                <Link href={getLocalizedRoute("branches", "lt")}>
+                  <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                    Ziureti filialus
+                  </SecondaryButton>
                 </Link>
               </div>
             </div>
@@ -171,7 +141,7 @@ export default function BlogIndexPage() {
         </Container>
       </Section>
 
-      <FinalCtaSection />
+      <FinalCtaSection locale="lt" />
     </main>
   );
 }
