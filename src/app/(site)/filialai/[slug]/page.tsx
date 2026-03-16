@@ -1,275 +1,434 @@
-import React from "react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { Bus, Car, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { MapPin, Phone, Mail, Clock, Car, Bus, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
-import { siteConfig } from "@/config/navigation";
-import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { defaultLocale } from "@/i18n/locales";
-
-import { mockBranches, getBranchBySlug } from "@/data/branches";
-import { getServiceBySlug, ServiceData } from "@/data/services";
-import {
-  formatBlogDate,
-  getBlogPostsByRelatedBranchId,
-} from "@/data/blog";
-import { ServiceCard } from "@/components/shared/ServiceCard";
+import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
 import { BlogCard } from "@/components/shared/BlogCard";
-import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
+import { ServiceCard } from "@/components/shared/ServiceCard";
 import { StructuredData } from "@/components/shared/StructuredData";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { GallerySection } from "@/components/sections/GallerySection";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { SecondaryButton } from "@/components/ui/SecondaryButton";
+import {
+  getAvailableServicesForBranch,
+  getBlogPostsForBranch,
+  getBranchBySlug,
+  getBranchTrustPoints,
+  getGalleryItemsForBranch,
+  getLocalizedContent,
+  getLocalizedSlug,
+  getLocalizedOpeningHours,
+  getPrimaryOpeningHours,
+  transformBlogPostForCard,
+  transformGalleryItemForMosaic,
+  transformServiceForCard,
+} from "@/lib/public-data";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbSchema } from "@/lib/schema";
+import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
-// Next.js static params generation for mock data
-export function generateStaticParams() {
-  return mockBranches.map((branch) => ({
-    slug: branch.slug,
-  }));
-}
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-// Dynamic metadata generation
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const branch = getBranchBySlug(params.slug);
-  
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const branch = await getBranchBySlug(slug);
+
   if (!branch) {
-    return {
-      title: "Branch Not Found",
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
+    return createLocalizedPageMetadata({
+      title: "Filialas nerastas",
+      description: "Nepavyko rasti pasirinkto filialo.",
+      path: getLocalizedRoute("branches", "lt"),
+      locale: "lt",
+      noIndex: true,
+    });
   }
 
   return createLocalizedPageMetadata({
-    title: branch.name,
-    description: branch.intro,
-    path: `/filialai/${branch.slug}`,
-    locale: defaultLocale,
+    title: getLocalizedContent(branch, "name", "lt"),
+    description: getLocalizedContent(branch, "short_description", "lt"),
+    path: getLocalizedDetailRoute("branches", slug, "lt"),
+    locale: "lt",
+    image: branch.cover_image_url || branch.gallery_preview_image_url || undefined,
   });
 }
 
-export default function BranchDetailPage({ params }: { params: { slug: string } }) {
-  const branch = getBranchBySlug(params.slug);
+export default async function BranchDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const branch = await getBranchBySlug(slug);
 
   if (!branch) {
     notFound();
   }
 
-  // Hydrate the featured services from the slug references
-  const featuredServices = branch.featuredServiceSlugs
-    .map(slug => getServiceBySlug(slug))
-    .filter(Boolean);
-  const relatedArticles = getBlogPostsByRelatedBranchId(branch.id);
+  const [services, galleryItems, relatedPosts] = await Promise.all([
+    getAvailableServicesForBranch(branch.id),
+    getGalleryItemsForBranch(branch.id),
+    getBlogPostsForBranch(branch.id),
+  ]);
+
+  const openingHours = getLocalizedOpeningHours(branch.opening_hours_json, "lt");
+  const trustPoints = getBranchTrustPoints(branch, "lt");
+  const serviceCards = services.map((service) => transformServiceForCard(service, "lt"));
+  const galleryMosaicItems = galleryItems.map((item, index) =>
+    transformGalleryItemForMosaic(item, "lt", index),
+  );
+  const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "lt"));
+  const featuredPost = blogCards[0];
+  const remainingPosts = blogCards.slice(1);
+  const resolvedSlug = getLocalizedSlug(branch, "lt");
+  const bookingHref = branch.booking_url || getBookingPath("lt");
+  const name = getLocalizedContent(branch, "name", "lt");
+  const shortDescription = getLocalizedContent(branch, "short_description", "lt");
+  const address = getLocalizedContent(branch, "address", "lt");
+  const primaryHours = getPrimaryOpeningHours(branch, "lt");
+  const bookingIsExternal =
+    bookingHref.startsWith("http") || bookingHref.startsWith("mailto:") || bookingHref.startsWith("tel:");
 
   return (
     <main>
       <StructuredData
         data={createBreadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Branches", path: "/filialai" },
-          { name: branch.name, path: `/filialai/${branch.slug}` },
+          { name: "Pradzia", path: "/" },
+          { name: "Filialai", path: getLocalizedRoute("branches", "lt") },
+          {
+            name,
+            path: getLocalizedDetailRoute("branches", resolvedSlug, "lt"),
+          },
         ])}
       />
-      {/* Branch Hero */}
-      <Section className="bg-secondary/10 border-b border-border/50 pb-16 md:pb-24 pt-24 md:pt-32">
-        <Container>
-          <div className="max-w-4xl">
-            <Link href="/filialai" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8 inline-block">
-              ← View all locations
-            </Link>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6">
-              {branch.name}
-            </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl">
-              {branch.intro}
-            </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href={siteConfig.bookingUrl}>
-                <PrimaryButton className="w-full sm:w-auto px-8 text-base h-12">
-                  Book at {branch.name}
+      <PublicDetailHero
+        backHref={getLocalizedRoute("branches", "lt")}
+        backLabel="< Atgal i visus filialus"
+        eyebrow="Filialo profilis"
+        title={name}
+        description={shortDescription}
+        meta={[
+          { label: "Darbo laikas", value: primaryHours },
+          { label: "Telefonas", value: branch.phone },
+          { label: "Paslaugos", value: serviceCards.length > 0 ? String(serviceCards.length) : "Ruoshiama" },
+        ]}
+        actions={
+          <>
+            {bookingIsExternal ? (
+              <a href={bookingHref} target="_blank" rel="noreferrer">
+                <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
+                  Rezervuoti siame filiale
+                </PrimaryButton>
+              </a>
+            ) : (
+              <Link href={bookingHref}>
+                <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
+                  Rezervuoti siame filiale
                 </PrimaryButton>
               </Link>
-            </div>
+            )}
+            {branch.map_url ? (
+              <a href={branch.map_url} target="_blank" rel="noreferrer">
+                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
+                  Atidaryti zemelapyje
+                </SecondaryButton>
+              </a>
+            ) : null}
+          </>
+        }
+        visual={
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
+            {branch.cover_image_url || branch.gallery_preview_image_url ? (
+              <Image
+                src={branch.cover_image_url || branch.gallery_preview_image_url || ""}
+                alt={name}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 34vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
+                Filialo vaizdas bus rodomas, kai admin sistemoje bus prideta nuotrauka.
+              </div>
+            )}
           </div>
-        </Container>
-      </Section>
+        }
+      />
 
-      {/* Information & Map Placeholder */}
       <Section className="bg-background">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            
-            {/* Contact Details Grid */}
-            <div className="space-y-12">
-              <div>
-                <h2 className="text-2xl font-medium mb-8">Contact & Hours</h2>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="mt-1 bg-secondary/30 p-2 rounded-lg text-primary">
-                      <MapPin className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="block font-medium text-foreground mb-1">Address</span>
-                      <span className="text-muted-foreground leading-relaxed">{branch.address}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="mt-1 bg-secondary/30 p-2 rounded-lg text-primary">
-                      <Phone className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="block font-medium text-foreground mb-1">Phone</span>
-                      <a href={`tel:${branch.phone.replace(/\s+/g, '')}`} className="text-muted-foreground hover:text-primary transition-colors">{branch.phone}</a>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
+            <div className="space-y-8">
+              <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+                <SectionHeading
+                  title="Apie si filiala"
+                  subtitle="Lokacijos apzvalga"
+                  description="Svarbiausia informacija apie vieta, atmosfera ir tai, kaip sis filialas isipaiso i jusu kasdienio ritmo pasirinkima."
+                  align="left"
+                />
+                <div className="space-y-5 text-base leading-8 text-muted-foreground md:text-lg">
+                  <p>{shortDescription}</p>
+                  <p>
+                    {serviceCards.length > 0
+                      ? `Siame filiale siuo metu galite rinktis is ${serviceCards.length} publikuotu paslaugu, o rezervacijos kelias paliktas aiskus ir tiesioginis.`
+                      : "Paslaugu sarasas siame filiale dar pildomas, taciau kontaktai ir rezervacijos kelias jau yra parengti."}
+                  </p>
+                </div>
+              </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="mt-1 bg-secondary/30 p-2 rounded-lg text-primary">
-                      <Mail className="w-5 h-5" />
+              <div className="rounded-[2rem] border border-border/60 bg-[linear-gradient(180deg,#f7f1ea_0%,#fcf8f4_100%)] p-8 shadow-sm shadow-black/5 md:p-10">
+                <SectionHeading
+                  title="Atvykimas ir patogumas"
+                  subtitle="Pries vizita"
+                  description="Praktine informacija apie parkavima ir atvykima viesuoju transportu, kad kelias i vizita butu sklandus."
+                  align="left"
+                  className="max-w-3xl"
+                />
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-[1.4rem] border border-[#ddcfbf]/60 bg-background/80 p-5">
+                    <div className="flex items-start gap-3">
+                      <Car className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <div>
+                        <div className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground">
+                          Parkavimas
+                        </div>
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                          {getLocalizedContent(branch, "parking_info", "lt") ||
+                            "Parkavimo informacija bus atnaujinta netrukus."}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <span className="block font-medium text-foreground mb-1">Email</span>
-                      <a href={`mailto:${branch.email}`} className="text-muted-foreground hover:text-primary transition-colors">{branch.email}</a>
+                  </div>
+                  <div className="rounded-[1.4rem] border border-[#ddcfbf]/60 bg-background/80 p-5">
+                    <div className="flex items-start gap-3">
+                      <Bus className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <div>
+                        <div className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground">
+                          Viesasis transportas
+                        </div>
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                          {getLocalizedContent(branch, "transport_info", "lt") ||
+                            "Atvykimo viesuoju transportu informacija bus atnaujinta netrukus."}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="pt-8 border-t border-border/50">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 bg-secondary/30 p-2 rounded-lg text-primary">
-                    <Clock className="w-5 h-5" />
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                  Kontaktai ir darbo laikas
+                </span>
+                <h3 className="mt-4 text-2xl font-medium tracking-tight">
+                  Visa svarbiausia informacija vienoje vietoje.
+                </h3>
+
+                <div className="mt-8 space-y-5 text-sm text-[#d9cfc5]">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
+                    <div>
+                      <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
+                        Adresas
+                      </div>
+                      <address className="mt-2 not-italic leading-7 text-[#f5efe7]">{address}</address>
+                    </div>
                   </div>
-                  <div className="w-full">
-                    <span className="block font-medium text-foreground mb-4">Opening Hours</span>
-                    <ul className="space-y-3">
-                      {branch.hours.map((hour, idx) => (
-                        <li key={idx} className="flex justify-between items-center text-muted-foreground border-b border-border/30 pb-3 last:border-0 last:pb-0">
+
+                  <div className="flex items-start gap-3">
+                    <Phone className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
+                    <div>
+                      <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
+                        Telefonas
+                      </div>
+                      <a
+                        href={`tel:${branch.phone.replace(/\s+/g, "")}`}
+                        className="mt-2 inline-block text-[#f5efe7] transition-colors hover:text-[#d2af88]"
+                      >
+                        {branch.phone}
+                      </a>
+                    </div>
+                  </div>
+
+                  {branch.email ? (
+                    <div className="flex items-start gap-3">
+                      <Mail className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
+                      <div>
+                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
+                          El. pastas
+                        </div>
+                        <a
+                          href={`mailto:${branch.email}`}
+                          className="mt-2 inline-block text-[#f5efe7] transition-colors hover:text-[#d2af88]"
+                        >
+                          {branch.email}
+                        </a>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+
+                {openingHours.length > 0 ? (
+                  <div className="mt-8 border-t border-white/10 pt-6">
+                    <div className="mb-4 flex items-center gap-3">
+                      <Clock className="h-5 w-5 text-[#d2af88]" />
+                      <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#bba998]">
+                        Darbo laikas
+                      </span>
+                    </div>
+                    <ul className="space-y-3 text-sm text-[#d9cfc5]">
+                      {openingHours.map((hour) => (
+                        <li
+                          key={`${hour.day}-${hour.time}`}
+                          className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 last:border-0 last:pb-0"
+                        >
                           <span>{hour.day}</span>
-                          <span className="font-medium">{hour.time}</span>
+                          <span className="font-medium text-[#faf5ee]">{hour.time}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
+                ) : null}
+
+                <div className="mt-8 flex flex-col gap-3">
+                  {bookingIsExternal ? (
+                    <a href={bookingHref} target="_blank" rel="noreferrer">
+                      <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                        Rezervuoti vizita
+                      </PrimaryButton>
+                    </a>
+                  ) : (
+                    <Link href={bookingHref}>
+                      <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                        Rezervuoti vizita
+                      </PrimaryButton>
+                    </Link>
+                  )}
+                  {branch.map_url ? (
+                    <a href={branch.map_url} target="_blank" rel="noreferrer">
+                      <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                        Atidaryti zemelapyje
+                      </SecondaryButton>
+                    </a>
+                  ) : null}
                 </div>
               </div>
             </div>
-
-            {/* Layout Column Right */}
-            <div className="space-y-12">
-              {/* Map Placeholder */}
-              <div className="aspect-[4/3] md:aspect-video lg:aspect-square rounded-2xl bg-muted border border-border/50 flex flex-col items-center justify-center text-muted-foreground bg-secondary/5 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-[url('https://maps.googleapis.com/maps/api/staticmap?center=Vilnius&zoom=14&size=800x800&key=placeholder')] bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
-                <MapPin className="w-10 h-10 mb-4 opacity-50 relative z-10" />
-                <span className="font-medium relative z-10">Interactive Map Placeholder</span>
-                <span className="text-sm mt-2 max-w-[200px] text-center relative z-10">Google Maps Embed to be integrated in future phases</span>
-              </div>
-
-              {/* Transit Info */}
-              <div className="bg-secondary/10 rounded-2xl p-8 border border-border/50">
-                <h3 className="text-lg font-medium mb-6">Getting Here</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-3 text-muted-foreground">
-                    <Car className="w-5 h-5 mt-0.5 shrink-0 text-primary" />
-                    <p className="leading-relaxed text-sm">{branch.parkingInfo}</p>
-                  </div>
-                  <div className="flex items-start gap-3 text-muted-foreground">
-                    <Bus className="w-5 h-5 mt-0.5 shrink-0 text-primary" />
-                    <p className="leading-relaxed text-sm">{branch.transportInfo}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </Container>
       </Section>
 
-      {/* Trust Highlights */}
-      <Section className="bg-secondary/10 border-y border-border/50">
-        <Container>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {branch.trustPoints.map((point, idx) => (
-              <div key={idx} className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                <span className="font-medium text-foreground tracking-tight">{point}</span>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      {/* Services available here snippet */}
-      {featuredServices.length > 0 && (
-        <Section className="bg-background">
+      {trustPoints.length > 0 ? (
+        <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
-            <SectionHeading 
-              title="Available Here" 
-              subtitle="Featured Services" 
+            <SectionHeading
+              title="Kodel klientai renkasi sia lokacija"
+              subtitle="Pasitikejimo akcentai"
+              description="Trumpi signalai, kurie padeda ivertinti filialo patoguma, aptarnavimo lygi ir bendra patirti."
               align="left"
+              className="max-w-3xl"
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-              {featuredServices.map((service: ServiceData | undefined) => {
-                if (!service) return null;
-                return (
-                  <ServiceCard
-                    key={service.id}
-                    title={service.title}
-                    description={service.shortDescription}
-                    price={service.price}
-                    duration={service.duration}
-                    href={`/paslaugos/${service.slug}`}
-                  />
-                );
-              })}
-            </div>
-            
-            <div className="mt-10 text-center md:text-left">
-              <Link href="/paslaugos" className="text-primary font-medium hover:underline underline-offset-4">
-                View entire service menu →
-              </Link>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {trustPoints.map((point) => (
+                <div
+                  key={point}
+                  className="rounded-[1.5rem] border border-[#ddcfbf]/60 bg-background/85 p-5 shadow-sm shadow-black/5"
+                >
+                  <span className="text-base font-medium leading-7 text-foreground">{point}</span>
+                </div>
+              ))}
             </div>
           </Container>
         </Section>
-      )}
+      ) : null}
 
-      {relatedArticles.length > 0 && (
-        <Section className="border-t border-border/50 bg-background">
+      {serviceCards.length > 0 ? (
+        <Section className="bg-background">
           <Container>
             <SectionHeading
-              title="Editorial related to this branch"
-              subtitle="Local reading"
+              title="Paslaugos siame filiale"
+              subtitle="Paslaugu pasirinkimas"
+              description="Perziurekite siuo metu siam filialui priskirtas paslaugas ir pasirinkite jusu vizito tikslui tinkamiausia varianta."
               align="left"
+              className="max-w-3xl"
             />
-            <div className="grid gap-6 md:grid-cols-3">
-              {relatedArticles.map((article) => (
-                <BlogCard
-                  key={article.id}
-                  title={article.title}
-                  excerpt={article.excerpt}
-                  date={formatBlogDate(article.publishedAt)}
-                  readingTime={article.readingTime}
-                  imageUrl={article.coverImageSrc}
-                  category={article.category}
-                  href={`/blogas/${article.slug}`}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {serviceCards.map((service) => (
+                <ServiceCard
+                  key={service.href}
+                  title={service.title}
+                  description={service.description}
+                  price={service.price}
+                  duration={service.duration}
+                  href={service.href}
+                  startingLabel="Nuo"
+                  detailLabel="Placiau"
                 />
               ))}
             </div>
           </Container>
         </Section>
-      )}
+      ) : null}
 
-      {/* Global Booking CTA */}
-      <FinalCtaSection />
+      <GallerySection items={galleryMosaicItems} locale="lt" />
+
+      {blogCards.length > 0 ? (
+        <Section className="bg-background">
+          <Container>
+            <SectionHeading
+              title="Susije straipsniai apie sia lokacija"
+              subtitle="Tinklarastis"
+              description="Papildomas kontekstas apie prieziura, stiliu ir lokacijos aktualijas, susijusias su sia vieta."
+              align="left"
+              className="max-w-3xl"
+            />
+
+            {featuredPost ? (
+              <div className="space-y-6">
+                <FeaturedArticleCard
+                  title={featuredPost.title}
+                  excerpt={featuredPost.excerpt}
+                  category={featuredPost.category}
+                  date={featuredPost.date}
+                  readingTime={featuredPost.readingTime}
+                  imageUrl={featuredPost.imageUrl || "/images/hero/picasso-team-hero.jpg"}
+                  imageAlt={featuredPost.imageAlt}
+                  href={featuredPost.href}
+                  featuredLabel="Teminis straipsnis"
+                  readLabel="Skaityti"
+                />
+
+                {remainingPosts.length > 0 ? (
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {remainingPosts.map((post) => (
+                      <BlogCard
+                        key={post.id}
+                        title={post.title}
+                        excerpt={post.excerpt}
+                        date={post.date}
+                        readingTime={post.readingTime}
+                        category={post.category}
+                        imageUrl={post.imageUrl}
+                        href={post.href}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
+
+      <FinalCtaSection locale="lt" />
     </main>
   );
 }

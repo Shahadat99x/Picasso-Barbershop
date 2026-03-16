@@ -1,19 +1,40 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
+import { createPromotion, updatePromotion } from "@/app/admin/actions/promotions";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { createPromotion, updatePromotion } from "@/app/admin/actions/promotions";
-import { ImageUpload } from "@/components/admin/ImageUpload";
+import { Textarea } from "@/components/ui/textarea";
 import type { Database } from "@/lib/supabase/types";
 
 type Promotion = Database["public"]["Tables"]["promotions"]["Row"];
+
+function LocaleSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-6 rounded-[1.75rem] border border-slate-200 bg-slate-50/60 p-5">
+      <div>
+        <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{description}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export function PromotionForm({ initialData }: { initialData?: Promotion }) {
   const router = useRouter();
@@ -48,11 +69,16 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
       try {
         if (initialData?.id) {
           const res = await updatePromotion(initialData.id, data);
-          if (res.error) throw new Error(res.error);
+          if (res.error) {
+            throw new Error(res.error);
+          }
         } else {
           const res = await createPromotion(data);
-          if (res.error) throw new Error(res.error);
+          if (res.error) {
+            throw new Error(res.error);
+          }
         }
+
         router.push("/admin/promotions");
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred while saving.");
@@ -65,53 +91,110 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
       onSubmit={handleSubmit}
       className="space-y-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
-      {error && (
-        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600">
-          {error}
-        </div>
-      )}
+      {error ? (
+        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600">{error}</div>
+      ) : null}
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="title_lt">Title (LT)</Label>
-          <Input
-            id="title_lt"
-            name="title_lt"
-            defaultValue={initialData?.title_lt || ""}
-            required
-            placeholder="e.g. Vasaros nuolaida"
-          />
-        </div>
+      <div className="grid gap-6 xl:grid-cols-2">
+        <LocaleSection
+          title="Lithuanian"
+          description="Primary public content for LT routes."
+        >
+          <div className="space-y-2">
+            <Label htmlFor="title_lt">Title (LT)</Label>
+            <Input
+              id="title_lt"
+              name="title_lt"
+              defaultValue={initialData?.title_lt || ""}
+              required
+              placeholder="e.g. Vasaros nuolaida"
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="title_en">Title (EN)</Label>
-          <Input
-            id="title_en"
-            name="title_en"
-            defaultValue={initialData?.title_en || ""}
-            placeholder="e.g. Summer discount"
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="description_lt">Description (LT)</Label>
+            <Textarea
+              id="description_lt"
+              name="description_lt"
+              defaultValue={initialData?.description_lt || ""}
+              required
+              rows={3}
+            />
+          </div>
 
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="description_lt">Description (LT)</Label>
-          <Textarea
-            id="description_lt"
-            name="description_lt"
-            defaultValue={initialData?.description_lt || ""}
-            required
-            rows={3}
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="discount_label_lt">Discount Label (LT)</Label>
+            <Input
+              id="discount_label_lt"
+              name="discount_label_lt"
+              defaultValue={initialData?.discount_label_lt || ""}
+              placeholder="e.g. -20%"
+            />
+          </div>
 
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="description_en">Description (EN)</Label>
-          <Textarea
-            id="description_en"
-            name="description_en"
-            defaultValue={initialData?.description_en || ""}
-            rows={3}
-          />
+          <div className="space-y-2">
+            <Label htmlFor="cta_text_lt">CTA Text (LT)</Label>
+            <Input
+              id="cta_text_lt"
+              name="cta_text_lt"
+              defaultValue={initialData?.cta_text_lt || ""}
+              placeholder="e.g. Rezervuoti"
+            />
+          </div>
+        </LocaleSection>
+
+        <LocaleSection
+          title="English"
+          description="Secondary public content for EN routes. Falls back to LT only when empty."
+        >
+          <div className="space-y-2">
+            <Label htmlFor="title_en">Title (EN)</Label>
+            <Input
+              id="title_en"
+              name="title_en"
+              defaultValue={initialData?.title_en || ""}
+              placeholder="e.g. Summer discount"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description_en">Description (EN)</Label>
+            <Textarea
+              id="description_en"
+              name="description_en"
+              defaultValue={initialData?.description_en || ""}
+              rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="discount_label_en">Discount Label (EN)</Label>
+            <Input
+              id="discount_label_en"
+              name="discount_label_en"
+              defaultValue={initialData?.discount_label_en || ""}
+              placeholder="e.g. -20%"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="cta_text_en">CTA Text (EN)</Label>
+            <Input
+              id="cta_text_en"
+              name="cta_text_en"
+              defaultValue={initialData?.cta_text_en || ""}
+              placeholder="e.g. Book now"
+            />
+          </div>
+        </LocaleSection>
+      </div>
+
+      <section className="grid gap-6 rounded-[1.75rem] border border-slate-200 bg-slate-50/60 p-5 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <h2 className="text-lg font-semibold text-slate-900">Shared promotion settings</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            These values are shared across both locales.
+          </p>
         </div>
 
         <div className="space-y-2 sm:col-span-2">
@@ -122,46 +205,6 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
             placeholder="https://res.cloudinary.com/.../banner.jpg"
           />
           <input type="hidden" name="banner_image_url" value={bannerImageUrl} />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="discount_label_lt">Discount Label (LT)</Label>
-          <Input
-            id="discount_label_lt"
-            name="discount_label_lt"
-            defaultValue={initialData?.discount_label_lt || ""}
-            placeholder="e.g. -20%"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="discount_label_en">Discount Label (EN)</Label>
-          <Input
-            id="discount_label_en"
-            name="discount_label_en"
-            defaultValue={initialData?.discount_label_en || ""}
-            placeholder="e.g. -20%"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="cta_text_lt">CTA Text (LT)</Label>
-          <Input
-            id="cta_text_lt"
-            name="cta_text_lt"
-            defaultValue={initialData?.cta_text_lt || ""}
-            placeholder="e.g. Rezervuoti"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="cta_text_en">CTA Text (EN)</Label>
-          <Input
-            id="cta_text_en"
-            name="cta_text_en"
-            defaultValue={initialData?.cta_text_en || ""}
-            placeholder="e.g. Book now"
-          />
         </div>
 
         <div className="space-y-2 sm:col-span-2">
@@ -205,24 +248,26 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
           />
         </div>
 
-        <div className="flex items-center space-x-2 pt-8">
-          <Switch
-            id="is_active"
-            name="is_active"
-            defaultChecked={initialData?.is_active ?? true}
-          />
-          <Label htmlFor="is_active">Active</Label>
-        </div>
+        <div className="sm:col-span-2 flex flex-wrap gap-8 pt-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="is_active"
+              name="is_active"
+              defaultChecked={initialData?.is_active ?? true}
+            />
+            <Label htmlFor="is_active">Active</Label>
+          </div>
 
-        <div className="flex items-center space-x-2 pt-8">
-          <Switch
-            id="is_featured"
-            name="is_featured"
-            defaultChecked={initialData?.is_featured ?? false}
-          />
-          <Label htmlFor="is_featured">Featured (Show on homepage)</Label>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="is_featured"
+              name="is_featured"
+              defaultChecked={initialData?.is_featured ?? false}
+            />
+            <Label htmlFor="is_featured">Featured (Show on homepage)</Label>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className="flex justify-end gap-3 pt-4">
         <Button
@@ -233,7 +278,7 @@ export function PromotionForm({ initialData }: { initialData?: Promotion }) {
           Cancel
         </Button>
         <Button type="submit" disabled={isPending} className="bg-slate-900 text-white">
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           {initialData ? "Update Promotion" : "Create Promotion"}
         </Button>
       </div>

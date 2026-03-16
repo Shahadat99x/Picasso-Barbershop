@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidatePromotionPublicPaths } from "./revalidate-public";
 
 type PromotionInsert = Database["public"]["Tables"]["promotions"]["Insert"];
 type PromotionUpdate = Database["public"]["Tables"]["promotions"]["Update"];
@@ -54,6 +55,7 @@ export async function createPromotion(input: PromotionInsert) {
   }
 
   revalidatePath("/admin/promotions");
+  revalidatePromotionPublicPaths(data);
   return { data };
 }
 
@@ -73,6 +75,7 @@ export async function updatePromotion(id: string, input: PromotionUpdate) {
   }
 
   revalidatePath("/admin/promotions");
+  revalidatePromotionPublicPaths(data);
   return { data };
 }
 
@@ -80,6 +83,7 @@ export async function deletePromotion(id: string) {
   await requireAuthenticatedAdminUser();
   const supabase = createSupabaseAdminClient();
 
+  const existing = await getPromotion(id);
   const { error } = await supabase.from("promotions").delete().eq("id", id);
 
   if (error) {
@@ -87,5 +91,6 @@ export async function deletePromotion(id: string) {
   }
 
   revalidatePath("/admin/promotions");
+  revalidatePromotionPublicPaths(existing);
   return { success: true };
 }

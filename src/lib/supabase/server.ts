@@ -23,6 +23,8 @@ export function createSupabaseServerClient() {
 }
 
 export function createSupabaseAdminClient() {
+  // Public pages and admin actions share this server-only client until typed admin access is tightened.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return createClient<any>(
     getSupabaseUrl(),
     getSupabaseServiceRoleKey(),

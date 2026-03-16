@@ -14,9 +14,15 @@ interface FaqItem {
 
 interface ServiceFaqSectionProps {
   faqs: FaqItem[];
+  title?: string;
+  subtitle?: string;
 }
 
-export function ServiceFaqSection({ faqs }: ServiceFaqSectionProps) {
+export function ServiceFaqSection({
+  faqs,
+  title = "Common Questions",
+  subtitle = "FAQ",
+}: ServiceFaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   if (!faqs || faqs.length === 0) return null;
@@ -25,8 +31,8 @@ export function ServiceFaqSection({ faqs }: ServiceFaqSectionProps) {
     <Section className="bg-secondary/10">
       <Container>
         <SectionHeading 
-          title="Common Questions" 
-          subtitle="FAQ" 
+          title={title}
+          subtitle={subtitle}
           align="left"
         />
         <div className="max-w-3xl border-t border-border/50">

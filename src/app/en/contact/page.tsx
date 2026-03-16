@@ -1,184 +1,253 @@
-import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
+import { CalendarClock, Mail, Phone } from "lucide-react";
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
-import { mockBranches } from "@/data/mock";
-import { createPageMetadata } from "@/lib/metadata";
+import { FeatureCard } from "@/components/shared/FeatureCard";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { SecondaryButton } from "@/components/ui/SecondaryButton";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import {
+  getActiveBranches,
+  getLocalizedContent,
+  getLocalizedSlug,
+  getPrimaryOpeningHours,
+  getSiteSettingsWithDefaults,
+} from "@/lib/public-data";
+import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Contact - Picasso Barbershop",
+export const metadata = createLocalizedPageMetadata({
+  title: "Contact",
   description:
-    "Get in touch with Picasso Barbershop. Find our locations, contact details, and opening hours in Vilnius.",
-  path: "/en/contact",
+    "Find branch contact details, opening hours, and shared Picasso Barbershop contact information from admin-managed settings.",
+  path: getLocalizedRoute("contact", "en"),
+  locale: "en",
 });
 
-export default function EnContactPage() {
+function getMapUrl(address: string, mapUrl: string | null) {
+  return mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
+export default async function EnContactPage() {
+  const [settings, branches] = await Promise.all([
+    getSiteSettingsWithDefaults(),
+    getActiveBranches(),
+  ]);
+  const highlights = [
+    {
+      eyebrow: "Booking",
+      title: "Fast booking route",
+      description:
+        "Use the shared booking path or pick a specific branch below and move directly into its route.",
+      href: getBookingPath("en"),
+      linkLabel: "Book now",
+      icon: <CalendarClock className="h-5 w-5" />,
+    },
+    {
+      eyebrow: "Phone",
+      title: "Call for help",
+      description:
+        "If you need help choosing a branch or service, a direct call is still the fastest practical option.",
+      href: `tel:${settings.default_phone.replace(/\s+/g, "")}`,
+      linkLabel: settings.default_phone,
+      icon: <Phone className="h-5 w-5" />,
+    },
+    {
+      eyebrow: "Email",
+      title: "Direct contact",
+      description:
+        "For more detailed questions or a broader enquiry, write to the main salon inbox directly.",
+      href: `mailto:${settings.default_email}`,
+      linkLabel: settings.default_email,
+      icon: <Mail className="h-5 w-5" />,
+    },
+  ];
+
   return (
     <main>
-      <Section className="!pb-0">
-        <div className="relative flex min-h-[40vh] flex-col justify-center overflow-hidden bg-[#F5F2ED] py-20">
-          <Container className="relative z-10">
-            <h1 className="text-5xl font-bold tracking-tight text-[#1a1a1a] sm:text-6xl">
-              Contact
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-[#4a4a4a] max-w-xl">
-              Get in touch with us. We'd love to hear from you.
-            </p>
-          </Container>
-          <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-[#e8e4dc] opacity-50 blur-3xl" />
-        </div>
-      </Section>
+      <PublicPageIntro
+        eyebrow="Contact"
+        title="Choose a branch or reach out directly when you need guidance."
+        description="The contact page uses live branch and settings data for phone numbers, email, opening hours, booking paths, and map directions."
+        stats={[
+          { label: "Active branches", value: String(branches.length) },
+          { label: "Main phone", value: settings.default_phone },
+          { label: "Main email", value: settings.default_email },
+        ]}
+      />
 
-      <Section className="bg-background">
+      <Section className="border-b border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <div>
-              <SectionHeading 
-                title="Send us a message" 
-                subtitle="We'll get back to you" 
-                align="left"
+          <div className="grid gap-6 lg:grid-cols-3">
+            {highlights.map((highlight) => (
+              <FeatureCard
+                key={highlight.title}
+                eyebrow={highlight.eyebrow}
+                title={highlight.title}
+                description={highlight.description}
+                icon={highlight.icon}
+                footer={
+                  <a href={highlight.href} className="text-sm font-medium text-primary hover:underline">
+                    {highlight.linkLabel}
+                  </a>
+                }
               />
-              <form className="mt-8 space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="john@example.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                    Phone (optional)
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="+370 6xx xxxxx"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                    placeholder="How can we help you?"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full h-12 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
-
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div>
-                <SectionHeading 
-                  title="Our Locations" 
-                  align="left"
-                />
-                <div className="mt-6 space-y-4">
-                  {mockBranches.map((branch, idx) => (
-                    <BranchSummaryCard 
-                      key={idx}
-                      name={branch.name}
-                      address={branch.address}
-                      phone="+370 600 00000"
-                      hoursSummary={branch.hours}
-                      mapUrl="#"
-                      branchHref="/en/branches"
-                      bookingHref="/en/services"
-                      bookingLabel="Book"
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-secondary/30 rounded-3xl p-8">
-                <h3 className="text-xl font-semibold mb-4">General Inquiries</h3>
-                <div className="space-y-3">
-                  <p className="flex items-center gap-3">
-                    <span className="text-muted-foreground">Email:</span>
-                    <a href="mailto:hello@picassobarbershop.lt" className="hover:underline">
-                      hello@picassobarbershop.lt
-                    </a>
-                  </p>
-                  <p className="flex items-center gap-3">
-                    <span className="text-muted-foreground">Phone:</span>
-                    <a href="tel:+37060000000" className="hover:underline">
-                      +370 600 00000
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-secondary/30 rounded-3xl p-8">
-                <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
-                <div className="flex gap-4">
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
-                  >
-                    IG
-                  </a>
-                  <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
-                  >
-                    FB
-                  </a>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </Container>
       </Section>
 
-      <Section id="rezervacija" className="bg-primary text-primary-foreground">
+      <Section className="bg-background">
         <Container>
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-medium tracking-tight mb-4">
-              Ready for a Transformation?
-            </h2>
-            <p className="text-primary-foreground/80 mb-8">
-              Book your appointment at any of our three Vilnius locations.
-            </p>
-            <Link
-              href="/en/services"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-background px-8 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-            >
-              View Services & Book
-            </Link>
+          <SectionHeading
+            title="All branches in one place"
+            subtitle="Quick access"
+            description="Review locations, opening hours, and core contact details, then move directly into the branch page or its booking path."
+            align="left"
+            className="max-w-3xl"
+          />
+          <div className="grid gap-6 lg:grid-cols-3">
+            {branches.map((branch) => (
+              <BranchSummaryCard
+                key={branch.id}
+                name={getLocalizedContent(branch, "name", "en")}
+                address={getLocalizedContent(branch, "address", "en")}
+                phone={branch.phone}
+                hoursSummary={getPrimaryOpeningHours(branch, "en")}
+                mapUrl={getMapUrl(getLocalizedContent(branch, "address", "en"), branch.map_url)}
+                branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "en"), "en")}
+                bookingHref={branch.booking_url || `tel:${branch.phone.replace(/\s+/g, "")}`}
+                eyebrow="Branch"
+                branchLabel="View branch"
+                bookingLabel={branch.booking_url ? "Book now" : "Call"}
+                mapAriaLabel={`Open map for ${getLocalizedContent(branch, "name", "en")}`}
+              />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="booking" className="border-t border-border/50 bg-background pt-0">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem]">
+            <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+              <SectionHeading
+                title="Enquiry form as a fallback route"
+                subtitle="Support"
+                description="A fuller enquiry backend can still be expanded later, but this shell already keeps the help path visible and offers a safe fallback scenario."
+                align="left"
+                className="max-w-3xl"
+              />
+
+              <form className="mt-8 grid gap-5 md:grid-cols-2">
+                <label>
+                  <span className="mb-2 block text-sm font-medium text-foreground">Name</span>
+                  <input
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="Your name"
+                  />
+                </label>
+                <label>
+                  <span className="mb-2 block text-sm font-medium text-foreground">Phone</span>
+                  <input
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="+370 6XX XXXXX"
+                  />
+                </label>
+                <label>
+                  <span className="mb-2 block text-sm font-medium text-foreground">Email</span>
+                  <input
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="name@example.com"
+                  />
+                </label>
+                <label className="md:col-span-2">
+                  <span className="mb-2 block text-sm font-medium text-foreground">Message</span>
+                  <textarea
+                    rows={5}
+                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
+                    placeholder="How can we help?"
+                  />
+                </label>
+
+                <div className="md:col-span-2">
+                  <PrimaryButton className="w-full" disabled>
+                    Submission backend will be connected separately
+                  </PrimaryButton>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                    Until then, use the branch cards above or write directly to the main email.
+                  </p>
+                </div>
+              </form>
+            </div>
+
+            <div className="space-y-6">
+              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-6 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                  Fastest route
+                </span>
+                <h2 className="mt-4 text-2xl font-medium tracking-tight">
+                  Call or move directly into booking.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
+                  If you already know what you need, the shared phone line and booking link remain
+                  the fastest actions.
+                </p>
+                <div className="mt-6 flex flex-col gap-3">
+                  <a href={`tel:${settings.default_phone.replace(/\s+/g, "")}`}>
+                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                      Call now
+                    </PrimaryButton>
+                  </a>
+                  <Link href={getBookingPath("en")}>
+                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                      Book now
+                    </SecondaryButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm shadow-black/5">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  Social channels
+                </span>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  {settings.social_instagram ? (
+                    <a
+                      href={settings.social_instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                    >
+                      Instagram
+                    </a>
+                  ) : null}
+                  {settings.social_facebook ? (
+                    <a
+                      href={settings.social_facebook}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                    >
+                      Facebook
+                    </a>
+                  ) : null}
+                  {settings.social_tiktok ? (
+                    <a
+                      href={settings.social_tiktok}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                    >
+                      TikTok
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </Section>

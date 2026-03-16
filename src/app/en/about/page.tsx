@@ -1,140 +1,235 @@
-import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
+import { CheckCircle2, MapPin, Scissors, ShieldCheck } from "lucide-react";
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
-import { SpecialistCard } from "@/components/shared/SpecialistCard";
-import { mockSpecialists } from "@/data/mock";
-import { createPageMetadata } from "@/lib/metadata";
+import { PublicPageIntro } from "@/components/public/page/public-page-intro";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { FeatureCard } from "@/components/shared/FeatureCard";
+import { TeamPreviewCard } from "@/components/shared/TeamPreviewCard";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { SecondaryButton } from "@/components/ui/SecondaryButton";
+import { createLocalizedPageMetadata } from "@/lib/metadata";
+import {
+  getActiveBranches,
+  getActiveSpecialists,
+  getLocalizedContent,
+  getSpecialistSpecialties,
+} from "@/lib/public-data";
+import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "About Us - Picasso Barbershop",
+export const metadata = createLocalizedPageMetadata({
+  title: "About",
   description:
-    "Learn about Picasso Barbershop's story, our team of expert barbers, and our commitment to premium grooming in Vilnius.",
-  path: "/en/about",
+    "Learn about the Picasso Barbershop brand, its specialist team, and how the premium experience is managed across Vilnius branches.",
+  path: getLocalizedRoute("about", "en"),
+  locale: "en",
 });
 
-export default function EnAboutPage() {
+const valueIcons = [
+  <Scissors key="cut" className="h-5 w-5" />,
+  <ShieldCheck key="shield" className="h-5 w-5" />,
+  <MapPin key="map" className="h-5 w-5" />,
+  <CheckCircle2 key="check" className="h-5 w-5" />,
+];
+
+const valuePillars = [
+  {
+    title: "Clear consultations",
+    description:
+      "Appointments start with understanding the client, the maintenance rhythm, and the result they want after the first week.",
+  },
+  {
+    title: "Premium without friction",
+    description:
+      "The atmosphere is elevated, while the actual experience stays calm, practical, and reliable.",
+  },
+  {
+    title: "Consistency across branches",
+    description:
+      "Different neighborhoods, the same quality bar, service rhythm, and booking logic.",
+  },
+  {
+    title: "Built for repeat trust",
+    description:
+      "The goal is not a one-off impression. It is a service standard that makes the next visit feel obvious.",
+  },
+];
+
+export default async function EnAboutPage() {
+  const [specialists, branches] = await Promise.all([
+    getActiveSpecialists(3),
+    getActiveBranches(),
+  ]);
+  const branchMap = new Map(
+    branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "en")]),
+  );
+
   return (
     <main>
-      <Section className="!pb-0">
-        <div className="relative flex min-h-[40vh] flex-col justify-center overflow-hidden bg-[#F5F2ED] py-20">
-          <Container className="relative z-10">
-            <h1 className="text-5xl font-bold tracking-tight text-[#1a1a1a] sm:text-6xl">
-              About Us
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-[#4a4a4a] max-w-xl">
-              A story of craftsmanship, tradition, and modern style in the heart of Vilnius.
-            </p>
-          </Container>
-          <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-[#e8e4dc] opacity-50 blur-3xl" />
-        </div>
-      </Section>
+      <PublicPageIntro
+        eyebrow="About the brand"
+        title="A brand built on calm execution, consistency, and repeat trust."
+        description="The Picasso Barbershop story now sits inside the same premium public system as the homepage, services, and branches pages, while the team preview remains connected to the live specialist module."
+        stats={[
+          { label: "Vilnius branches", value: String(branches.length) },
+          { label: "Featured specialists", value: String(specialists.length) },
+          { label: "Content model", value: "LT/EN" },
+        ]}
+      />
 
       <Section className="bg-background">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <SectionHeading 
-                title="Our Story" 
-                subtitle="Since 2018" 
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+            <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+              <SectionHeading
+                title="Craft, atmosphere, and consistency under one name"
+                subtitle="Our story"
+                description="Picasso Barbershop is built around the idea that premium grooming should feel calm, sharply delivered, and easy to trust from the first visit onward."
                 align="left"
               />
-              <div className="space-y-4 text-muted-foreground">
+              <div className="space-y-5 text-base leading-8 text-muted-foreground md:text-lg">
                 <p>
-                  Picasso Barbershop was founded with a simple mission: to bring traditional barbershop craftsmanship to modern Vilnius while creating a space where style meets community.
+                  Each branch keeps the same quality standard while adapting to a different city
+                  rhythm. That shows up not only in the atmosphere, but also in the way services
+                  are explained, how consultations are framed, and how booking feels publicly.
                 </p>
                 <p>
-                  What started as a single location in the Old Town has grown into three premium branches across the city, each maintaining the same commitment to quality, attention to detail, and personalized service.
-                </p>
-                <p>
-                  We believe that a great haircut is more than just a service—it's an experience. Our masters combine classic techniques with contemporary styling to deliver looks that enhance your natural features and fit your lifestyle.
+                  The public site now reflects that same order: from first impression through to
+                  choosing a service or branch, each step is meant to reduce hesitation and make
+                  the next move feel clear.
                 </p>
               </div>
             </div>
-            <div className="bg-secondary/30 rounded-3xl p-8">
-              <h3 className="text-xl font-semibold mb-6">Our Values</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm flex-shrink-0">✓</span>
-                  <div>
-                    <strong className="block">Quality First</strong>
-                    <span className="text-sm text-muted-foreground">Premium products, precision techniques</span>
+
+            <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+              <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
+                How we work
+              </span>
+              <h2 className="mt-4 text-3xl font-medium tracking-tight">
+                Appointments are built around people, not volume.
+              </h2>
+              <div className="mt-6 space-y-4">
+                {[
+                  "Consultation is part of the result, not a formality.",
+                  "Every location follows the same standard for quality, service, and presentation.",
+                  "The real goal is a result that still feels right well after the appointment.",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 text-sm leading-7 text-[#d9cfc5]">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#d2af88]" />
+                    <span>{item}</span>
                   </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm flex-shrink-0">✓</span>
-                  <div>
-                    <strong className="block">Personalized Service</strong>
-                    <span className="text-sm text-muted-foreground">Every client is unique</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm flex-shrink-0">✓</span>
-                  <div>
-                    <strong className="block">Welcoming Atmosphere</strong>
-                    <span className="text-sm text-muted-foreground">A space for community</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm flex-shrink-0">✓</span>
-                  <div>
-                    <strong className="block">Continuous Learning</strong>
-                    <span className="text-sm text-muted-foreground">Always evolving our craft</span>
-                  </div>
-                </li>
-              </ul>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-col gap-3">
+                <Link href={getLocalizedRoute("services", "en")}>
+                  <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                    View services
+                  </PrimaryButton>
+                </Link>
+                <Link href={getLocalizedRoute("branches", "en")}>
+                  <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
+                    View branches
+                  </SecondaryButton>
+                </Link>
+              </div>
             </div>
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-secondary/10">
+      <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
         <Container>
-          <SectionHeading 
-            title="Meet The Team" 
-            subtitle="Our expert barbers" 
-            align="center"
+          <SectionHeading
+            title="Why clients choose us"
+            subtitle="Values"
+            description="The principles that shape both the service standard and the public-facing Picasso Barbershop experience."
+            align="left"
+            className="max-w-3xl"
           />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
-            {mockSpecialists.map((specialist, idx) => (
-              <SpecialistCard 
-                key={idx}
-                name={specialist.name}
-                title={specialist.title}
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {valuePillars.map((pillar, index) => (
+              <FeatureCard
+                key={pillar.title}
+                eyebrow="Trust"
+                title={pillar.title}
+                description={pillar.description}
+                icon={valueIcons[index]}
               />
             ))}
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-primary text-primary-foreground">
+      {specialists.length > 0 ? (
+        <Section className="bg-background">
+          <Container>
+            <SectionHeading
+              title="Team preview"
+              subtitle="CMS-managed specialists"
+              description="A concise look at the specialists drawn from the live content module, used here to reinforce trust and service level."
+              align="left"
+              className="max-w-3xl"
+            />
+            <div className="grid gap-6 lg:grid-cols-3">
+              {specialists.map((specialist) => (
+                <TeamPreviewCard
+                  key={specialist.id}
+                  name={specialist.full_name}
+                  role={getLocalizedContent(specialist, "role", "en")}
+                  branch={branchMap.get(specialist.branch_id || "") || "Vilnius"}
+                  experience={
+                    specialist.years_experience
+                      ? `${specialist.years_experience} years`
+                      : "Experience"
+                  }
+                  specialties={
+                    getSpecialistSpecialties(specialist, "en").length > 0
+                      ? getSpecialistSpecialties(specialist, "en")
+                      : ["Premium service", "Precise finish"]
+                  }
+                  summary={
+                    getLocalizedContent(specialist, "bio", "en") ||
+                    "A specialist summary will appear here once it is filled in through the admin."
+                  }
+                />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      <Section className="bg-background pt-0">
         <Container>
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-medium tracking-tight mb-4">
-              Visit Us Today
-            </h2>
-            <p className="text-primary-foreground/80 mb-8">
-              Experience the Picasso Barbershop difference at any of our three Vilnius locations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/en/branches"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-background px-8 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-              >
-                View Locations
-              </Link>
-              <Link
-                href="/en/services"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-primary-foreground/20 bg-transparent px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
-              >
-                Our Services
-              </Link>
+          <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+              <div>
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                  Next
+                </span>
+                <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
+                  A brand matters only when it is backed by real service quality.
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">
+                  If you are ready to move from the story into a practical choice, compare
+                  services, review branches, or book the next appointment directly.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+                <Link href={getBookingPath("en")}>
+                  <PrimaryButton className="w-full">Book now</PrimaryButton>
+                </Link>
+                <Link href={getLocalizedRoute("services", "en")}>
+                  <SecondaryButton className="w-full">View services</SecondaryButton>
+                </Link>
+              </div>
             </div>
           </div>
         </Container>
       </Section>
+
+      <FinalCtaSection locale="en" />
     </main>
   );
 }

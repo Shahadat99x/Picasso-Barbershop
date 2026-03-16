@@ -10,10 +10,13 @@ interface BranchSummaryCardProps {
   address: string;
   phone: string;
   hoursSummary: string;
-  mapUrl: string;
+  mapUrl?: string;
   branchHref: string;
   bookingHref: string;
+  eyebrow?: string;
+  branchLabel?: string;
   bookingLabel?: string;
+  mapAriaLabel?: string;
 }
 
 export function BranchSummaryCard({
@@ -24,7 +27,10 @@ export function BranchSummaryCard({
   mapUrl,
   branchHref,
   bookingHref,
+  eyebrow = "Branch",
+  branchLabel = "View branch",
   bookingLabel = "Book here",
+  mapAriaLabel,
 }: BranchSummaryCardProps) {
   const isDirectLink =
     bookingHref.startsWith("tel:") || bookingHref.startsWith("mailto:");
@@ -34,19 +40,21 @@ export function BranchSummaryCard({
       <div className="flex items-start justify-between gap-4">
         <div>
           <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-            Branch
+            {eyebrow}
           </span>
           <h3 className="mt-3 text-2xl font-medium tracking-tight">{name}</h3>
         </div>
-        <a
-          href={mapUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex rounded-full border border-border/60 bg-background p-3 text-primary transition-colors hover:bg-secondary/20"
-          aria-label={`Open map for ${name}`}
-        >
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
+        {mapUrl ? (
+          <a
+            href={mapUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex rounded-full border border-border/60 bg-background p-3 text-primary transition-colors hover:bg-secondary/20"
+            aria-label={mapAriaLabel || `Open map for ${name}`}
+          >
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        ) : null}
       </div>
 
       <div className="mt-6 space-y-4 text-sm text-muted-foreground">
@@ -68,7 +76,7 @@ export function BranchSummaryCard({
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <Link href={branchHref} className="flex-1">
-          <SecondaryButton className="w-full">View branch</SecondaryButton>
+          <SecondaryButton className="w-full">{branchLabel}</SecondaryButton>
         </Link>
         {isDirectLink ? (
           <a href={bookingHref} className="flex-1">

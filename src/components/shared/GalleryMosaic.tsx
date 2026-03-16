@@ -1,22 +1,22 @@
 import Image from "next/image";
 import React from "react";
 
-import type { GalleryItem } from "@/data/gallery";
+import type { GalleryLayout, GalleryMosaicItem } from "@/lib/public-data";
 import { cn } from "@/lib/utils";
 
 interface GalleryMosaicProps {
-  items: GalleryItem[];
+  items: GalleryMosaicItem[];
   className?: string;
 }
 
-const layoutClasses: Record<GalleryItem["layout"], string> = {
+const layoutClasses: Record<GalleryLayout, string> = {
   hero: "sm:col-span-2 sm:row-span-2",
   portrait: "sm:row-span-2",
   landscape: "sm:col-span-2",
   square: "",
 };
 
-const aspectClasses: Record<GalleryItem["layout"], string> = {
+const aspectClasses: Record<GalleryLayout, string> = {
   hero: "aspect-[4/5] sm:aspect-auto",
   portrait: "aspect-[4/5] sm:aspect-auto",
   landscape: "aspect-[16/10]",

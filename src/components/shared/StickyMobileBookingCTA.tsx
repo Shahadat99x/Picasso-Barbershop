@@ -2,14 +2,21 @@ import React from "react";
 import Link from "next/link";
 
 import { PrimaryButton } from "../ui/PrimaryButton";
-import { siteConfig } from "@/config/navigation";
 
-export function StickyMobileBookingCTA() {
+interface StickyMobileBookingCTAProps {
+  bookingUrl: string;
+  label: string;
+}
+
+export function StickyMobileBookingCTA({
+  bookingUrl,
+  label,
+}: StickyMobileBookingCTAProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/90 backdrop-blur border-t border-border p-4 md:hidden">
-      <Link href={siteConfig.bookingUrl}>
+    <div className="mobile-booking-cta fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/90 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] backdrop-blur transition-all duration-300 md:hidden">
+      <Link href={bookingUrl}>
         <PrimaryButton className="w-full h-14 text-lg">
-          Book Appointment
+          {label}
         </PrimaryButton>
       </Link>
     </div>

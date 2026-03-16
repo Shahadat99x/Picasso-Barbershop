@@ -1,46 +1,59 @@
 import React from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface PromoBannerProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   description: string;
+  eyebrow?: string;
   ctaText?: string;
-  onClickCta?: () => void;
+  ctaHref?: string;
 }
 
 export function PromoBanner({
   title,
   description,
+  eyebrow,
   ctaText,
-  onClickCta,
+  ctaHref,
   className,
   ...props
 }: PromoBannerProps) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl bg-primary px-6 py-12 md:px-12 md:py-16 text-primary-foreground flex flex-col md:flex-row items-center justify-between gap-8",
+        "relative flex flex-col items-start justify-between gap-8 overflow-hidden rounded-[2rem] border border-[#7a5b39]/40 bg-[linear-gradient(135deg,#171311_0%,#241b16_50%,#171311_100%)] px-6 py-10 text-primary-foreground shadow-[0_24px_60px_rgba(0,0,0,0.18)] md:flex-row md:items-center md:px-12 md:py-14",
         className
       )}
       {...props}
     >
-      {/* Decorative gradient blob */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
+      <div className="pointer-events-none absolute -right-20 top-0 h-52 w-52 rounded-full bg-[#aa7e4d]/12 blur-3xl" />
       
-      <div className="relative z-10 max-w-xl text-center md:text-left">
-        <h3 className="mb-3 text-2xl font-medium tracking-tight md:text-3xl">{title}</h3>
-        <p className="text-primary-foreground/80 leading-relaxed text-sm md:text-base">
+      <div className="relative z-10 max-w-xl text-left">
+        {eyebrow ? (
+          <span className="mb-3 block text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d5b08b]">
+            {eyebrow}
+          </span>
+        ) : null}
+        <h3 className="mb-3 text-2xl font-medium tracking-tight md:text-[2rem]">{title}</h3>
+        <p className="text-sm leading-7 text-primary-foreground/78 md:text-base">
           {description}
         </p>
       </div>
       
       {ctaText && (
-        <button
-          onClick={onClickCta}
-          className="relative z-10 shrink-0 rounded-full bg-background px-8 py-4 text-sm font-medium text-foreground transition-all hover:bg-secondary"
-        >
-          {ctaText}
-        </button>
+        ctaHref ? (
+          <Link
+            href={ctaHref}
+            className="relative z-10 shrink-0 rounded-full border border-[#d6b996] bg-[#d6b996] px-7 py-3 text-sm font-semibold text-[#18120d] transition-colors hover:bg-[#e1c3a1]"
+          >
+            {ctaText}
+          </Link>
+        ) : (
+          <div className="relative z-10 shrink-0 rounded-full border border-[#d6b996] bg-[#d6b996] px-7 py-3 text-sm font-semibold text-[#18120d]">
+            {ctaText}
+          </div>
+        )
       )}
     </div>
   );

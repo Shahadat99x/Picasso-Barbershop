@@ -1,5 +1,6 @@
-import { Locale, defaultLocale, getPathWithLocale } from "@/i18n/locales";
+import { Locale, defaultLocale } from "@/i18n/locales";
 import { navDictionary, footerDictionary } from "@/i18n/dictionaries/ui";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export interface NavItem {
   label: string;
@@ -17,12 +18,12 @@ export interface FooterNavItem {
 export function getMainNav(locale: Locale = defaultLocale): NavItem[] {
   const t = navDictionary[locale];
   return [
-    { label: t.services, href: locale === defaultLocale ? "/paslaugos" : "/en/services" },
-    { label: t.branches, href: locale === defaultLocale ? "/filialai" : "/en/branches" },
-    { label: t.gallery, href: locale === defaultLocale ? "/galerija" : "/en/gallery" },
-    { label: t.about, href: locale === defaultLocale ? "/apie-mus" : "/en/about" },
-    { label: t.blog, href: locale === defaultLocale ? "/blogas" : "/en/blog" },
-    { label: t.contact, href: locale === defaultLocale ? "/kontaktai" : "/en/contact" },
+    { label: t.services, href: getLocalizedRoute("services", locale) },
+    { label: t.branches, href: getLocalizedRoute("branches", locale) },
+    { label: t.gallery, href: getLocalizedRoute("gallery", locale) },
+    { label: t.about, href: getLocalizedRoute("about", locale) },
+    { label: t.blog, href: getLocalizedRoute("blog", locale) },
+    { label: t.contact, href: getLocalizedRoute("contact", locale) },
   ];
 }
 
@@ -33,12 +34,12 @@ export function getFooterNav(locale: Locale = defaultLocale) {
   const t = footerDictionary[locale];
   return {
     explore: [
-      { label: t.services, href: locale === defaultLocale ? "/paslaugos" : "/en/services" },
-      { label: t.branches, href: locale === defaultLocale ? "/filialai" : "/en/branches" },
-      { label: t.gallery, href: locale === defaultLocale ? "/galerija" : "/en/gallery" },
-      { label: t.about, href: locale === defaultLocale ? "/apie-mus" : "/en/about" },
-      { label: t.blog, href: locale === defaultLocale ? "/blogas" : "/en/blog" },
-      { label: t.contact, href: locale === defaultLocale ? "/kontaktai" : "/en/contact" },
+      { label: t.services, href: getLocalizedRoute("services", locale) },
+      { label: t.branches, href: getLocalizedRoute("branches", locale) },
+      { label: t.gallery, href: getLocalizedRoute("gallery", locale) },
+      { label: t.about, href: getLocalizedRoute("about", locale) },
+      { label: t.blog, href: getLocalizedRoute("blog", locale) },
+      { label: t.contact, href: getLocalizedRoute("contact", locale) },
     ],
     legal: [
       { label: t.privacyPolicy, href: "/privacy-policy" },
