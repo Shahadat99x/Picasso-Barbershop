@@ -41,6 +41,14 @@
 - structured data validation automation
 - image moderation workflow if needed
 
+## Deferred Public Content Enhancements
+
+- specialist detail route and profile pages if the business later wants public specialist biographies or direct specialist booking entry points
+- admin-managed homepage editorial blocks for hero, why-choose-us, and final CTA copy
+- admin-managed About page editorial blocks if the owner wants to edit brand-story/value content without code changes
+- richer promotion placements if marketing needs more than a single featured public banner
+- stronger public content preview workflow before publishing large LT/EN updates
+
 ## Notes
 
 This file is for deferred work only.

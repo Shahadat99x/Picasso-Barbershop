@@ -263,3 +263,35 @@ The admin forms previously used raw URL text inputs for images, which required m
 - File validation (type: JPEG/PNG/WebP/GIF, max 10MB)
 - Image preview with remove functionality
 - Hidden input fields to maintain FormData compatibility
+
+## Decision 034
+
+Phase 5d centralizes LT/EN public route mapping inside a shared route helper layer used by navigation, metadata, sitemap generation, language switching, and public links.
+
+Reason:
+
+The earlier implementation mixed localized routes with naive `/en` prefixing, which caused broken switches and mismatched canonical/detail links once translated route segments and dynamic pages were introduced. A single route map keeps public navigation and SEO behavior consistent.
+
+## Decision 035
+
+Public service, branch, and blog detail pages resolve content by either Lithuanian or English slug, while localized field content still follows EN-first-with-LT-fallback behavior.
+
+Reason:
+
+Admin content is bilingual but not always translated at the same time. Matching on both slug columns prevents 404s for partially translated records, and field-level fallback preserves a stable public experience while translations are completed.
+
+## Decision 036
+
+Specialist and team cards remain intentionally non-clickable in V1. No public specialist detail route is introduced in Phase 5d.
+
+Reason:
+
+The current information architecture documents specialists as preview/supporting content rather than a required public detail surface. Leaving clickable cards without a dedicated route would create broken navigation. A specialist detail route should only be added when there is explicit product scope, page design, and content depth for individual profiles.
+
+## Decision 037
+
+The mobile navigation drawer is rendered as a viewport-level overlay and explicitly suppresses the sticky mobile booking CTA while open.
+
+Reason:
+
+Keeping the drawer inside the sticky header stacking context caused visual interference with page content and the bottom booking CTA on mobile. Rendering the menu as a portal-style overlay, locking scroll, and hiding the sticky CTA during the open state produces a cleaner premium mobile navigation experience without redesigning the site shell.

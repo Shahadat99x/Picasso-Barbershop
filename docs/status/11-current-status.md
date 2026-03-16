@@ -2,111 +2,95 @@
 
 ## Current Phase
 
-Phase 4d — Admin Media Upload UX (In Progress)
+Phase 5d - Public Data Wiring and Route Integrity (Completed)
+
+This was a focused cleanup slice between Phase 5b and Phase 6. It finished the public CMS wiring, fixed broken detail routes, and aligned LT/EN routing and fallback behavior with the actual content model.
+
+An additional post-Phase 5d UX hardening fix is also complete: the mobile navigation now renders as a true viewport-level overlay with proper stacking, body scroll locking, and sticky mobile CTA suppression while the menu is open.
 
 ## Completed Phases
 
-- Phase 0 — Foundation and repo bootstrap
-- Phase 1 — Design system and UI foundation
-- Phase 2 — Public shell and global layout
-- Phase 2a — Homepage
-- Phase 2b — Public Pages (Services, Branches, Specialists)
-- Phase 2c — Booking flow & Authentication scaffolding
-- Phase 3 — Branches
-- Phase 3a — Gallery, About, Contact
-- Phase 3b — Blog foundation
-- Phase 3c — Core SEO implementation
-- Phase 4 — Supabase schema and content architecture
-- Phase 4a — Admin auth and admin shell
-- Phase 4b — Admin content modules I
-- Phase 4c — Admin content modules II
-- Phase 5 — Localization system
-- Phase 5a — Translation operations and bilingual QA
-- Phase 5b — Localized SEO expansion
+- Phase 0 - Foundation and repo bootstrap
+- Phase 1 - Design system and UI foundation
+- Phase 2 - Public shell and global layout
+- Phase 2a - Homepage
+- Phase 2b - Services
+- Phase 2c - Booking flow and auth scaffolding
+- Phase 3 - Branches
+- Phase 3a - Gallery, About, Contact
+- Phase 3b - Blog foundation
+- Phase 3c - Core SEO implementation
+- Phase 4 - Supabase schema and content architecture
+- Phase 4a - Admin auth and admin shell
+- Phase 4b - Admin content modules I
+- Phase 4c - Admin content modules II
+- Phase 4d - Admin media upload UX
+- Phase 5 - Localization system
+- Phase 5a - Translation operations and bilingual QA
+- Phase 5b - Localized SEO expansion
+- Phase 5d - Public data wiring and route integrity
 
 ## In Progress
 
-- Phase 4d — Admin Media Upload UX
+- No active implementation phase at the moment
 
 ## Next Planned Phase
 
-Phase 6 — Performance optimization
+Phase 6 - Performance optimization
 
-## Known Decisions Already Confirmed
+## Current Public CMS State
 
-- Lithuanian is the primary language
-- English is the secondary language
-- public site should be built before full admin modules
-- one Super Admin is enough for V1
-- Next.js + Cloudinary + Vercel + optional Supabase stack is approved
-- basic PWA is planned
-- premium frontend is the highest priority
+These public surfaces are now fully CMS-backed with LT/EN fallback behavior where the schema supports it:
 
-## Current Risks
+- homepage services, branches, specialists preview, gallery, testimonials, blog preview, and promotions
+- services index and detail pages
+- branches index and detail pages
+- blog index and detail pages
+- gallery index page
+- contact page branch/contact blocks
+- shared header/footer/settings-driven UI
+- sitemap entries for services, branches, and blog posts
 
-- real brand identity may still need refinement
-- real service list may evolve
-- branch-specific content may not yet be final
-- gallery assets may not yet be finalized
-- blog article topics and production imagery may still evolve
-- booking provider details may still need final confirmation
+These surfaces are partially CMS-backed by design:
 
-## Phase 5b - Localized SEO Expansion
+- about page: specialist/team section is CMS-backed, but the editorial brand-story framing remains code-authored
 
-Localization system delivered in this phase:
+These surfaces remain intentionally static/editorial for now:
 
-- i18n locale configuration (`src/i18n/locales.ts`)
-- UI dictionaries for navigation and common elements (`src/i18n/dictionaries/ui.ts`)
-- Bilingual content helpers (`src/i18n/get-content.ts`)
-- Language switcher component with actual routing
-- English versions of all public pages
-- Navigation config updated with locale-aware paths
+- homepage hero copy
+- homepage why-choose-us/value framing
+- homepage final CTA copy
+- about page story/value/closing CTA copy
 
-Localized SEO delivered in this phase:
+## Phase 5d Delivery Summary
 
-- hreflang implementation with LT/EN alternates (`src/lib/metadata.ts`)
-- Locale-aware canonical URLs
-- createLocalizedPageMetadata helper function
-- generateHreflangAlternates for language tag generation
-- Sitemap includes both LT and EN routes
-- Key pages updated with localized metadata (homepage, services, branches, blog, gallery, about, contact)
+Route integrity and localization:
 
-## Phase 4d - Admin Media Upload UX
+- service detail pages now resolve against real CMS slugs instead of mock data
+- branch detail pages now resolve against real CMS slugs instead of mock data
+- blog detail pages now resolve against real CMS slugs instead of mock data
+- added the missing `/en/branches/[slug]` route
+- language switching now maps translated route segments correctly instead of relying on naive `/en` prefix swapping
+- EN pages use EN fields when present and safely fall back to LT when EN content is missing
 
-Admin media upload UX improvements delivered in this phase:
+Public CMS wiring:
 
-- ImageUpload reusable component (`src/components/admin/ImageUpload.tsx`)
-  - Drag-and-drop upload zone
-  - Click to upload
-  - Manual URL paste fallback
-  - Image preview with remove action
-  - File type and size validation (max 10MB)
-  - Upload progress state
-- Cloudinary upload API route (`src/app/api/upload/image/route.ts`)
-  - Server-side upload handling
-  - File type validation
-  - Secure server-side secrets
-  - Returns uploaded URL, public ID, and dimensions
-- Updated admin modules with ImageUpload component:
-  - Blog post cover image
-  - Gallery item image
-  - Specialist photo
-  - Promotion banner
-  - Settings logo and favicon
+- homepage sections now read real admin-managed content for services, branches, specialists, gallery, testimonials, blog previews, and promotions
+- services, branches, blog, gallery, contact, and about/team pages now use shared public data helpers instead of seed/mock collections
+- empty or missing content now hides sections safely instead of leaving broken cards or dead links
 
-## Notes for Next AI Session
+Settings and media:
 
-Read these files first:
+- business name, logo, favicon, footer copy, contact info, and social links are now reflected publicly from site settings with defaults
+- service and branch admin forms now support image uploads needed for public rendering
+- public pages now render Cloudinary-hosted media correctly
 
-- `/docs/foundation/01-project-overview.md`
-- `/docs/foundation/03-information-architecture.md`
-- `/docs/foundation/04-content-model.md`
-- `/docs/planning/08-phase-index.md`
-- `/docs/foundation/06-design-system.md`
+Specialist route decision:
 
-Implement only one phase at a time.
-Do not overbuild admin before public templates are proven.
-Current public routes delivered in this phase:
+- there is still no public specialist detail route in V1
+- specialist/team cards are intentionally non-clickable to avoid dead-end navigation until a dedicated IA and content model exist for specialist profiles
+
+## Route Coverage
 
 ### Lithuanian (LT) - Default
 
@@ -127,17 +111,39 @@ Current public routes delivered in this phase:
 - `/en/services`
 - `/en/services/[slug]`
 - `/en/branches`
+- `/en/branches/[slug]`
 - `/en/gallery`
 - `/en/about`
 - `/en/blog`
 - `/en/blog/[slug]`
 - `/en/contact`
 
-Localization system delivered in this phase:
+## Current Risks
 
-- i18n locale configuration (`src/i18n/locales.ts`)
-- UI dictionaries for navigation and common elements (`src/i18n/dictionaries/ui.ts`)
-- Bilingual content helpers (`src/i18n/get-content.ts`)
-- Language switcher component with actual routing
-- English versions of all public pages
-- Navigation config updated with locale-aware paths
+- some premium editorial sections are still intentionally code-authored rather than admin-managed
+- content quality on EN pages still depends on translation completeness in admin, even though runtime fallback is now safe
+- specialist detail pages remain out of scope until product and IA requirements exist for them
+
+## Post-Phase 5d UX Hardening
+
+Mobile navigation overlay fix delivered:
+
+- mobile navigation now renders through a viewport-level overlay instead of being visually constrained by the sticky header stacking context
+- drawer/backdrop behavior now sits above page content and above the sticky mobile booking CTA
+- opening the mobile menu now locks page scroll cleanly
+- sticky mobile booking CTA now fades out and becomes non-interactive while the menu is open
+- drawer spacing and safe-area padding were refined for small mobile screens
+- language switcher and booking CTA are grouped inside a cleaner bottom action block in the drawer
+
+## Notes for Next AI Session
+
+Read these files first:
+
+- `/docs/foundation/01-project-overview.md`
+- `/docs/foundation/03-information-architecture.md`
+- `/docs/foundation/04-content-model.md`
+- `/docs/foundation/06-design-system.md`
+- `/docs/status/12-decisions-log.md`
+
+Do not reopen public CMS wiring unless a real regression is reported.
+Phase 6 work should focus on performance, caching, media optimization, and rendering efficiency rather than more route or content architecture changes.
