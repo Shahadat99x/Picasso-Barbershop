@@ -37,6 +37,7 @@ export default async function SpecialistsPage() {
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Name</TableHead>
+                <TableHead className="font-medium text-slate-500">Slug</TableHead>
                 <TableHead className="font-medium text-slate-500">Role (LT)</TableHead>
                 <TableHead className="font-medium text-slate-500">Branch</TableHead>
                 <TableHead className="font-medium text-slate-500">Translation</TableHead>
@@ -51,7 +52,7 @@ export default async function SpecialistsPage() {
               {specialists.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={8}
                     className="h-32 text-center text-sm text-slate-500"
                   >
                     No specialists found. Create your first team member to get started.
@@ -66,6 +67,7 @@ export default async function SpecialistsPage() {
                     <TableCell className="font-medium text-slate-900">
                       {specialist.full_name}
                     </TableCell>
+                    <TableCell className="text-slate-500">{specialist.slug}</TableCell>
                     <TableCell className="text-slate-500">{specialist.role_lt}</TableCell>
                     <TableCell className="text-slate-500">
                       {specialist.branches?.name_lt || "None"}
