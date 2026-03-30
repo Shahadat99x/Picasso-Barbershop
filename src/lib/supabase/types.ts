@@ -189,6 +189,7 @@ export type Database = {
         Row: {
           id: string;
           full_name: string;
+          slug: string;
           role_lt: string;
           role_en: string | null;
           bio_lt: string | null;
@@ -207,6 +208,7 @@ export type Database = {
         Insert: {
           id?: string;
           full_name: string;
+          slug: string;
           role_lt: string;
           role_en?: string | null;
           bio_lt?: string | null;
