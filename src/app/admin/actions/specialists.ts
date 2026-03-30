@@ -3,6 +3,10 @@
 import { revalidatePath } from "next/cache";
 
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
+import {
+  normalizeSpecialistInput,
+  validateSpecialistInput,
+} from "@/lib/admin/specialists";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
 import { revalidateSpecialistPublicPaths } from "./revalidate-public";
@@ -43,8 +47,18 @@ export async function getSpecialist(id: string) {
 export async function createSpecialist(input: SpecialistInsert) {
   await requireAuthenticatedAdminUser();
   const supabase = createSupabaseAdminClient();
+  const normalizedInput = normalizeSpecialistInput(input) as SpecialistInsert;
+  const validationError = validateSpecialistInput(normalizedInput);
 
-  const { data, error } = await supabase.from("specialists").insert(input).select().single();
+  if (validationError) {
+    return { error: validationError };
+  }
+
+  const { data, error } = await supabase
+    .from("specialists")
+    .insert(normalizedInput)
+    .select()
+    .single();
 
   if (error) {
     return { error: error.message };
@@ -58,10 +72,16 @@ export async function createSpecialist(input: SpecialistInsert) {
 export async function updateSpecialist(id: string, input: SpecialistUpdate) {
   await requireAuthenticatedAdminUser();
   const supabase = createSupabaseAdminClient();
+  const normalizedInput = normalizeSpecialistInput(input) as SpecialistUpdate;
+  const validationError = validateSpecialistInput(normalizedInput);
+
+  if (validationError) {
+    return { error: validationError };
+  }
 
   const { data, error } = await supabase
     .from("specialists")
-    .update(input)
+    .update(normalizedInput)
     .eq("id", id)
     .select()
     .single();
