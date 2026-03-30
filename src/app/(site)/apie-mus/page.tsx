@@ -15,7 +15,7 @@ import {
   getActiveBranches,
   getActiveSpecialists,
   getLocalizedContent,
-  getSpecialistSpecialties,
+  transformSpecialistForCard,
 } from "@/lib/public-data";
 import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 
@@ -64,6 +64,13 @@ export default async function AboutPage() {
   ]);
   const branchMap = new Map(
     branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "lt")]),
+  );
+  const specialistCards = specialists.map((specialist) =>
+    transformSpecialistForCard(
+      specialist,
+      "lt",
+      branchMap.get(specialist.branch_id || ""),
+    ),
   );
 
   return (
@@ -172,27 +179,18 @@ export default async function AboutPage() {
               align="left"
               className="max-w-3xl"
             />
-            <div className="grid gap-6 lg:grid-cols-3">
-              {specialists.map((specialist) => (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {specialistCards.map((specialist) => (
                 <TeamPreviewCard
                   key={specialist.id}
-                  name={specialist.full_name}
-                  role={getLocalizedContent(specialist, "role", "lt")}
-                  branch={branchMap.get(specialist.branch_id || "") || "Vilnius"}
-                  experience={
-                    specialist.years_experience
-                      ? `${specialist.years_experience} m.`
-                      : "Patirtis"
-                  }
-                  specialties={
-                    getSpecialistSpecialties(specialist, "lt").length > 0
-                      ? getSpecialistSpecialties(specialist, "lt")
-                      : ["Premium aptarnavimas", "Tikslus rezultatas"]
-                  }
-                  summary={
-                    getLocalizedContent(specialist, "bio", "lt") ||
-                    "Specialisto aprasymas pasirodys cia, kai jis bus uzpildytas admin sistemoje."
-                  }
+                  name={specialist.name}
+                  role={specialist.title}
+                  imageUrl={specialist.imageUrl}
+                  branch={specialist.branchLabel}
+                  experience={specialist.experienceLabel}
+                  specialties={specialist.specialties}
+                  summary={specialist.summary}
+                  eyebrowLabel="Komanda"
                 />
               ))}
             </div>

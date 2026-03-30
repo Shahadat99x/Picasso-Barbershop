@@ -15,7 +15,7 @@ import {
   getActiveBranches,
   getActiveSpecialists,
   getLocalizedContent,
-  getSpecialistSpecialties,
+  transformSpecialistForCard,
 } from "@/lib/public-data";
 import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 
@@ -64,6 +64,13 @@ export default async function EnAboutPage() {
   ]);
   const branchMap = new Map(
     branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "en")]),
+  );
+  const specialistCards = specialists.map((specialist) =>
+    transformSpecialistForCard(
+      specialist,
+      "en",
+      branchMap.get(specialist.branch_id || ""),
+    ),
   );
 
   return (
@@ -172,27 +179,18 @@ export default async function EnAboutPage() {
               align="left"
               className="max-w-3xl"
             />
-            <div className="grid gap-6 lg:grid-cols-3">
-              {specialists.map((specialist) => (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {specialistCards.map((specialist) => (
                 <TeamPreviewCard
                   key={specialist.id}
-                  name={specialist.full_name}
-                  role={getLocalizedContent(specialist, "role", "en")}
-                  branch={branchMap.get(specialist.branch_id || "") || "Vilnius"}
-                  experience={
-                    specialist.years_experience
-                      ? `${specialist.years_experience} years`
-                      : "Experience"
-                  }
-                  specialties={
-                    getSpecialistSpecialties(specialist, "en").length > 0
-                      ? getSpecialistSpecialties(specialist, "en")
-                      : ["Premium service", "Precise finish"]
-                  }
-                  summary={
-                    getLocalizedContent(specialist, "bio", "en") ||
-                    "A specialist summary will appear here once it is filled in through the admin."
-                  }
+                  name={specialist.name}
+                  role={specialist.title}
+                  imageUrl={specialist.imageUrl}
+                  branch={specialist.branchLabel}
+                  experience={specialist.experienceLabel}
+                  specialties={specialist.specialties}
+                  summary={specialist.summary}
+                  eyebrowLabel="Team"
                 />
               ))}
             </div>

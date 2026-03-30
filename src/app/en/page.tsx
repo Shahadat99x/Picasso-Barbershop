@@ -47,7 +47,7 @@ export default async function EnHomePage() {
   const [services, branches, specialists, galleryItems, testimonials, blogPosts, promotions] =
     await Promise.all([
       getFeaturedServices(3),
-      getActiveBranches(3),
+      getActiveBranches(),
       getFeaturedSpecialists(4),
       getFeaturedGalleryItems(6),
       getVisibleTestimonials(2),
@@ -55,10 +55,18 @@ export default async function EnHomePage() {
       getActivePromotions(1),
     ]);
 
+  const featuredBranches = branches.slice(0, 3);
+  const branchMap = new Map(
+    branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "en")]),
+  );
   const serviceCards = services.map((service) => transformServiceForCard(service, "en"));
-  const branchCards = branches.map((branch) => transformBranchForCard(branch, "en"));
+  const branchCards = featuredBranches.map((branch) => transformBranchForCard(branch, "en"));
   const specialistCards = specialists.map((specialist) =>
-    transformSpecialistForCard(specialist, "en"),
+    transformSpecialistForCard(
+      specialist,
+      "en",
+      branchMap.get(specialist.branch_id || ""),
+    ),
   );
   const testimonialCards = testimonials.map((testimonial) =>
     transformTestimonialForCard(testimonial, "en"),
@@ -140,12 +148,16 @@ export default async function EnHomePage() {
               align="left"
               className="max-w-3xl"
             />
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
               {specialistCards.map((specialist) => (
                 <SpecialistCard
-                  key={`${specialist.name}-${specialist.title}`}
+                  key={specialist.id}
                   name={specialist.name}
                   title={specialist.title}
+                  summary={specialist.summary}
+                  specialties={specialist.specialties}
+                  branchLabel={specialist.branchLabel}
+                  experienceLabel={specialist.experienceLabel}
                   imageUrl={specialist.imageUrl}
                   eyebrowLabel="Team"
                 />
