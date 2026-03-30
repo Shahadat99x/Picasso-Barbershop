@@ -110,8 +110,13 @@ export interface TransformedBranch {
 }
 
 export interface TransformedSpecialist {
+  id: string;
   name: string;
   title: string;
+  summary: string;
+  specialties: string[];
+  branchLabel?: string;
+  experienceLabel?: string;
   imageUrl?: string;
 }
 
@@ -550,6 +555,46 @@ export function getSpecialistSpecialties(
   return toStringArray(preferred);
 }
 
+export function getSpecialistSummary(
+  specialist: PublicSpecialist,
+  locale: Locale = defaultLocale,
+) {
+  const bio = getLocalizedContent(specialist, "bio", locale).trim();
+
+  if (bio) {
+    return bio;
+  }
+
+  const specialties = getSpecialistSpecialties(specialist, locale).slice(0, 2);
+
+  if (specialties.length > 0) {
+    return locale === "en"
+      ? `Focus areas: ${specialties.join(" • ")}.`
+      : `Pagrindines sritys: ${specialties.join(" • ")}.`;
+  }
+
+  return locale === "en"
+    ? "Calm, precise grooming delivered with a premium service standard."
+    : "Rami, tiksli ir premium paslaugos standarta palaikanti specialisto praktika.";
+}
+
+export function getSpecialistExperienceLabel(
+  specialist: PublicSpecialist,
+  locale: Locale = defaultLocale,
+) {
+  if (!specialist.years_experience || specialist.years_experience <= 0) {
+    return null;
+  }
+
+  if (locale === "en") {
+    return specialist.years_experience === 1
+      ? "1 year experience"
+      : `${specialist.years_experience} years experience`;
+  }
+
+  return `${specialist.years_experience} m. patirties`;
+}
+
 export function getBlogPostBody(post: PublicBlogPost, locale: Locale = defaultLocale) {
   const preferred = getLocalizedFieldValue<unknown>(post, "body", locale);
   return normalizeArticleBody(preferred);
@@ -984,10 +1029,16 @@ export function transformBranchForCard(
 export function transformSpecialistForCard(
   specialist: PublicSpecialist,
   locale: Locale = defaultLocale,
+  branchLabel?: string,
 ): TransformedSpecialist {
   return {
+    id: specialist.id,
     name: specialist.full_name,
     title: getLocalizedContent(specialist, "role", locale),
+    summary: getSpecialistSummary(specialist, locale),
+    specialties: getSpecialistSpecialties(specialist, locale),
+    branchLabel: branchLabel?.trim() || undefined,
+    experienceLabel: getSpecialistExperienceLabel(specialist, locale) || undefined,
     imageUrl: specialist.photo_url ?? undefined,
   };
 }
