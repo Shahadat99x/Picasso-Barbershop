@@ -191,6 +191,8 @@ export default async function EnAboutPage() {
                   specialties={specialist.specialties}
                   summary={specialist.summary}
                   eyebrowLabel="Team"
+                  href={specialist.href}
+                  ctaLabel="View profile"
                 />
               ))}
             </div>
