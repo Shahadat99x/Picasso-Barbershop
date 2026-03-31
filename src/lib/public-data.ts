@@ -115,6 +115,7 @@ export interface TransformedSpecialist {
   title: string;
   summary: string;
   specialties: string[];
+  href: string;
   branchLabel?: string;
   experienceLabel?: string;
   imageUrl?: string;
@@ -787,6 +788,17 @@ export async function getFeaturedSpecialists(limit = 4) {
   return getActiveSpecialists(limit);
 }
 
+export async function getSpecialistBySlug(slug: string) {
+  return runPublicQuery<PublicSpecialist | null>("specialist detail", null, async (client) =>
+    client
+      .from("specialists")
+      .select("*")
+      .eq("is_active", true)
+      .eq("slug", slug)
+      .maybeSingle(),
+  );
+}
+
 export async function getVisibleGalleryItems(limit?: number) {
   return runPublicQuery<PublicGalleryItem[]>("gallery items", [], async (client) => {
     let query = client
@@ -1037,6 +1049,7 @@ export function transformSpecialistForCard(
     title: getLocalizedContent(specialist, "role", locale),
     summary: getSpecialistSummary(specialist, locale),
     specialties: getSpecialistSpecialties(specialist, locale),
+    href: getLocalizedDetailRoute("specialists", specialist.slug, locale),
     branchLabel: branchLabel?.trim() || undefined,
     experienceLabel: getSpecialistExperienceLabel(specialist, locale) || undefined,
     imageUrl: specialist.photo_url ?? undefined,

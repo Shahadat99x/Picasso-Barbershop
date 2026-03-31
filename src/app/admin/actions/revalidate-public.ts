@@ -58,14 +58,22 @@ export function revalidateBranchPublicPaths(branch?: Pick<BranchRow, "slug_lt" |
   revalidatePublicPaths(paths);
 }
 
-export function revalidateSpecialistPublicPaths(_specialist?: Pick<SpecialistRow, "id"> | null) {
-  void _specialist;
-  revalidatePublicPaths([
+export function revalidateSpecialistPublicPaths(
+  specialist?: Pick<SpecialistRow, "slug"> | null,
+) {
+  const paths = [
     getLocalizedRoute("home", "lt"),
     getLocalizedRoute("home", "en"),
     getLocalizedRoute("about", "lt"),
     getLocalizedRoute("about", "en"),
-  ]);
+  ];
+
+  if (specialist?.slug) {
+    paths.push(getLocalizedDetailRoute("specialists", specialist.slug, "lt"));
+    paths.push(getLocalizedDetailRoute("specialists", specialist.slug, "en"));
+  }
+
+  revalidatePublicPaths(paths);
 }
 
 export function revalidatePromotionPublicPaths(_promotion?: Pick<PromotionRow, "id"> | null) {
