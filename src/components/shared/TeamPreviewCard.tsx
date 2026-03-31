@@ -10,6 +10,8 @@ interface TeamPreviewCardProps {
   specialties: string[];
   summary: string;
   eyebrowLabel?: string;
+  href?: string;
+  ctaLabel?: string;
 }
 
 export function TeamPreviewCard({
@@ -21,6 +23,8 @@ export function TeamPreviewCard({
   specialties,
   summary,
   eyebrowLabel,
+  href,
+  ctaLabel,
 }: TeamPreviewCardProps) {
   return (
     <SpecialistCard
@@ -33,6 +37,8 @@ export function TeamPreviewCard({
       specialties={specialties}
       summary={summary}
       eyebrowLabel={eyebrowLabel}
+      href={href}
+      ctaLabel={ctaLabel}
     />
   );
 }

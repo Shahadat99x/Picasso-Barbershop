@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -12,6 +13,8 @@ interface SpecialistCardProps extends React.HTMLAttributes<HTMLDivElement> {
   experienceLabel?: string;
   imageUrl?: string;
   eyebrowLabel?: string;
+  href?: string;
+  ctaLabel?: string;
   variant?: "compact" | "editorial";
 }
 
@@ -24,6 +27,8 @@ export function SpecialistCard({
   experienceLabel,
   imageUrl,
   eyebrowLabel,
+  href,
+  ctaLabel,
   variant = "compact",
   className,
   ...props
@@ -31,11 +36,11 @@ export function SpecialistCard({
   const isEditorial = variant === "editorial";
   const visibleSpecialties = specialties.filter(Boolean).slice(0, isEditorial ? 3 : 2);
   const fallbackInitial = name.trim().charAt(0).toUpperCase() || "P";
-
-  return (
+  const card = (
     <article
       className={cn(
         "group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-border/60 bg-card/95 shadow-sm shadow-black/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10",
+        href && "cursor-pointer",
         isEditorial && "bg-[linear-gradient(180deg,rgba(249,246,241,0.98)_0%,rgba(255,255,255,0.98)_100%)]",
         className,
       )}
@@ -114,7 +119,26 @@ export function SpecialistCard({
             ))}
           </div>
         ) : null}
+
+        {href && ctaLabel ? (
+          <div className="mt-4 pt-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary">
+            {ctaLabel} {"->"}
+          </div>
+        ) : null}
       </div>
     </article>
+  );
+
+  if (!href) {
+    return card;
+  }
+
+  return (
+    <Link
+      href={href}
+      className="block h-full rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-4"
+    >
+      {card}
+    </Link>
   );
 }

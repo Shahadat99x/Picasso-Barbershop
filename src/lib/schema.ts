@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/navigation";
+import { defaultLocale, type Locale } from "@/i18n/locales";
 import { getCanonicalUrl } from "@/lib/metadata";
 
 interface BreadcrumbItem {
@@ -29,7 +30,10 @@ export function createLocalBusinessSchema() {
   };
 }
 
-export function createBreadcrumbSchema(items: BreadcrumbItem[]) {
+export function createBreadcrumbSchema(
+  items: BreadcrumbItem[],
+  locale: Locale = defaultLocale,
+) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -37,7 +41,7 @@ export function createBreadcrumbSchema(items: BreadcrumbItem[]) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: getCanonicalUrl(item.path),
+      item: getCanonicalUrl(item.path, locale),
     })),
   };
 }
@@ -100,5 +104,41 @@ export function createFaqSchema(
         text: faq.answer,
       },
     })),
+  };
+}
+
+interface PersonProfileSchemaInput {
+  name: string;
+  path: string;
+  description: string;
+  jobTitle: string;
+  image?: string;
+  locale?: Locale;
+  specialties?: string[];
+}
+
+export function createPersonProfileSchema({
+  name,
+  path,
+  description,
+  jobTitle,
+  image,
+  locale = defaultLocale,
+  specialties = [],
+}: PersonProfileSchemaInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name,
+    description,
+    jobTitle,
+    url: getCanonicalUrl(path, locale),
+    image: image ? [getCanonicalUrl(image, locale)] : undefined,
+    knowsAbout: specialties.length > 0 ? specialties : undefined,
+    worksFor: {
+      "@type": "HairSalon",
+      name: siteConfig.name,
+      url: siteConfig.siteUrl,
+    },
   };
 }

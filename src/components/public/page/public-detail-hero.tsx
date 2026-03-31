@@ -3,6 +3,7 @@ import React from "react";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
+import { cn } from "@/lib/utils";
 
 interface DetailMetaItem {
   label: string;
@@ -30,6 +31,13 @@ export function PublicDetailHero({
   actions,
   visual,
 }: PublicDetailHeroProps) {
+  const metaGridClassName =
+    meta.length >= 3
+      ? "sm:grid-cols-3"
+      : meta.length === 2
+        ? "sm:grid-cols-2"
+        : "sm:grid-cols-1";
+
   return (
     <Section className="relative overflow-hidden bg-[#161313] pb-16 pt-24 text-[#f5efe7] md:pb-20 md:pt-32">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,123,74,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(168,123,74,0.10),transparent_30%),linear-gradient(180deg,#191616_0%,#121010_100%)]" />
@@ -57,7 +65,7 @@ export function PublicDetailHero({
               {description}
             </p>
 
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className={cn("mt-8 grid grid-cols-1 gap-4", metaGridClassName)}>
               {meta.map((item) => (
                 <div
                   key={item.label}
