@@ -191,6 +191,8 @@ export default async function AboutPage() {
                   specialties={specialist.specialties}
                   summary={specialist.summary}
                   eyebrowLabel="Komanda"
+                  href={specialist.href}
+                  ctaLabel="Ziureti profili"
                 />
               ))}
             </div>

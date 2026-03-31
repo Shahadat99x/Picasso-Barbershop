@@ -160,6 +160,8 @@ export default async function EnHomePage() {
                   experienceLabel={specialist.experienceLabel}
                   imageUrl={specialist.imageUrl}
                   eyebrowLabel="Team"
+                  href={specialist.href}
+                  ctaLabel="View profile"
                 />
               ))}
             </div>

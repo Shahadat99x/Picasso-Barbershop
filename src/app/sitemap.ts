@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/navigation";
 import {
   getActiveBranches,
+  getActiveSpecialists,
   getLocalizedSlug,
   getPublishedBlogPosts,
   getPublishedServices,
@@ -20,9 +21,10 @@ function toSitemapEntry(path: string, lastModified: Date, priority: number) {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const [services, branches, blogPosts] = await Promise.all([
+  const [services, branches, specialists, blogPosts] = await Promise.all([
     getPublishedServices(),
     getActiveBranches(),
+    getActiveSpecialists(),
     getPublishedBlogPosts(),
   ]);
 
@@ -82,5 +84,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ),
   ]);
 
-  return [...staticRoutes, ...serviceRoutes, ...branchRoutes, ...blogRoutes];
+  const specialistRoutes = specialists.flatMap((specialist) => [
+    toSitemapEntry(
+      getLocalizedDetailRoute("specialists", specialist.slug, "lt"),
+      new Date(specialist.updated_at),
+      0.6,
+    ),
+    toSitemapEntry(
+      getLocalizedDetailRoute("specialists", specialist.slug, "en"),
+      new Date(specialist.updated_at),
+      0.6,
+    ),
+  ]);
+
+  return [...staticRoutes, ...serviceRoutes, ...branchRoutes, ...specialistRoutes, ...blogRoutes];
 }

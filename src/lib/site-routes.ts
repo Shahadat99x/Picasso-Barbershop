@@ -4,6 +4,7 @@ export type PublicRouteKey =
   | "home"
   | "services"
   | "branches"
+  | "specialists"
   | "gallery"
   | "about"
   | "blog"
@@ -13,6 +14,7 @@ const publicRouteSegments: Record<PublicRouteKey, Record<Locale, string>> = {
   home: { lt: "", en: "" },
   services: { lt: "paslaugos", en: "services" },
   branches: { lt: "filialai", en: "branches" },
+  specialists: { lt: "specialistai", en: "specialists" },
   gallery: { lt: "galerija", en: "gallery" },
   about: { lt: "apie-mus", en: "about" },
   blog: { lt: "blogas", en: "blog" },
@@ -47,7 +49,7 @@ export function getLocalizedRoute(routeKey: PublicRouteKey, locale: Locale = def
 }
 
 export function getLocalizedDetailRoute(
-  routeKey: Extract<PublicRouteKey, "services" | "branches" | "blog">,
+  routeKey: Extract<PublicRouteKey, "services" | "branches" | "specialists" | "blog">,
   slug: string,
   locale: Locale = defaultLocale,
 ) {

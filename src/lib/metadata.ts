@@ -14,6 +14,14 @@ interface PageMetadataInput {
 }
 
 export function getCanonicalUrl(path: string, locale: Locale = defaultLocale) {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  if (/\.[a-z0-9]+$/i.test(path)) {
+    return new URL(path, siteConfig.siteUrl).toString();
+  }
+
   return new URL(localizePath(path, locale), siteConfig.siteUrl).toString();
 }
 
