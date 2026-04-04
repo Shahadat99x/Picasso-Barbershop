@@ -49,7 +49,7 @@ export function SiteFooter({
   ];
   
   return (
-    <footer className="relative overflow-hidden border-t border-[#7d5d3b]/25 bg-[linear-gradient(180deg,#151211_0%,#100e0d_100%)] pb-8 pt-16 text-[#f5efe7]">
+    <footer className="relative overflow-hidden border-t border-[#7d5d3b]/25 bg-[linear-gradient(180deg,#151211_0%,#100e0d_100%)] pb-[calc(env(safe-area-inset-bottom)+7.5rem)] pt-16 text-[#f5efe7] md:pb-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,123,74,0.14),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(168,123,74,0.08),transparent_26%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ba8c59]/35 to-transparent" />
       <Container>
