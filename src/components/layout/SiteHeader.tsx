@@ -30,7 +30,7 @@ export function SiteHeader({
   
   return (
     <header className="site-header sticky top-0 z-40 w-full border-b border-white/8 bg-background/72 shadow-[0_8px_28px_rgba(17,17,17,0.06)] backdrop-blur-xl">
-      <Container className="flex h-20 items-center justify-between">
+      <Container className="flex h-20 items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <Link
             href={homeHref}
@@ -52,7 +52,7 @@ export function SiteHeader({
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
+        <nav className="hidden min-[840px]:flex items-center gap-5 text-sm font-medium text-foreground/80 lg:gap-8">
           {nav.map((item) => (
             <Link key={item.href} href={item.href} className="transition-colors hover:text-foreground">
               {item.label}
@@ -60,10 +60,10 @@ export function SiteHeader({
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden min-[840px]:flex items-center gap-4 lg:gap-6">
           <LanguageSwitcher />
           <Link href={bookUrl}>
-            <PrimaryButton className="h-10 px-6 text-sm">{t.book}</PrimaryButton>
+            <PrimaryButton className="h-10 px-5 text-sm lg:px-6">{t.book}</PrimaryButton>
           </Link>
         </div>
 
