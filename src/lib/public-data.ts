@@ -256,6 +256,16 @@ function getAdminClient() {
 }
 
 function logPublicDataError(scope: string, error: unknown) {
+  const message = error instanceof Error
+    ? error.message
+    : isRecord(error) && typeof error.message === "string"
+      ? error.message
+      : "";
+
+  if (message.includes("Dynamic server usage")) {
+    return;
+  }
+
   console.error(`Failed to fetch public data for ${scope}:`, error);
 }
 
