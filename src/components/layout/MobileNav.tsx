@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "../ui/PrimaryButton";
@@ -29,6 +29,11 @@ export function MobileNav({
 }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dialogId = useId();
+  const isMounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
 
   const nav = getMainNav(locale);
   const t = navDictionary[locale];
@@ -81,13 +86,13 @@ export function MobileNav({
     };
   }, [isOpen]);
 
-  const portalTarget = typeof document === "undefined" ? null : document.body;
+  const portalTarget = isMounted ? document.body : null;
 
   const overlay = portalTarget
     ? createPortal(
         <div
           className={cn(
-            "fixed inset-0 z-[120] md:hidden",
+            "fixed inset-0 z-[120] min-[840px]:hidden",
             isOpen ? "pointer-events-auto" : "pointer-events-none",
           )}
           aria-hidden={!isOpen}
@@ -185,8 +190,8 @@ export function MobileNav({
     : null;
 
   return (
-    <>
-      <div className="md:hidden">
+      <>
+      <div className="min-[840px]:hidden">
         <button
           type="button"
           onClick={toggleMenu}

@@ -171,6 +171,10 @@ export async function generateSpecialistProfileMetadata(
     title: getSpecialistPageTitle(specialist.full_name, role, locale),
     description: summary,
     path: getSpecialistDetailPath(specialist.slug, locale),
+    alternatePath: getSpecialistDetailPath(
+      specialist.slug,
+      locale === defaultLocale ? "en" : defaultLocale,
+    ),
     locale,
     image: specialist.photo_url || undefined,
   });

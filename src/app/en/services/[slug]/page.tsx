@@ -54,10 +54,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
+  const resolvedSlug = getLocalizedSlug(service, "en");
+  const alternateSlug = getLocalizedSlug(service, "lt");
+
   return createLocalizedPageMetadata({
     title: getLocalizedContent(service, "title", "en"),
     description: getLocalizedContent(service, "short_description", "en"),
-    path: getLocalizedDetailRoute("services", slug, "en"),
+    path: getLocalizedDetailRoute("services", resolvedSlug, "en"),
+    alternatePath: getLocalizedDetailRoute("services", alternateSlug, "lt"),
     locale: "en",
     image: service.cover_image_url || undefined,
   });

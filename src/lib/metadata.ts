@@ -52,6 +52,7 @@ interface LocalizedPageMetadataInput {
   description: string;
   path: string;
   locale?: Locale;
+  alternatePath?: string;
   image?: string;
   type?: "website" | "article";
   noIndex?: boolean;
@@ -65,20 +66,22 @@ export function createLocalizedPageMetadata({
   description,
   path,
   locale = defaultLocale,
+  alternatePath,
   image,
   type = "website",
   noIndex = false,
 }: LocalizedPageMetadataInput): Metadata {
   const fullTitle = `${title} | ${siteConfig.name}`;
   const ogImage = image ?? siteConfig.defaultOgImage;
-  const canonicalUrl = getCanonicalUrl(path, locale);
-  const hreflangAlternates = generateHreflangAlternates(path);
-  
-  // Determine OpenGraph locale
+  const localizedPath = localizePath(path, locale);
   const ogLocale = locale === defaultLocale ? "lt_LT" : "en_US";
   const alternateLocale: Locale = locale === defaultLocale ? "en" : defaultLocale;
-  const alternatePath = getAlternateLocalePath(path, locale);
-  const alternateUrl = getCanonicalUrl(alternatePath, alternateLocale);
+  const resolvedAlternatePath =
+    alternatePath ?? getAlternateLocalePath(localizedPath, locale);
+  const ltPath = locale === defaultLocale ? localizedPath : resolvedAlternatePath;
+  const enPath = locale === "en" ? localizedPath : resolvedAlternatePath;
+  const canonicalUrl = getCanonicalUrl(localizedPath, locale);
+  const alternateUrl = getCanonicalUrl(resolvedAlternatePath, alternateLocale);
 
   return {
     title,
@@ -86,9 +89,9 @@ export function createLocalizedPageMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        "lt": hreflangAlternates["lt"],
-        "en": hreflangAlternates["en"],
-        "x-default": hreflangAlternates["x-default"],
+        "lt": getCanonicalUrl(ltPath, "lt"),
+        "en": getCanonicalUrl(enPath, "en"),
+        "x-default": getCanonicalUrl(ltPath, "lt"),
       },
     },
     robots: {
@@ -116,6 +119,7 @@ export function createLocalizedPageMetadata({
       images: [getCanonicalUrl(ogImage, locale)],
     },
     other: {
+      "alternate-path": resolvedAlternatePath,
       "alternate-url": alternateUrl,
     },
   };

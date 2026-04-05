@@ -52,10 +52,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
+  const resolvedSlug = getLocalizedSlug(branch, "lt");
+  const alternateSlug = getLocalizedSlug(branch, "en");
+
   return createLocalizedPageMetadata({
     title: getLocalizedContent(branch, "name", "lt"),
     description: getLocalizedContent(branch, "short_description", "lt"),
-    path: getLocalizedDetailRoute("branches", slug, "lt"),
+    path: getLocalizedDetailRoute("branches", resolvedSlug, "lt"),
+    alternatePath: getLocalizedDetailRoute("branches", alternateSlug, "en"),
     locale: "lt",
     image: branch.cover_image_url || branch.gallery_preview_image_url || undefined,
   });

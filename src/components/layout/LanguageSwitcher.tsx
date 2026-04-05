@@ -12,6 +12,37 @@ interface ExtendedLanguageSwitcherProps extends LanguageSwitcherProps {
   onSwitch?: () => void;
 }
 
+function getAlternatePathFromMetadata() {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  const alternatePath = document
+    .querySelector('meta[name="alternate-path"]')
+    ?.getAttribute("content")
+    ?.trim();
+
+  if (alternatePath) {
+    return alternatePath;
+  }
+
+  const alternateUrl = document
+    .querySelector('meta[name="alternate-url"]')
+    ?.getAttribute("content")
+    ?.trim();
+
+  if (!alternateUrl) {
+    return null;
+  }
+
+  try {
+    const parsedUrl = new URL(alternateUrl);
+    return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+  } catch {
+    return alternateUrl;
+  }
+}
+
 export function LanguageSwitcher({
   className,
   onSwitch,
@@ -23,8 +54,16 @@ export function LanguageSwitcher({
   const currentLocale = getLocaleFromPath(pathname);
   
   const switchLocale = (newLocale: Locale) => {
+    if (newLocale === currentLocale) {
+      return;
+    }
+
     onSwitch?.();
-    router.push(localizePath(pathname, newLocale));
+
+    const alternatePath = getAlternatePathFromMetadata();
+    const nextPath = alternatePath || localizePath(pathname, newLocale);
+
+    router.push(nextPath);
   };
   
   return (
