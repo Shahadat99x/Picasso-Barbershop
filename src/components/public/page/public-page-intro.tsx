@@ -45,7 +45,7 @@ export function PublicPageIntro({
                   key={`${stat.label}-${stat.value}`}
                   className="rounded-[1.5rem] border border-white/8 bg-white/4 px-5 py-5"
                 >
-                  <div className="text-2xl font-medium tracking-tight text-[#faf5ee]">
+                  <div className="text-2xl font-medium tracking-tight text-[#faf5ee] [overflow-wrap:anywhere]">
                     {stat.value}
                   </div>
                   <div className="mt-1 text-[0.72rem] uppercase tracking-[0.2em] text-[#bcae9f]">
