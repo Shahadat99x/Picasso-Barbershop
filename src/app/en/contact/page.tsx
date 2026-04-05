@@ -109,7 +109,7 @@ export default async function EnContactPage() {
             align="left"
             className="max-w-3xl"
           />
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {branches.map((branch) => (
               <BranchSummaryCard
                 key={branch.id}
@@ -132,8 +132,8 @@ export default async function EnContactPage() {
 
       <Section id="booking" className="border-t border-border/50 bg-background pt-0">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem]">
-            <div className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
+          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]">
+            <div className="min-w-0 w-full rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
               <SectionHeading
                 title="Enquiry form as a fallback route"
                 subtitle="Support"
@@ -142,29 +142,29 @@ export default async function EnContactPage() {
                 className="max-w-3xl"
               />
 
-              <form className="mt-8 grid gap-5 md:grid-cols-2">
-                <label>
+              <form className="mt-8 grid min-w-0 gap-5 md:grid-cols-2">
+                <label className="min-w-0">
                   <span className="mb-2 block text-sm font-medium text-foreground">Name</span>
                   <input
                     className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
                     placeholder="Your name"
                   />
                 </label>
-                <label>
+                <label className="min-w-0">
                   <span className="mb-2 block text-sm font-medium text-foreground">Phone</span>
                   <input
                     className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
                     placeholder="+370 6XX XXXXX"
                   />
                 </label>
-                <label>
+                <label className="min-w-0">
                   <span className="mb-2 block text-sm font-medium text-foreground">Email</span>
                   <input
                     className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
                     placeholder="name@example.com"
                   />
                 </label>
-                <label className="md:col-span-2">
+                <label className="min-w-0 md:col-span-2">
                   <span className="mb-2 block text-sm font-medium text-foreground">Message</span>
                   <textarea
                     rows={5}
@@ -173,8 +173,11 @@ export default async function EnContactPage() {
                   />
                 </label>
 
-                <div className="md:col-span-2">
-                  <PrimaryButton className="w-full" disabled>
+                <div className="min-w-0 md:col-span-2">
+                  <PrimaryButton
+                    className="h-auto min-h-12 w-full whitespace-normal px-6 py-3 text-sm leading-6 sm:text-base"
+                    disabled
+                  >
                     Submission backend will be connected separately
                   </PrimaryButton>
                   <p className="mt-3 text-sm leading-7 text-muted-foreground">
@@ -184,8 +187,8 @@ export default async function EnContactPage() {
               </form>
             </div>
 
-            <div className="space-y-6">
-              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-6 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+            <div className="min-w-0 space-y-6">
+              <div className="min-w-0 rounded-[2rem] border border-border/60 bg-[#171311] p-6 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
                   Fastest route
                 </span>
@@ -210,7 +213,7 @@ export default async function EnContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm shadow-black/5">
+              <div className="min-w-0 rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm shadow-black/5">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                   Social channels
                 </span>
