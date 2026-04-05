@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Picasso Barbershop Website & Admin Platform
 
-## Getting Started
+Production website and content-admin platform for **Picasso Barbershop (Vilnius)**.
 
-First, run the development server:
+- Live domain: **https://picassobarber.lt**
+- Locale strategy: **LT (default)** and **EN**
+- Maintained end-to-end: system design, frontend, backend/content layer, and deployment
 
+## Project Overview
+
+This repository contains a real-world Next.js application powering:
+
+- A premium, mobile-first public marketing website
+- A bilingual content experience (Lithuanian + English)
+- An admin dashboard for managing business content
+- SEO-focused route architecture for local discoverability
+
+## Core Features
+
+### Public Site
+- Home, Services, Branches, Gallery, About, Blog, Contact
+- Dynamic service, branch, and blog detail pages
+- Strong CTA/booking flow and mobile-first UX
+- Localized route structure for LT and EN
+- SEO metadata, sitemap, and robots handling
+
+### Admin
+- Secure admin login and protected routes
+- CRUD modules for branches, services, specialists, gallery, blog, promotions, testimonials, leads, and settings
+- Content-driven public rendering through Supabase-backed data
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling/UI:** Tailwind CSS + shadcn/ui
+- **Backend/Data:** Supabase
+- **Media:** Cloudinary
+- **Hosting/Deploy:** Vercel
+
+## Route Structure (Public)
+
+### Lithuanian (default)
+- `/`
+- `/paslaugos`, `/paslaugos/[slug]`
+- `/filialai`, `/filialai/[slug]`
+- `/galerija`
+- `/apie-mus`
+- `/blogas`, `/blogas/[slug]`
+- `/kontaktai`
+
+### English
+- `/en`
+- `/en/services`, `/en/services/[slug]`
+- `/en/branches`, `/en/branches/[slug]`
+- `/en/gallery`
+- `/en/about`
+- `/en/blog`, `/en/blog/[slug]`
+- `/en/contact`
+
+## Local Development
+
+### 1) Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2) Configure environment variables
+Copy `.env.example` to `.env.local` and set values:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Required categories:
+- App URL
+- Supabase credentials
+- Cloudinary cloud name
 
-## Learn More
+### 3) Run development server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open: `http://localhost:3000`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` — start development server
+- `npm run build` — create production build
+- `npm run start` — run production server
+- `npm run lint` — run ESLint
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Primary deployment target is **Vercel**.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+High-level flow:
+- connect repository to Vercel
+- configure environment variables
+- set production domain and SSL
+- validate public routes, admin auth, media delivery, and SEO endpoints
+
+## Documentation
+
+Detailed project planning and architecture docs are available in:
+
+- `/docs/foundation`
+- `/docs/planning`
+- `/docs/status`
+
+Recommended starting points:
+- `/docs/foundation/01-project-overview.md`
+- `/docs/foundation/02-tech-stack.md`
+- `/docs/planning/09-deployment-strategy.md`
