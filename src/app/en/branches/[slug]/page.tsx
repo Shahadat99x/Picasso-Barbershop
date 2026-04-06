@@ -119,23 +119,15 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
         meta={[
           { label: "Hours", value: primaryHours },
           { label: "Phone", value: branch.phone },
-          { label: "Services", value: serviceCards.length > 0 ? String(serviceCards.length) : "Coming soon" },
+          { label: "Services", value: <Link href={getLocalizedRoute("services", "en")} className="underline hover:text-white transition-colors">Explore services</Link> },
         ]}
         actions={
           <>
-            {bookingIsExternal ? (
-              <a href={bookingHref} target="_blank" rel="noreferrer">
-                <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                  Book at this branch
-                </PrimaryButton>
-              </a>
-            ) : (
-              <Link href={bookingHref}>
-                <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                  Book at this branch
-                </PrimaryButton>
-              </Link>
-            )}
+            <a href="#contact">
+              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
+                Visit branch
+              </PrimaryButton>
+            </a>
             {branch.map_url ? (
               <a href={branch.map_url} target="_blank" rel="noreferrer">
                 <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
@@ -195,6 +187,23 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
                   className="max-w-3xl"
                 />
                 <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-[1.4rem] border border-[#ddcfbf]/60 bg-background/80 p-5 md:col-span-2">
+                    <div className="flex items-start gap-3">
+                      <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                      <div>
+                        <div className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground">
+                          Location & Map
+                        </div>
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                          {address}. You can easily find us following street signs or use your{" "}
+                          {branch.map_url ? (
+                            <a href={branch.map_url} target="_blank" rel="noreferrer" className="text-primary underline hover:text-primary/80">map app</a>
+                          ) : "map app"}{" "}
+                          for exact directions.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                   <div className="rounded-[1.4rem] border border-[#ddcfbf]/60 bg-background/80 p-5">
                     <div className="flex items-start gap-3">
                       <Car className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
@@ -228,7 +237,7 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
             </div>
 
             <div className="lg:sticky lg:top-28 lg:self-start">
-              <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
+              <div id="contact" className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
                   Contact and opening hours
                 </span>
@@ -303,19 +312,11 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
                 ) : null}
 
                 <div className="mt-8 flex flex-col gap-3">
-                  {bookingIsExternal ? (
-                    <a href={bookingHref} target="_blank" rel="noreferrer">
-                      <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                        Book appointment
-                      </PrimaryButton>
-                    </a>
-                  ) : (
-                    <Link href={bookingHref}>
-                      <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                        Book appointment
-                      </PrimaryButton>
-                    </Link>
-                  )}
+                  <a href={`tel:${branch.phone.replace(/\s+/g, "")}`}>
+                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
+                      Call branch
+                    </PrimaryButton>
+                  </a>
                   {branch.map_url ? (
                     <a href={branch.map_url} target="_blank" rel="noreferrer">
                       <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
