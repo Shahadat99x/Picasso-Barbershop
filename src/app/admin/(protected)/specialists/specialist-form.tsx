@@ -332,7 +332,7 @@ export function SpecialistForm({
         </div>
       </FormSection>
 
-      <div className="flex justify-end gap-3 pt-4">
+      <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row sm:justify-end">
         <Button
           type="button"
           variant="outline"

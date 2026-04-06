@@ -31,18 +31,18 @@ export default async function SpecialistsPage() {
         }}
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Name</TableHead>
-                <TableHead className="font-medium text-slate-500">Slug</TableHead>
-                <TableHead className="font-medium text-slate-500">Role (LT)</TableHead>
-                <TableHead className="font-medium text-slate-500">Branch</TableHead>
-                <TableHead className="font-medium text-slate-500">Translation</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 lg:table-cell">Slug</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Role (LT)</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Branch</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 lg:table-cell">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
-                <TableHead className="font-medium text-slate-500">Featured</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Featured</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
                 </TableHead>
@@ -67,12 +67,12 @@ export default async function SpecialistsPage() {
                     <TableCell className="font-medium text-slate-900">
                       {specialist.full_name}
                     </TableCell>
-                    <TableCell className="text-slate-500">{specialist.slug}</TableCell>
-                    <TableCell className="text-slate-500">{specialist.role_lt}</TableCell>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="hidden text-slate-500 lg:table-cell">{specialist.slug}</TableCell>
+                    <TableCell className="hidden text-slate-500 md:table-cell">{specialist.role_lt}</TableCell>
+                    <TableCell className="hidden text-slate-500 md:table-cell">
                       {specialist.branches?.name_lt || "None"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden lg:table-cell">
                       <TranslationStatusBadge status={calculateTranslationStatus(specialist.role_lt, specialist.role_en)} />
                     </TableCell>
                     <TableCell>
@@ -92,7 +92,7 @@ export default async function SpecialistsPage() {
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {specialist.is_featured && (
                         <Badge
                           variant="secondary"

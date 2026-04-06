@@ -31,16 +31,16 @@ export default async function ServicesPage() {
         }}
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Title (LT)</TableHead>
-                <TableHead className="font-medium text-slate-500">Category</TableHead>
-                <TableHead className="font-medium text-slate-500">Translation</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Category</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
-                <TableHead className="font-medium text-slate-500">Featured</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Featured</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
                 </TableHead>
@@ -65,8 +65,8 @@ export default async function ServicesPage() {
                     <TableCell className="font-medium text-slate-900">
                       {service.title_lt}
                     </TableCell>
-                    <TableCell className="text-slate-500">{service.category}</TableCell>
-                    <TableCell>
+                    <TableCell className="hidden text-slate-500 md:table-cell">{service.category}</TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <TranslationStatusBadge status={calculateTranslationStatus(service.title_lt, service.title_en)} />
                     </TableCell>
                     <TableCell>
@@ -86,7 +86,7 @@ export default async function ServicesPage() {
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {service.is_featured && (
                         <Badge
                           variant="secondary"

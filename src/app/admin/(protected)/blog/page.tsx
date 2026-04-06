@@ -31,16 +31,16 @@ export default async function BlogPage() {
         }}
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Title (LT)</TableHead>
-                <TableHead className="font-medium text-slate-500">Category</TableHead>
-                <TableHead className="font-medium text-slate-500">Author</TableHead>
-                <TableHead className="font-medium text-slate-500">Published</TableHead>
-                <TableHead className="font-medium text-slate-500">Translation</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Category</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Author</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 lg:table-cell">Published</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -66,14 +66,14 @@ export default async function BlogPage() {
                     <TableCell className="font-medium text-slate-900">
                       {post.title_lt}
                     </TableCell>
-                    <TableCell className="text-slate-500">{post.category}</TableCell>
-                    <TableCell className="text-slate-500">{post.author_name}</TableCell>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="hidden text-slate-500 md:table-cell">{post.category}</TableCell>
+                    <TableCell className="hidden text-slate-500 md:table-cell">{post.author_name}</TableCell>
+                    <TableCell className="hidden text-slate-500 lg:table-cell">
                       {post.published_at
                         ? new Date(post.published_at).toLocaleDateString("lt-LT")
                         : "-"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <TranslationStatusBadge status={calculateTranslationStatus(post.title_lt, post.title_en)} />
                     </TableCell>
                     <TableCell>

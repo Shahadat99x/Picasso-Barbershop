@@ -31,15 +31,15 @@ export default async function PromotionsPage() {
         }}
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Title (LT)</TableHead>
-                <TableHead className="font-medium text-slate-500">Discount</TableHead>
-                <TableHead className="font-medium text-slate-500">Dates</TableHead>
-                <TableHead className="font-medium text-slate-500">Translation</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Discount</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Dates</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -65,10 +65,10 @@ export default async function PromotionsPage() {
                     <TableCell className="font-medium text-slate-900">
                       {promo.title_lt}
                     </TableCell>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="hidden text-slate-500 md:table-cell">
                       {promo.discount_label_lt || "-"}
                     </TableCell>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="hidden text-slate-500 md:table-cell">
                       {promo.starts_at && promo.ends_at
                         ? `${new Date(promo.starts_at).toLocaleDateString("lt-LT")} - ${new Date(promo.ends_at).toLocaleDateString("lt-LT")}`
                         : promo.starts_at
@@ -77,7 +77,7 @@ export default async function PromotionsPage() {
                             ? `Until ${new Date(promo.ends_at).toLocaleDateString("lt-LT")}`
                             : "-"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <TranslationStatusBadge status={calculateTranslationStatus(promo.title_lt, promo.title_en)} />
                     </TableCell>
                     <TableCell>

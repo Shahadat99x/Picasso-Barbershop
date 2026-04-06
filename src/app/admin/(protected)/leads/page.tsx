@@ -39,16 +39,16 @@ export default async function LeadsPage() {
         description="Review contact form submissions and inquiries."
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Name</TableHead>
                 <TableHead className="font-medium text-slate-500">Contact</TableHead>
-                <TableHead className="font-medium text-slate-500">Source</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Source</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
-                <TableHead className="font-medium text-slate-500">Date</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Date</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
                 </TableHead>
@@ -77,7 +77,7 @@ export default async function LeadsPage() {
                       <div className="text-sm">{lead.email || "-"}</div>
                       <div className="text-xs text-slate-400">{lead.phone || "-"}</div>
                     </TableCell>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="hidden text-slate-500 md:table-cell">
                       {lead.source_page || "-"}
                     </TableCell>
                     <TableCell>
@@ -88,7 +88,7 @@ export default async function LeadsPage() {
                         {STATUS_LABELS[lead.status] || lead.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="hidden text-slate-500 md:table-cell">
                       {new Date(lead.created_at).toLocaleDateString("lt-LT")}
                     </TableCell>
                     <TableCell className="text-right">
