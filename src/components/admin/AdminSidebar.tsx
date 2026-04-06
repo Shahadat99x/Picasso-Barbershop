@@ -51,8 +51,7 @@ export function AdminSidebar() {
             </div>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-            Single-role superadmin workspace for content, trust signals, and lead
-            operations.
+            Manage website content, business information, and customer inquiries.
           </p>
         </div>
 
