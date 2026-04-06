@@ -4,20 +4,20 @@ import { Section } from "@/components/layout/Section";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import Link from "next/link";
 import { Locale, defaultLocale } from "@/i18n/locales";
-import { getBookingPath } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 const ctaCopy: Record<Locale, { title: string; description: string; cta: string }> = {
   lt: {
     title: "Pasiruose naujam ivaizdziui?",
     description:
       "Rezervuokite vizita ir pasirinkite jums tinkamiausia paslauga bei filiala be bereikalingu trikdziu.",
-    cta: "Rezervuoti vizita",
+    cta: "Aplankyti filialą",
   },
   en: {
     title: "Ready for your next look?",
     description:
       "Book your appointment and choose the service and branch that fit you best without unnecessary friction.",
-    cta: "Book an appointment",
+    cta: "Visit branch",
   },
 };
 
@@ -41,7 +41,7 @@ export function FinalCtaSection({ locale = defaultLocale }: FinalCtaSectionProps
           <p className="mx-auto mb-10 max-w-xl text-primary-foreground/78 leading-8 md:text-lg">
             {copy.description}
           </p>
-          <Link href={getBookingPath(locale)}>
+          <Link href={getLocalizedRoute("branches", locale)}>
             <PrimaryButton className="h-14 border-none bg-[#d2af88] px-10 text-base font-semibold text-[#18120d] hover:bg-[#dec09c]">
               {copy.cta}
             </PrimaryButton>

@@ -24,7 +24,7 @@ const heroContent: Record<
     title: "Kur prieziura tampa jusu braizu.",
     description:
       "Preciziski kirpimai, astrus barzdos formavimas ir premium barbershop atmosfera, sukurta pasitikejimui ir detalems.",
-    cta: "Rezervuoti vizita",
+    cta: "Aplankyti filialą",
     secondaryCta: "Musu paslaugos",
     imageAlt: "Picasso Barbershop komanda salone",
   },
@@ -33,7 +33,7 @@ const heroContent: Record<
     title: "Where grooming becomes a signature.",
     description:
       "Expert cuts, sharp beard work, and a premium barbershop atmosphere designed around confidence and detail.",
-    cta: "Book Appointment",
+    cta: "Visit branch",
     secondaryCta: "Our Services",
     imageAlt: "Picasso Barbershop team inside the salon",
   },
@@ -55,7 +55,7 @@ export function HeroSection({ locale = defaultLocale }: HeroSectionProps) {
       imageAlt={content.imageAlt}
       plaqueLabel={heroImage.plaqueLabel}
       primaryAction={{
-        href: getBookingPath(locale),
+        href: getLocalizedRoute("branches", locale),
         label: content.cta,
       }}
       secondaryAction={{
