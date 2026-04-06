@@ -47,11 +47,11 @@ export function BranchCard({ branch }: BranchCardProps) {
             View Details
           </Button>
         </Link>
-        <Link href="#book" className="flex-1 min-w-[120px]">
+        <a href={`tel:${branch.phone.replace(/\s+/g, "")}`} className="flex-1 min-w-[120px]">
           <Button variant="outline" className="w-full" size="lg">
-            Book Now
+            Call Branch
           </Button>
-        </Link>
+        </a>
       </CardFooter>
     </Card>
   );
