@@ -140,9 +140,9 @@ export default async function EnBlogPostPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getBookingPath("en")}>
+            <Link href={getLocalizedRoute("contact", "en")}>
               <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Book appointment
+                Contact us
               </PrimaryButton>
             </Link>
             {relatedService ? (
@@ -261,12 +261,12 @@ export default async function EnBlogPostPage({ params }: PageProps) {
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
                   If the article helped narrow your choice, continue into services, branches, or
-                  go straight to booking.
+                  contact us directly.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <Link href={getBookingPath("en")}>
+                  <Link href={getLocalizedRoute("contact", "en")}>
                     <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Book appointment
+                      Contact us
                     </PrimaryButton>
                   </Link>
                   <Link href={getLocalizedRoute("branches", "en")}>
@@ -287,7 +287,7 @@ export default async function EnBlogPostPage({ params }: PageProps) {
             <SectionHeading
               title="Continue reading"
               subtitle="Related articles"
-              description="Additional editorial context for readers who want to keep exploring the subject before making a booking decision."
+              description="Additional editorial context for readers who want to keep exploring the subject before visiting."
               align="left"
               className="max-w-3xl"
             />

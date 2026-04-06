@@ -25,7 +25,7 @@ export function SiteHeader({
   const nav = getMainNav(locale);
   const t = navDictionary[locale];
   const displayName = businessName || "Picasso Barbershop";
-  const bookUrl = bookingUrl || "/kontaktai#rezervacija";
+  const bookUrl = bookingUrl || "/kontaktai";
   const homeHref = getLocalizedRoute("home", locale);
   
   return (

@@ -18,11 +18,11 @@ export interface ContactFormField {
 export const contactHighlights: ContactHighlight[] = [
   {
     id: "contact-1",
-    title: "Book the direct route",
+    title: "Browse branches natively",
     description:
-      "If you already know the service or branch you want, go straight to booking and choose the most convenient appointment.",
-    href: siteConfig.bookingUrl,
-    linkLabel: "Book now",
+      "If you already know the service or branch you want, review the options and find the best branch for your visit.",
+    href: "/filialai",
+    linkLabel: "View branches",
   },
   {
     id: "contact-2",

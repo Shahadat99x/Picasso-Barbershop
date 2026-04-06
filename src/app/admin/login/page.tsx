@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LockKeyhole, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
@@ -27,20 +27,8 @@ export default async function AdminLoginPage() {
                   Admin access for the salon content system.
                 </h1>
                 <p className="mt-4 max-w-md text-base leading-relaxed text-primary-foreground/75">
-                  This area is reserved for the single V1 superadmin and is intended for
-                  content management, leads, and operational settings in later phases.
+                  Log in to manage website content, business information, and customer inquiries.
                 </p>
-              </div>
-
-              <div className="space-y-4 text-sm text-primary-foreground/80">
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="h-5 w-5" />
-                  <span>Protected route foundation with server-side session checks</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <LockKeyhole className="h-5 w-5" />
-                  <span>Superadmin email allowlist gate for the current single-role model</span>
-                </div>
               </div>
             </div>
           </section>
@@ -54,8 +42,7 @@ export default async function AdminLoginPage() {
                 Sign in to continue
               </h1>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Use your Supabase auth credentials and make sure your email is included in
-                `SUPABASE_SUPERADMIN_EMAILS`.
+                Please sign in with your administrator email and password.
               </p>
 
               <div className="mt-8">

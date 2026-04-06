@@ -10,13 +10,13 @@ const ctaCopy: Record<Locale, { title: string; description: string; cta: string 
   lt: {
     title: "Pasiruose naujam ivaizdziui?",
     description:
-      "Rezervuokite vizita ir pasirinkite jums tinkamiausia paslauga bei filiala be bereikalingu trikdziu.",
+      "Perziurekite musu filialus ir susisiekite su pasirinkta lokacija del kito vizito be bereikalingu trikdziu.",
     cta: "Aplankyti filialą",
   },
   en: {
     title: "Ready for your next look?",
     description:
-      "Book your appointment and choose the service and branch that fit you best without unnecessary friction.",
+      "Browse our branches and contact your preferred location directly for your next visit without unnecessary friction.",
     cta: "Visit branch",
   },
 };

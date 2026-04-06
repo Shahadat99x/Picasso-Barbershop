@@ -50,8 +50,8 @@ export default async function GalleryPage() {
         ]}
         actions={
           <>
-            <Link href={getBookingPath("lt")}>
-              <PrimaryButton className="w-full sm:w-auto">Rezervuoti vizita</PrimaryButton>
+            <Link href={getLocalizedRoute("contact", "lt")}>
+              <PrimaryButton className="w-full sm:w-auto">Susisiekti</PrimaryButton>
             </Link>
             <Link href={getLocalizedRoute("branches", "lt")}>
               <SecondaryButton className="w-full sm:w-auto">Ziureti filialus</SecondaryButton>
