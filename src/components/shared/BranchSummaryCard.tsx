@@ -29,7 +29,7 @@ export function BranchSummaryCard({
   bookingHref,
   eyebrow = "Branch",
   branchLabel = "View branch",
-  bookingLabel = "Book here",
+  bookingLabel = "Call branch",
   mapAriaLabel,
 }: BranchSummaryCardProps) {
   const isDirectLink =

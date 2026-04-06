@@ -6,7 +6,7 @@ import {
   getSiteSettingsWithDefaults,
   SiteSettingsWithDefaults,
 } from "@/lib/public-data";
-import { getBookingPath } from "@/lib/site-routes";
+import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 
 export default async function SiteLayout({
   children,
@@ -21,7 +21,7 @@ export default async function SiteLayout({
       <SiteHeader 
         locale="lt" 
         businessName={settings.business_name}
-        bookingUrl={getBookingPath("lt")}
+        bookingUrl={getLocalizedRoute("branches", "lt")}
         logoUrl={settings.logo_url}
       />
       <div className="flex-1">{children}</div>
@@ -35,7 +35,7 @@ export default async function SiteLayout({
         socialFacebook={settings.social_facebook}
         socialTikTok={settings.social_tiktok}
       />
-      <StickyMobileBookingCTA bookingUrl={getBookingPath("lt")} label="Rezervuoti vizita" />
+      <StickyMobileBookingCTA bookingUrl={getLocalizedRoute("branches", "lt")} label="Aplankyti filialą" />
     </div>
   );
 }

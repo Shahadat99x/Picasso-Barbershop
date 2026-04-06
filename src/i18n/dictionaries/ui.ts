@@ -1,26 +1,26 @@
 import { Locale } from "../locales";
 
 export const navDictionary = {
-  lt: {
-    home: "Pradžia",
-    services: "Paslaugos",
-    branches: "Filialai",
-    gallery: "Galerija",
-    about: "Apie mus",
-    blog: "Blogas",
-    contact: "Kontaktai",
-    book: "Užsakyti",
-  },
-  en: {
-    home: "Home",
-    services: "Services",
-    branches: "Branches",
-    gallery: "Gallery",
-    about: "About",
-    blog: "Blog",
-    contact: "Contact",
-    book: "Book",
-  },
+    lt: {
+      home: "Pradžia",
+      services: "Paslaugos",
+      branches: "Filialai",
+      gallery: "Galerija",
+      about: "Apie mus",
+      blog: "Blogas",
+      contact: "Kontaktai",
+      book: "Aplankyti mus",
+    },
+    en: {
+      home: "Home",
+      services: "Services",
+      branches: "Branches",
+      gallery: "Gallery",
+      about: "About",
+      blog: "Blog",
+      contact: "Contact",
+      book: "Visit us",
+    },
 } satisfies Record<Locale, Record<string, string>>;
 
 export const footerDictionary = {
@@ -58,7 +58,7 @@ export const commonDictionary = {
   lt: {
     readMore: "Skaityti daugiau",
     viewAll: "Žiūrėti visus",
-    bookNow: "Užsakyti dabar",
+    bookNow: "Aplankyti filialą",
     learnMore: "Sužinoti daugiau",
     contactUs: "Susisiekti",
     hours: "Darbo valandas",
@@ -75,7 +75,7 @@ export const commonDictionary = {
   en: {
     readMore: "Read more",
     viewAll: "View all",
-    bookNow: "Book now",
+    bookNow: "Visit branch",
     learnMore: "Learn more",
     contactUs: "Contact us",
     hours: "Hours",
@@ -95,17 +95,17 @@ export const ctaDictionary = {
   lt: {
     heroTitle: "Premium kirpimas ir barzdaskirtis Vilniuje",
     heroSubtitle: "Trys filialai, profesionalūs meistrai, Jūsų stilius",
-    heroCta: "Užsakyti vizitą",
+    heroCta: "Aplankyti mus",
     finalCtaTitle: "Pasiruošęs pokyčiams?",
-    finalCtaSubtitle: "Užsakykite vizitą jau šiandien ir pakelkite savo stilių į naują lygį",
-    finalCta: "Užsakyti dabar",
+    finalCtaSubtitle: "Aplankykite mus jau šiandien ir pakelkite savo stilių į naują lygį",
+    finalCta: "Aplankyti mus",
   },
   en: {
     heroTitle: "Premium haircut and beard grooming in Vilnius",
     heroSubtitle: "Three branches, professional masters, your style",
-    heroCta: "Book appointment",
+    heroCta: "Visit us",
     finalCtaTitle: "Ready for a change?",
-    finalCtaSubtitle: "Book your visit today and elevate your style to the next level",
-    finalCta: "Book now",
+    finalCtaSubtitle: "Visit us today and elevate your style to the next level",
+    finalCta: "Visit us",
   },
 } satisfies Record<Locale, Record<string, string>>;

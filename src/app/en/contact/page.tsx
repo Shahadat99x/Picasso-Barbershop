@@ -38,12 +38,12 @@ export default async function EnContactPage() {
   ]);
   const highlights = [
     {
-      eyebrow: "Booking",
-      title: "Fast booking route",
+      eyebrow: "Visit us",
+      title: "Walk-ins & Branches",
       description:
-        "Use the shared booking path or pick a specific branch below and move directly into its route.",
-      href: getBookingPath("en"),
-      linkLabel: "Book now",
+        "Drop by the salon directly - we welcome walk-ins without an appointment. Find your branch below.",
+      href: getLocalizedRoute("branches", "en"),
+      linkLabel: "Our branches",
       icon: <CalendarClock className="h-5 w-5" />,
     },
     {
@@ -119,10 +119,10 @@ export default async function EnContactPage() {
                 hoursSummary={getPrimaryOpeningHours(branch, "en")}
                 mapUrl={getMapUrl(getLocalizedContent(branch, "address", "en"), branch.map_url)}
                 branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "en"), "en")}
-                bookingHref={branch.booking_url || `tel:${branch.phone.replace(/\s+/g, "")}`}
+                bookingHref={`tel:${branch.phone.replace(/\s+/g, "")}`}
                 eyebrow="Branch"
                 branchLabel="View branch"
-                bookingLabel={branch.booking_url ? "Book now" : "Call"}
+                bookingLabel="Call branch"
                 mapAriaLabel={`Open map for ${getLocalizedContent(branch, "name", "en")}`}
               />
             ))}
@@ -193,11 +193,10 @@ export default async function EnContactPage() {
                   Fastest route
                 </span>
                 <h2 className="mt-4 text-2xl font-medium tracking-tight">
-                  Call or move directly into booking.
+                  Call or visit us directly.
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
-                  If you already know what you need, the shared phone line and booking link remain
-                  the fastest actions.
+                  If you already know what you need, the shared phone line and visiting us are the fastest actions.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
                   <a href={`tel:${settings.default_phone.replace(/\s+/g, "")}`}>
@@ -205,9 +204,9 @@ export default async function EnContactPage() {
                       Call now
                     </PrimaryButton>
                   </a>
-                  <Link href={getBookingPath("en")}>
+                  <Link href={getLocalizedRoute("branches", "en")}>
                     <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Book now
+                      All branches
                     </SecondaryButton>
                   </Link>
                 </div>

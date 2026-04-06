@@ -38,12 +38,12 @@ export default async function ContactPage() {
   ]);
   const highlights = [
     {
-      eyebrow: "Rezervacija",
-      title: "Greitas rezervacijos kelias",
+      eyebrow: "Apsilankymas",
+      title: "Gyva eilė ir filialai",
       description:
-        "Naudokite bendra rezervacijos marsruta arba pasirinkite konkretu filiala zemiau ir pereikite tiesiai i jo kelia.",
-      href: getBookingPath("lt"),
-      linkLabel: "Rezervuoti",
+        "Atvykite tiesiai į saloną - priimame be išankstinės rezervacijos. Susiraskite artimiausią filialą žemiau.",
+      href: getLocalizedRoute("branches", "lt"),
+      linkLabel: "Mūsų filialai",
       icon: <CalendarClock className="h-5 w-5" />,
     },
     {
@@ -119,10 +119,10 @@ export default async function ContactPage() {
                 hoursSummary={getPrimaryOpeningHours(branch, "lt")}
                 mapUrl={getMapUrl(getLocalizedContent(branch, "address", "lt"), branch.map_url)}
                 branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "lt"), "lt")}
-                bookingHref={branch.booking_url || `tel:${branch.phone.replace(/\s+/g, "")}`}
+                bookingHref={`tel:${branch.phone.replace(/\s+/g, "")}`}
                 eyebrow="Filialas"
                 branchLabel="Ziureti filiala"
-                bookingLabel={branch.booking_url ? "Rezervuoti" : "Skambinti"}
+                bookingLabel="Skambinti filialui"
                 mapAriaLabel={`Atidaryti zemelapi ${getLocalizedContent(branch, "name", "lt")}`}
               />
             ))}
@@ -194,10 +194,10 @@ export default async function ContactPage() {
                   Greiciausias kelias
                 </span>
                 <h2 className="mt-4 text-2xl font-medium tracking-tight">
-                  Skambinkite arba pereikite tiesiai i rezervacija.
+                  Skambinkite arba atvykite gyvai.
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
-                  Jei zinote, ko ieskote, bendras telefono numeris ir rezervacijos nuoroda lieka
+                  Jei zinote, ko ieskote, bendras telefono numeris ir apsilankymas salone lieka
                   greiciausi veiksmai.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
@@ -206,9 +206,9 @@ export default async function ContactPage() {
                       Skambinti
                     </PrimaryButton>
                   </a>
-                  <Link href={getBookingPath("lt")}>
+                  <Link href={getLocalizedRoute("branches", "lt")}>
                     <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Rezervuoti
+                      Visi filialai
                     </SecondaryButton>
                   </Link>
                 </div>

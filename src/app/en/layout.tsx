@@ -6,7 +6,7 @@ import {
   getSiteSettingsWithDefaults,
   SiteSettingsWithDefaults,
 } from "@/lib/public-data";
-import { getBookingPath } from "@/lib/site-routes";
+import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 
 export default async function EnSiteLayout({
   children,
@@ -21,7 +21,7 @@ export default async function EnSiteLayout({
       <SiteHeader 
         locale="en" 
         businessName={settings.business_name}
-        bookingUrl={getBookingPath("en")}
+        bookingUrl={getLocalizedRoute("branches", "en")}
         logoUrl={settings.logo_url}
       />
       <div className="flex-1">{children}</div>
@@ -35,7 +35,7 @@ export default async function EnSiteLayout({
         socialFacebook={settings.social_facebook}
         socialTikTok={settings.social_tiktok}
       />
-      <StickyMobileBookingCTA bookingUrl={getBookingPath("en")} label="Book now" />
+      <StickyMobileBookingCTA bookingUrl={getLocalizedRoute("branches", "en")} label="Visit branch" />
     </div>
   );
 }
