@@ -31,15 +31,15 @@ export default async function TestimonialsPage() {
         }}
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Customer</TableHead>
-                <TableHead className="font-medium text-slate-500">Quote (LT)</TableHead>
-                <TableHead className="font-medium text-slate-500">Rating</TableHead>
-                <TableHead className="font-medium text-slate-500">Translation</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Quote (LT)</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Rating</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -65,10 +65,10 @@ export default async function TestimonialsPage() {
                     <TableCell className="font-medium text-slate-900">
                       {testimonial.customer_name}
                     </TableCell>
-                    <TableCell className="max-w-xs text-slate-500">
+                    <TableCell className="hidden max-w-xs text-slate-500 md:table-cell">
                       <div className="truncate">{testimonial.quote_lt}</div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <div className="flex items-center gap-1">
                         {testimonial.rating && (
                           <>
@@ -78,7 +78,7 @@ export default async function TestimonialsPage() {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <TranslationStatusBadge status={calculateTranslationStatus(testimonial.quote_lt, testimonial.quote_en)} />
                     </TableCell>
                     <TableCell>

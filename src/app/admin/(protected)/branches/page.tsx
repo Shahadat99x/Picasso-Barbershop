@@ -31,15 +31,15 @@ export default async function BranchesPage() {
         }}
       />
 
-      <div className="rounded-[2rem] border border-slate-200 bg-white p-2 shadow-sm shadow-black/5 sm:p-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm shadow-black/5 sm:rounded-[2rem] sm:p-2 md:p-4">
         <div className="rounded-2xl border border-slate-100 bg-slate-50/50">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead className="font-medium text-slate-500">Name (LT)</TableHead>
-                <TableHead className="font-medium text-slate-500">Slug</TableHead>
-                <TableHead className="font-medium text-slate-500">City</TableHead>
-                <TableHead className="font-medium text-slate-500">Translation</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Slug</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">City</TableHead>
+                <TableHead className="hidden font-medium text-slate-500 md:table-cell">Translation</TableHead>
                 <TableHead className="font-medium text-slate-500">Status</TableHead>
                 <TableHead className="text-right font-medium text-slate-500">
                   Actions
@@ -71,9 +71,9 @@ export default async function BranchesPage() {
                       <TableCell className="font-medium text-slate-900">
                         {branch.name_lt}
                       </TableCell>
-                      <TableCell className="text-slate-500">{branch.slug_lt}</TableCell>
-                      <TableCell className="text-slate-500">{branch.city}</TableCell>
-                      <TableCell>
+                      <TableCell className="hidden text-slate-500 md:table-cell">{branch.slug_lt}</TableCell>
+                      <TableCell className="hidden text-slate-500 md:table-cell">{branch.city}</TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <TranslationStatusBadge status={translationStatus} />
                       </TableCell>
                       <TableCell>

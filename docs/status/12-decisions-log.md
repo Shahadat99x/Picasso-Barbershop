@@ -305,3 +305,19 @@ model\ and \Readiness\) and placeholder dev copy.
 Reason:
 
 The admin MVP is complete enough that the UI needs to sound like a finished owner-facing product rather than a developer handoff milestone tracker. This provides a calmer, premium experience for the salon owner.
+
+## Decision 039
+
+Admin module list tables use responsive column hiding rather than a card-based mobile layout.
+
+Reason:
+
+All 9 admin module list pages share the same table-based pattern. Converting them to card layouts on mobile would be a significant redesign. Instead, secondary columns (slug, translation status, category, dates, featured badges) are hidden on sub-md screens using `hidden md:table-cell`, keeping only the primary name/title column, status, and action button visible on mobile. This provides a usable mobile experience while keeping the implementation minimal, consistent, and easy to maintain.
+
+## Decision 040
+
+Admin sidebar branding block is hidden on sub-lg screens.
+
+Reason:
+
+On mobile and tablet, the sidebar renders as a horizontal scrolling navigation strip. The full branding block (logo, name, description paragraph) consumed too much vertical space in this mode without adding navigation value. Hiding it below lg frees space for content. The compact navigation items also use reduced padding and icon sizes on smaller screens for better density.

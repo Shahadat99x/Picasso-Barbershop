@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase 3.5 — Admin placeholder and product-copy cleanup (Completed)
+Phase 4 — Admin responsiveness and usability hardening (Completed)
 
-This phase audited the admin UI for dev/scaffold text and replaced it with polished, owner-facing product copy. The dashboard now feels like a premium content console for the salon owner, removing internal narrative and safe placeholders left from Phase 4a.
+This phase made the admin dashboard and all CRUD module screens genuinely usable on tablets and mobile devices. Sidebar navigation, dashboard cards, module list tables, forms, and action buttons now respond properly to smaller viewports.
 
 ## Completed Phases
 
@@ -28,6 +28,7 @@ This phase audited the admin UI for dev/scaffold text and replaced it with polis
 - Phase 5a - Translation operations and bilingual QA
 - Phase 5b - Localized SEO expansion
 - Phase 5d - Public data wiring and route integrity
+- Phase 4 (responsive) - Admin responsiveness and usability hardening
 
 ## In Progress
 

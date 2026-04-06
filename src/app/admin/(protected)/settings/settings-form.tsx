@@ -244,7 +244,7 @@ export function SettingsForm({ initialData }: { initialData?: SiteSettings | nul
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 pt-4">
+      <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row sm:justify-end">
         <Button type="submit" disabled={isPending} className="bg-slate-900 text-white">
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Save Settings
