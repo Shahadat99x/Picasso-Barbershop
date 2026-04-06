@@ -295,3 +295,13 @@ The mobile navigation drawer is rendered as a viewport-level overlay and explici
 Reason:
 
 Keeping the drawer inside the sticky header stacking context caused visual interference with page content and the bottom booking CTA on mobile. Rendering the menu as a portal-style overlay, locking scroll, and hiding the sticky CTA during the open state produces a cleaner premium mobile navigation experience without redesigning the site shell.
+
+## Decision 038
+
+Phase 3.5 cleans up the admin dashboard UI and sidebar by removing implementation status cards (like \
+Single-role
+model\ and \Readiness\) and placeholder dev copy.
+
+Reason:
+
+The admin MVP is complete enough that the UI needs to sound like a finished owner-facing product rather than a developer handoff milestone tracker. This provides a calmer, premium experience for the salon owner.

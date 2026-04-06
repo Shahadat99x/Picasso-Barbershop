@@ -2,11 +2,9 @@
 
 ## Current Phase
 
-Phase 5d - Public Data Wiring and Route Integrity (Completed)
+Phase 3.5 — Admin placeholder and product-copy cleanup (Completed)
 
-This was a focused cleanup slice between Phase 5b and Phase 6. It finished the public CMS wiring, fixed broken detail routes, and aligned LT/EN routing and fallback behavior with the actual content model.
-
-An additional post-Phase 5d UX hardening fix is also complete: the mobile navigation now renders as a true viewport-level overlay with proper stacking, body scroll locking, and sticky mobile CTA suppression while the menu is open.
+This phase audited the admin UI for dev/scaffold text and replaced it with polished, owner-facing product copy. The dashboard now feels like a premium content console for the salon owner, removing internal narrative and safe placeholders left from Phase 4a.
 
 ## Completed Phases
 
@@ -20,6 +18,7 @@ An additional post-Phase 5d UX hardening fix is also complete: the mobile naviga
 - Phase 3a - Gallery, About, Contact
 - Phase 3b - Blog foundation
 - Phase 3c - Core SEO implementation
+- Phase 3.5 - Admin placeholder and product-copy cleanup
 - Phase 4 - Supabase schema and content architecture
 - Phase 4a - Admin auth and admin shell
 - Phase 4b - Admin content modules I
