@@ -213,12 +213,12 @@ export default async function EnAboutPage() {
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">
                   If you are ready to move from the story into a practical choice, compare
-                  services, review branches, or book the next appointment directly.
+                  services, review branches, or contact us directly.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link href={getBookingPath("en")}>
-                  <PrimaryButton className="w-full">Book now</PrimaryButton>
+                <Link href={getLocalizedRoute("contact", "en")}>
+                  <PrimaryButton className="w-full">Contact us</PrimaryButton>
                 </Link>
                 <Link href={getLocalizedRoute("services", "en")}>
                   <SecondaryButton className="w-full">View services</SecondaryButton>

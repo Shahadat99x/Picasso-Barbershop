@@ -131,9 +131,9 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getBookingPath("lt")}>
+            <Link href={getLocalizedRoute("contact", "lt")}>
               <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Rezervuoti sia paslauga
+                Susisiekti
               </PrimaryButton>
             </Link>
             <Link href={getLocalizedRoute("branches", "lt")}>
@@ -208,25 +208,25 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             <div className="lg:sticky lg:top-28 lg:self-start">
               <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
-                  Rezervacijos kelias
+                  Kitas žingsnis
                 </span>
                 <h3 className="mt-4 text-2xl font-medium tracking-tight">
-                  Pasirinkite laika ir tinkamiausia filiala.
+                  Pasirinkite patogiausią filialą.
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
                   {availableBranches.length > 0
-                    ? "Si paslauga jau susieta su filialais zemiau, todel galite greitai pereiti nuo perziuros prie rezervacijos."
-                    : "Filialu priskyrimas dar nesukonfiguruotas. Susisiekite ir padėsime parinkti artimiausia laika."}
+                    ? "Si paslauga teikiama toliau nurodytuose filialuose, tad galite tiesiog atvykti arba susisiekti tiesiogiai."
+                    : "Siai paslaugai filialai dar nepriskirti. Susisiekite ir suderinsime jums patogiausia laika."}
                 </p>
                 <div className="mt-8 flex flex-col gap-3">
-                  <Link href={getBookingPath("lt")}>
+                  <Link href={getLocalizedRoute("branches", "lt")}>
                     <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Rezervuoti vizita
+                      Žiūrėti filialus
                     </PrimaryButton>
                   </Link>
-                  <Link href={getLocalizedRoute("branches", "lt")}>
+                  <Link href={getLocalizedRoute("contact", "lt")}>
                     <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Ziureti filialus
+                      Susisiekti
                     </SecondaryButton>
                   </Link>
                 </div>
@@ -266,9 +266,9 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
             <SectionHeading
-              title="Kur galite rezervuoti"
+              title="Kur atvykti šiai paslaugai"
               subtitle="Filialai"
-              description="Filialai, kuriuose si paslauga jau yra prieinama ir is kuriu galite tiesiogiai pasirinkti tolimesni zingsni."
+              description="Sia paslauga galite gauti siuose filialuose. Perziurekite informacija is anksto arba tiesiog susisiekite su mumis."
               align="left"
               className="max-w-3xl"
             />
@@ -285,7 +285,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                   bookingHref={branch.booking_url || getBookingPath("lt")}
                   eyebrow="Filialas"
                   branchLabel="Ziureti filiala"
-                  bookingLabel="Rezervuoti cia"
+                  bookingLabel="Paskambinti filialui"
                   mapAriaLabel={`Atidaryti zemelapi ${getLocalizedContent(branch, "name", "lt")}`}
                 />
               ))}

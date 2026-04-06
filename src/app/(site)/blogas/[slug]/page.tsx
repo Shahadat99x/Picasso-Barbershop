@@ -140,9 +140,9 @@ export default async function BlogArticlePage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getBookingPath("lt")}>
+            <Link href={getLocalizedRoute("contact", "lt")}>
               <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Rezervuoti vizita
+                Susisiekti
               </PrimaryButton>
             </Link>
             {relatedService ? (
@@ -260,13 +260,13 @@ export default async function BlogArticlePage({ params }: PageProps) {
                   Pereikite nuo skaitymo prie aiskaus veiksmo.
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
-                  Jei straipsnis padejo apsispresti, pasirinkite paslauga, filiala arba iskart
-                  pereikite prie rezervacijos.
+                  Jei straipsnis padejo apsispresti, pasirinkite paslauga, filiala arba susisiekite
+                  su mumis tiesiogiai.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <Link href={getBookingPath("lt")}>
+                  <Link href={getLocalizedRoute("contact", "lt")}>
                     <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Rezervuoti
+                      Susisiekti
                     </PrimaryButton>
                   </Link>
                   <Link href={getLocalizedRoute("branches", "lt")}>

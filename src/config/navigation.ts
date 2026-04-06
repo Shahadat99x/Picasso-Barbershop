@@ -94,7 +94,7 @@ export const siteConfig = {
     "Premium grooming, haircut, beard, and salon experiences across three Vilnius branches.",
   contactEmail: "hello@picassobarbershop.lt",
   contactPhone: "+370 600 00000",
-  bookingUrl: "/kontaktai#rezervacija",
+  bookingUrl: "/kontaktai",
   siteUrl: "https://picassobarbershop.lt",
   defaultOgImage: "/mock/gallery/lounge.svg",
   defaultAddress: "Vilniaus g. 22, Vilnius, Lithuania",

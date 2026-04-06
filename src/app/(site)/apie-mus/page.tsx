@@ -213,12 +213,12 @@ export default async function AboutPage() {
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">
                   Jei norite pereiti nuo istorijos prie praktinio pasirinkimo, palyginkite
-                  paslaugas, filialus arba iskart rezervuokite kita vizita.
+                  paslaugas, filialus arba iskart susisiekite del vizito.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link href={getBookingPath("lt")}>
-                  <PrimaryButton className="w-full">Rezervuoti</PrimaryButton>
+                <Link href={getLocalizedRoute("contact", "lt")}>
+                  <PrimaryButton className="w-full">Susisiekti</PrimaryButton>
                 </Link>
                 <Link href={getLocalizedRoute("services", "lt")}>
                   <SecondaryButton className="w-full">Ziureti paslaugas</SecondaryButton>

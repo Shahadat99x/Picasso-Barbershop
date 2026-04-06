@@ -131,9 +131,9 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getBookingPath("en")}>
+            <Link href={getLocalizedRoute("contact", "en")}>
               <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Book this service
+                Contact us
               </PrimaryButton>
             </Link>
             <Link href={getLocalizedRoute("branches", "en")}>
@@ -208,25 +208,25 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
             <div className="lg:sticky lg:top-28 lg:self-start">
               <div className="rounded-[2rem] border border-border/60 bg-[#171311] p-8 text-[#f5efe7] shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#d1af89]">
-                  Booking path
+                  Next step
                 </span>
                 <h3 className="mt-4 text-2xl font-medium tracking-tight">
-                  Choose your time and the branch that fits best.
+                  Choose the branch that fits best.
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
                   {availableBranches.length > 0
-                    ? "This service is already connected to the branches below, so you can move from review to booking without friction."
+                    ? "This service is available at the branches below, so you can easily review where to visit us."
                     : "Branch availability has not been configured yet. Contact us and we will help you choose the best timing."}
                 </p>
                 <div className="mt-8 flex flex-col gap-3">
-                  <Link href={getBookingPath("en")}>
+                  <Link href={getLocalizedRoute("branches", "en")}>
                     <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Book appointment
+                      Browse branches
                     </PrimaryButton>
                   </Link>
-                  <Link href={getLocalizedRoute("branches", "en")}>
+                  <Link href={getLocalizedRoute("contact", "en")}>
                     <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Browse branches
+                      Contact us
                     </SecondaryButton>
                   </Link>
                 </div>
@@ -266,9 +266,9 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
         <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
             <SectionHeading
-              title="Where you can book this service"
+              title="Where this service is available"
               subtitle="Branches"
-              description="The locations where this service is already available, with a direct path to branch details or booking."
+              description="The locations where this service is available across our network. View branch details or contact us directly."
               align="left"
               className="max-w-3xl"
             />
@@ -285,7 +285,7 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
                   bookingHref={branch.booking_url || getBookingPath("en")}
                   eyebrow="Branch"
                   branchLabel="View branch"
-                  bookingLabel="Book here"
+                  bookingLabel="Call branch"
                   mapAriaLabel={`Open map for ${getLocalizedContent(branch, "name", "en")}`}
                 />
               ))}

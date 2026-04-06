@@ -35,7 +35,7 @@ const specialistPageCopy = {
     metadataMissingDescription: "Nepavyko rasti pasirinkto specialisto profilio.",
     fallbackRole: "Komandos narys",
     fallbackSummary:
-      "Profilis netrukus bus papildytas. Kol kas kvieciame perziureti paslaugas, filialus ir rezervacijos galimybes.",
+      "Profilis netrukus bus papildytas. Kol kas kvieciame perziureti paslaugas, filialus ir susisiekti su mumis.",
     backLabel: "< Atgal i komandos perziura",
     heroEyebrow: "Specialisto profilis",
     heroRoleLabel: "Pareigos",
@@ -46,30 +46,30 @@ const specialistPageCopy = {
     aboutDescription:
       "Trumpa perziura, kuri padeda suprasti specialisto vaidmeni, darbo krypti ir kaip patogiai pereiti prie kito zingsnio.",
     branchConnectedLine:
-      "Profilis jau pateikiamas su filialo kontekstu, todel nuo perziuros galima sklandziai pereiti prie rezervacijos ar lokacijos pasirinkimo.",
+      "Profilis jau pateikiamas su filialo kontekstu, todel nuo perziuros galima sklandziai pereiti prie vizito planavimo ar lokacijos pasirinkimo.",
     branchPendingLine:
-      "Filialo priskyrimas siuo metu nerodomas, todel toliau galima ramiai lyginti paslaugas, filialus ir tik tada rinktis rezervacijos kelia.",
+      "Filialo priskyrimas siuo metu nerodomas, todel toliau galima ramiai lyginti paslaugas, filialus ir tik tada kreiptis del vizito.",
     specialtiesSubtitle: "Pagrindines sritys",
     specialtiesTitle: "Specializacijos",
     specialtiesDescription:
       "Trumpai pateiktos sritys, kurios padeda greitai suprasti specialisto darba ir tinkamiausia vizito krypti.",
     ctaEyebrow: "Tolimesnis zingsnis",
-    ctaTitle: "Pereikite nuo profilio prie rezervacijos.",
+    ctaTitle: "Pereikite nuo profilio prie vizito planavimo.",
     ctaDescription:
-      "Jei jau zinote, ko ieskote, rezervuokite vizita arba palyginkite paslaugas ir filialus pries priimdami sprendima.",
+      "Jei jau zinote, ko ieskote, susisiekite su mumis tiesiogiai arba palyginkite paslaugas ir filialus pries priimdami sprendima.",
     ctaBranchAssigned: "Priskirtas filialas: {branch}.",
     ctaBranchPending:
       "Filialas dar nenurodytas, tad patogiausia pradeti nuo paslaugu arba filialu perziuros.",
-    bookLabel: "Rezervuoti vizita",
+    bookLabel: "Susisiekti",
     servicesLabel: "Ziureti paslaugas",
     branchesLabel: "Ziureti filialus",
     branchSectionSubtitle: "Filialas",
     branchSectionTitle: "Kur pradeti si specialisto kelia",
     branchSectionDescription:
-      "Jei specialistas jau susietas su konkrecia lokacija, zemiau pateikiamas tiesioginis kelias i filialo informacija ir rezervacija.",
+      "Jei specialistas jau susietas su konkrecia lokacija, zemiau pateikiamas tiesioginis kelias i filialo informacija ir kontaktus.",
     branchEyebrow: "Filialas",
     branchCardLabel: "Ziureti filiala",
-    branchBookingLabel: "Rezervuoti cia",
+    branchBookingLabel: "Paskambinti filialui",
     mapAriaLabelPrefix: "Atidaryti zemelapi",
     relatedSubtitle: "Komanda",
     relatedTitle: "Komandoje taip pat",
@@ -82,7 +82,7 @@ const specialistPageCopy = {
     metadataMissingDescription: "The requested specialist profile could not be found.",
     fallbackRole: "Team member",
     fallbackSummary:
-      "This profile will be expanded further. For now, you can continue through services, branches, and the booking path.",
+      "This profile will be expanded further. For now, you can continue through services, branches, and contact us directly.",
     backLabel: "< Back to team overview",
     heroEyebrow: "Specialist profile",
     heroRoleLabel: "Role",
@@ -91,32 +91,32 @@ const specialistPageCopy = {
     aboutSubtitle: "Profile",
     aboutTitle: "About the specialist",
     aboutDescription:
-      "A concise overview that helps frame the specialist's role, focus, and the next practical step toward booking.",
+      "A concise overview that helps frame the specialist's role, focus, and the next practical step toward a visit.",
     branchConnectedLine:
-      "This profile is already presented with branch context, making it easier to move from review into booking or location selection.",
+      "This profile is already presented with branch context, making it easier to move from review into planning your visit or location selection.",
     branchPendingLine:
-      "No branch assignment is currently shown, so the next step can stay simple: compare services, review branches, then choose the booking path that fits.",
+      "No branch assignment is currently shown, so the next step can stay simple: compare services, review branches, then choose the contact path that fits.",
     specialtiesSubtitle: "Focus areas",
     specialtiesTitle: "Specialties",
     specialtiesDescription:
       "A clean summary of the areas that help clients quickly understand the specialist's work and the most suitable appointment direction.",
     ctaEyebrow: "Next step",
-    ctaTitle: "Move from profile review into booking.",
+    ctaTitle: "Move from profile review into planning your visit.",
     ctaDescription:
-      "If you already know what you need, book the visit directly or compare services and branches before deciding.",
+      "If you already know what you need, contact us directly or compare services and branches before deciding.",
     ctaBranchAssigned: "Assigned branch: {branch}.",
     ctaBranchPending:
       "No branch has been assigned publicly yet, so the easiest next step is to review services or branches first.",
-    bookLabel: "Book appointment",
+    bookLabel: "Contact us",
     servicesLabel: "View services",
     branchesLabel: "View branches",
     branchSectionSubtitle: "Branch",
     branchSectionTitle: "Where to start this specialist journey",
     branchSectionDescription:
-      "If the specialist is already connected to a specific location, the branch details and booking path are shown below.",
+      "If the specialist is already connected to a specific location, the branch details and contact information are shown below.",
     branchEyebrow: "Branch",
     branchCardLabel: "View branch",
-    branchBookingLabel: "Book here",
+    branchBookingLabel: "Call branch",
     mapAriaLabelPrefix: "Open map for",
     relatedSubtitle: "Team",
     relatedTitle: "Also on the team",
