@@ -19,12 +19,12 @@ export function AdminMetricCard({
   return (
     <Link
       href={href}
-      className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 transition-transform hover:-translate-y-0.5"
+      className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-black/5 transition-transform hover:-translate-y-0.5 sm:rounded-[1.75rem] sm:p-6"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-4 text-4xl font-medium tracking-tight text-slate-950">
+          <p className="text-xs font-medium text-slate-500 sm:text-sm">{label}</p>
+          <p className="mt-2 text-2xl font-medium tracking-tight text-slate-950 sm:mt-4 sm:text-4xl">
             {count ?? "—"}
           </p>
         </div>
@@ -39,8 +39,8 @@ export function AdminMetricCard({
           {isLive ? "Live" : "Placeholder"}
         </span>
       </div>
-      <p className="mt-4 text-sm leading-relaxed text-slate-600">{description}</p>
-      <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-slate-950">
+      <p className="mt-3 hidden text-sm leading-relaxed text-slate-600 sm:block sm:mt-4">{description}</p>
+      <div className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-slate-950 sm:mt-6 sm:text-sm">
         Open module
         <ArrowUpRight className="h-4 w-4" />
       </div>

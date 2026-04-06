@@ -13,7 +13,7 @@ export function AdminShell({ email, children }: AdminShellProps) {
         <AdminSidebar />
         <div className="min-w-0">
           <AdminTopBar email={email} />
-          <main className="px-5 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+          <main className="px-3 py-4 sm:px-5 sm:py-6 lg:px-8 lg:py-8">{children}</main>
         </div>
       </div>
     </div>

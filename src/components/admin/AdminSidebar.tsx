@@ -38,7 +38,7 @@ export function AdminSidebar() {
   return (
     <aside className="border-b border-white/10 bg-[#111827] text-white lg:min-h-screen lg:border-b-0 lg:border-r">
       <div className="flex h-full flex-col">
-        <div className="border-b border-white/10 px-6 py-6">
+        <div className="hidden border-b border-white/10 px-6 py-6 lg:block">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
               <Wrench className="h-5 w-5 text-[#f5d7a1]" />
@@ -55,8 +55,8 @@ export function AdminSidebar() {
           </p>
         </div>
 
-        <nav className="overflow-x-auto px-4 py-4 lg:flex-1 lg:overflow-visible lg:px-3">
-          <ul className="flex gap-2 lg:flex-col">
+        <nav className="overflow-x-auto px-2 py-2 sm:px-4 sm:py-3 lg:flex-1 lg:overflow-visible lg:px-3 lg:py-4">
+          <ul className="flex gap-1 sm:gap-2 lg:flex-col">
             {adminNavigation.map((item) => {
               const Icon = iconMap[item.href];
               const isActive =
@@ -68,7 +68,7 @@ export function AdminSidebar() {
                   <Link
                     href={item.href}
                     className={[
-                      "group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-colors",
+                      "group flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm transition-colors sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3",
                       isActive
                         ? "bg-white text-[#0f172a] shadow-sm"
                         : "text-white/72 hover:bg-white/6 hover:text-white",
@@ -76,15 +76,15 @@ export function AdminSidebar() {
                   >
                     <span
                       className={[
-                        "flex h-9 w-9 items-center justify-center rounded-xl border transition-colors",
+                        "flex h-7 w-7 items-center justify-center rounded-lg border transition-colors sm:h-9 sm:w-9 sm:rounded-xl",
                         isActive
                           ? "border-slate-200 bg-slate-100"
                           : "border-white/10 bg-white/5 group-hover:border-white/20 group-hover:bg-white/10",
                       ].join(" ")}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </span>
-                    <span className="whitespace-nowrap font-medium">{item.label}</span>
+                    <span className="whitespace-nowrap text-xs font-medium sm:text-sm">{item.label}</span>
                   </Link>
                 </li>
               );
