@@ -1,8 +1,9 @@
-import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface HeroAction {
   href: string;
@@ -13,7 +14,7 @@ interface PublicHeroSignatureProps {
   eyebrow: string;
   title: string;
   description: string;
-  imageSrc: string;
+  imageSrc: string | StaticImageData;
   imageAlt: string;
   plaqueLabel: string;
   imagePriority?: boolean;
@@ -79,7 +80,7 @@ export function PublicHeroSignature({
               <div className="absolute inset-4 rounded-[2rem] border border-[#9e7750]/10" />
               <div className="relative overflow-hidden rounded-[2rem] border border-[#7d6040]/45 bg-[#100f0d] p-[0.78rem] shadow-[0_28px_72px_rgba(0,0,0,0.38)]">
                 <div className="relative aspect-[5/6] overflow-hidden rounded-[1.45rem] bg-[#1c1c1c] md:aspect-[4/5]">
-                  <Image
+                  <OptimizedImage
                     src={imageSrc}
                     alt={imageAlt}
                     fill

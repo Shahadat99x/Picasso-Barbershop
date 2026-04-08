@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface FeaturedArticleCardProps {
   title: string;
@@ -32,11 +32,11 @@ export function FeaturedArticleCard({
       <article className="overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-sm shadow-black/5 transition-all hover:shadow-md">
         <div className="grid gap-0 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <div className="relative min-h-[18rem] overflow-hidden bg-muted md:min-h-[24rem]">
-            <Image
+            <OptimizedImage
               src={imageUrl}
               alt={imageAlt}
               fill
-              sizes="(max-width: 1024px) 100vw, 55vw"
+              sizes="(max-width: 1024px) 100vw, 52vw"
               className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             />
           </div>

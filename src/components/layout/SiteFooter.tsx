@@ -1,14 +1,13 @@
-"use client";
-
 import React from "react";
 import { Container } from "./Container";
 import { getFooterNav } from "@/config/navigation";
 import { footerDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import type { Locale } from "@/i18n/locales";
 
 interface SiteFooterProps {
+  locale?: Locale;
   businessName?: string;
   description?: string;
   footerText?: string | null;
@@ -20,6 +19,7 @@ interface SiteFooterProps {
 }
 
 export function SiteFooter({
+  locale = "lt",
   businessName,
   description,
   footerText,
@@ -29,8 +29,6 @@ export function SiteFooter({
   socialFacebook,
   socialTikTok,
 }: SiteFooterProps) {
-  const pathname = usePathname();
-  const locale = pathname?.startsWith("/en") ? "en" : "lt";
   const footerNav = getFooterNav(locale);
   const t = footerDictionary[locale];
   const homeHref = getLocalizedRoute("home", locale);

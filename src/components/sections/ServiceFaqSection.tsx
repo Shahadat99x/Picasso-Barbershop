@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
@@ -23,8 +21,6 @@ export function ServiceFaqSection({
   title = "Common Questions",
   subtitle = "FAQ",
 }: ServiceFaqSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   if (!faqs || faqs.length === 0) return null;
 
   return (
@@ -37,34 +33,28 @@ export function ServiceFaqSection({
         />
         <div className="max-w-3xl border-t border-border/50">
           {faqs.map((faq, index) => {
-            const isOpen = openIndex === index;
             return (
-              <div key={index} className="border-b border-border/50">
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between py-6 text-left focus:outline-none group"
+              <details
+                key={`${faq.question}-${index}`}
+                className="group border-b border-border/50"
+                open={index === 0}
+              >
+                <summary
+                  className="flex w-full cursor-pointer items-center justify-between py-6 text-left list-none"
                 >
-                  <span className="text-lg font-medium group-hover:text-primary transition-colors pr-8">
+                  <span className="pr-8 text-lg font-medium transition-colors group-hover:text-primary">
                     {faq.question}
                   </span>
-                  <ChevronDown 
+                  <ChevronDown
                     className={cn(
-                      "w-5 h-5 text-muted-foreground transition-transform duration-300 flex-shrink-0",
-                      isOpen && "rotate-180 text-primary"
-                    )} 
+                      "h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 group-open:rotate-180 group-open:text-primary",
+                    )}
                   />
-                </button>
-                <div 
-                  className={cn(
-                    "overflow-hidden transition-all duration-300 ease-in-out",
-                    isOpen ? "max-h-96 opacity-100 pb-6" : "max-h-0 opacity-0"
-                  )}
-                >
-                  <p className="text-muted-foreground leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
+                </summary>
+                <p className="pb-6 text-muted-foreground leading-relaxed">
+                  {faq.answer}
+                </p>
+              </details>
             );
           })}
         </div>

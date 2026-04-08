@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { Container } from "./Container";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { MobileNav } from "./MobileNav";
@@ -9,6 +8,7 @@ import { getMainNav } from "@/config/navigation";
 import { navDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
 import Link from "next/link";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface SiteHeaderProps {
   locale?: "lt" | "en";
@@ -39,7 +39,7 @@ export function SiteHeader({
           >
             {logoUrl ? (
               <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[#ddd0c0]/80 bg-white/80 shadow-[0_6px_16px_rgba(67,49,29,0.08)]">
-                <Image
+                <OptimizedImage
                   src={logoUrl}
                   alt={displayName}
                   fill

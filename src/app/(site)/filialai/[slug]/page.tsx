@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Bus, Car, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -10,6 +9,7 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { StructuredData } from "@/components/shared/StructuredData";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
@@ -32,7 +32,7 @@ import {
 } from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbSchema } from "@/lib/schema";
-import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -89,13 +89,10 @@ export default async function BranchDetailPage({ params }: PageProps) {
   const featuredPost = blogCards[0];
   const remainingPosts = blogCards.slice(1);
   const resolvedSlug = getLocalizedSlug(branch, "lt");
-  const bookingHref = branch.booking_url || getBookingPath("lt");
   const name = getLocalizedContent(branch, "name", "lt");
   const shortDescription = getLocalizedContent(branch, "short_description", "lt");
   const address = getLocalizedContent(branch, "address", "lt");
   const primaryHours = getPrimaryOpeningHours(branch, "lt");
-  const bookingIsExternal =
-    bookingHref.startsWith("http") || bookingHref.startsWith("mailto:") || bookingHref.startsWith("tel:");
 
   return (
     <main>
@@ -140,12 +137,12 @@ export default async function BranchDetailPage({ params }: PageProps) {
         visual={
           <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
             {branch.cover_image_url || branch.gallery_preview_image_url ? (
-              <Image
+              <OptimizedImage
                 src={branch.cover_image_url || branch.gallery_preview_image_url || ""}
                 alt={name}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 34vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 34vw"
                 className="object-cover"
               />
             ) : (

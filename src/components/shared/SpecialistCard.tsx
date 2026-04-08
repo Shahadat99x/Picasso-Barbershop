@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface SpecialistCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -53,7 +53,7 @@ export function SpecialistCard({
         )}
       >
         {imageUrl ? (
-          <Image
+          <OptimizedImage
             src={imageUrl}
             alt={name}
             fill

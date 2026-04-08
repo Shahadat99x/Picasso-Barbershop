@@ -1,8 +1,8 @@
-import Image from "next/image";
 import React from "react";
 
 import type { GalleryLayout, GalleryMosaicItem } from "@/lib/public-data";
 import { cn } from "@/lib/utils";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface GalleryMosaicProps {
   items: GalleryMosaicItem[];
@@ -24,6 +24,18 @@ const aspectClasses: Record<GalleryLayout, string> = {
 };
 
 export function GalleryMosaic({ items, className }: GalleryMosaicProps) {
+  const getSizes = (layout: GalleryLayout) => {
+    switch (layout) {
+      case "hero":
+      case "landscape":
+        return "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw";
+      case "portrait":
+      case "square":
+      default:
+        return "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw";
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -41,11 +53,11 @@ export function GalleryMosaic({ items, className }: GalleryMosaicProps) {
           )}
         >
           <div className={cn("relative h-full w-full", aspectClasses[item.layout])}>
-            <Image
+            <OptimizedImage
               src={item.imageSrc}
               alt={item.alt}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              sizes={getSizes(item.layout)}
               className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

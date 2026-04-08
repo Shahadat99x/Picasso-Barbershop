@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Clock3, MapPin, Scissors } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -11,6 +10,7 @@ import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
 import { ArticleBody } from "@/components/shared/ArticleBody";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { FeatureCard } from "@/components/shared/FeatureCard";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { StructuredData } from "@/components/shared/StructuredData";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -169,12 +169,12 @@ export default async function BlogArticlePage({ params }: PageProps) {
         visual={
           <div className="relative aspect-[5/4] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
             {post.cover_image_url ? (
-              <Image
+              <OptimizedImage
                 src={post.cover_image_url}
                 alt={getBlogCoverAltText(post, "lt")}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 38vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 38vw"
                 className="object-cover"
               />
             ) : (

@@ -11,7 +11,7 @@ import { navDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
 import Link from "next/link";
 import { createPortal } from "react-dom";
-import Image from "next/image";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface MobileNavProps {
   locale: "lt" | "en";
@@ -126,7 +126,7 @@ export function MobileNav({
                 >
                   {logoUrl ? (
                     <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[#ddd0c0]/80 bg-white/82 shadow-[0_6px_16px_rgba(67,49,29,0.08)]">
-                      <Image
+                      <OptimizedImage
                         src={logoUrl}
                         alt={businessName}
                         fill

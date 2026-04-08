@@ -2,9 +2,10 @@ import React from "react";
 import { Locale, defaultLocale } from "@/i18n/locales";
 import { PublicHeroSignature } from "@/components/public/hero/public-hero-signature";
 import { getLocalizedRoute } from "@/lib/site-routes";
+import heroImageSrc from "../../../public/images/hero/picasso-team-hero.jpg";
 
 const heroImage = {
-  src: "/images/hero/picasso-team-hero.jpg",
+  src: heroImageSrc,
   plaqueLabel: "Real Team. Real Craft.",
 };
 
