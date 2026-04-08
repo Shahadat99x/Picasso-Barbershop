@@ -4,6 +4,7 @@ import { Container } from "./Container";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { MobileNav } from "./MobileNav";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { PublicNavLinks } from "./PublicNavLinks";
 import { getMainNav } from "@/config/navigation";
 import { navDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
@@ -52,12 +53,8 @@ export function SiteHeader({
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden min-[840px]:flex items-center gap-5 text-sm font-medium text-foreground/80 lg:gap-8">
-          {nav.map((item) => (
-            <Link key={item.href} href={item.href} className="transition-colors hover:text-foreground">
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden min-[840px]:flex items-center gap-2 lg:gap-3" aria-label={locale === "en" ? "Primary navigation" : "Pagrindine navigacija"}>
+          <PublicNavLinks items={nav} locale={locale} />
         </nav>
 
         <div className="hidden min-[840px]:flex items-center gap-4 lg:gap-6">

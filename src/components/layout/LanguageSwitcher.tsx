@@ -67,28 +67,39 @@ export function LanguageSwitcher({
   };
   
   return (
-    <div className={cn("flex items-center gap-1", className)} {...props}>
+    <div
+      className={cn(
+        "inline-flex items-center rounded-full border border-border/60 bg-background/88 p-1 shadow-sm shadow-black/5",
+        className,
+      )}
+      role="group"
+      aria-label={currentLocale === "en" ? "Language switcher" : "Kalbos perjungimas"}
+      {...props}
+    >
       <button
+        type="button"
         onClick={() => switchLocale("lt")}
         className={cn(
-          "px-2 py-1 text-sm font-medium transition-colors",
-          currentLocale === "lt" 
-            ? "text-foreground" 
+          "rounded-full px-3 py-1.5 text-sm font-semibold transition-colors",
+          currentLocale === "lt"
+            ? "bg-secondary text-foreground"
             : "text-muted-foreground hover:text-foreground"
         )}
+        aria-pressed={currentLocale === "lt"}
         aria-label="Switch to Lithuanian"
       >
         {localeLabels.lt}
       </button>
-      <span className="text-muted-foreground/30">|</span>
       <button
+        type="button"
         onClick={() => switchLocale("en")}
         className={cn(
-          "px-2 py-1 text-sm font-medium transition-colors",
-          currentLocale === "en" 
-            ? "text-foreground" 
+          "rounded-full px-3 py-1.5 text-sm font-semibold transition-colors",
+          currentLocale === "en"
+            ? "bg-secondary text-foreground"
             : "text-muted-foreground hover:text-foreground"
         )}
+        aria-pressed={currentLocale === "en"}
         aria-label="Switch to English"
       >
         {localeLabels.en}

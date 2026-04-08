@@ -16,7 +16,7 @@ export const navDictionary = {
       services: "Services",
       branches: "Branches",
       gallery: "Gallery",
-      about: "About",
+      about: "About us",
       blog: "Blog",
       contact: "Contact",
       book: "Visit branch",
