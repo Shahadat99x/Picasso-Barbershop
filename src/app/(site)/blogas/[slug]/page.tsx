@@ -28,7 +28,7 @@ import {
 } from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import { createArticleSchema, createBreadcrumbSchema } from "@/lib/schema";
-import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -129,7 +129,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
 
       <PublicDetailHero
         backHref={getLocalizedRoute("blog", "lt")}
-        backLabel="< Atgal i visus straipsnius"
+        backLabel="< Atgal i bloga"
         eyebrow="Tinklarastis"
         title={title}
         description={excerpt}
@@ -179,7 +179,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
-                Virselio vaizdas bus rodomas, kai straipsniui bus priskirta nuotrauka.
+                Virselio vaizdas cia atsiras netrukus.
               </div>
             )}
           </div>
@@ -192,7 +192,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
             <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
               <div className="mb-8 border-b border-border/50 pb-6">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Straipsnio turinys
+                  Skaitymui
                 </span>
                 <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
@@ -260,8 +260,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
                   Pereikite nuo skaitymo prie aiskaus veiksmo.
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
-                  Jei straipsnis padejo apsispresti, pasirinkite paslauga, filiala arba susisiekite
-                  su mumis tiesiogiai.
+                  Jei straipsnis padejo aiskiau apsispresti, toliau galite ramiai pereiti prie
+                  paslaugos, filialo arba tiesioginio kontakto.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
                   <Link href={getLocalizedRoute("contact", "lt")}>
@@ -287,7 +287,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
             <SectionHeading
               title="Teskite skaityma"
               subtitle="Susije straipsniai"
-              description="Papildomi straipsniai tiems, kurie nori gilinti tema ir toliau formuoti aiskesni pasirinkima pries vizita."
+              description="Papildomi straipsniai tiems, kurie nori giliau pazvelgti i tema ir ramiau apsispresti pries vizita."
               align="left"
               className="max-w-3xl"
             />
