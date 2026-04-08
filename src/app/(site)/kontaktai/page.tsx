@@ -17,12 +17,12 @@ import {
   getPrimaryOpeningHours,
   getSiteSettingsWithDefaults,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Kontaktai",
   description:
-    "Raskite filialu kontaktus, darbo laika ir bendra Picasso Barbershop informacija is admin valdomu nustatymu.",
+    "Raskite Picasso Barbershop filialu kontaktus, darbo laika ir kryptis, kad galetumete greitai susisiekti arba atvykti i jums patogiausia vieta.",
   path: getLocalizedRoute("contact", "lt"),
   locale: "lt",
 });
@@ -71,9 +71,9 @@ export default async function ContactPage() {
       <PublicPageIntro
         eyebrow="Kontaktai"
         title="Pasirinkite filiala arba susisiekite tiesiogiai, jei reikia pagalbos."
-        description="Kontaktinis puslapis naudoja realius filialu ir nustatymu duomenis: telefonus, el. pasta, darbo laika, rezervacijos nuorodas ir zemelapiu kryptis."
+        description="Cia rasite visus pagrindinius kontaktus, filialu darbo laika ir kryptis, kad butu lengva paskambinti, parasyti ar uzsukti gyvai."
         stats={[
-          { label: "Aktyvus filialai", value: String(branches.length) },
+          { label: "Filialai", value: String(branches.length) },
           { label: "Bendras telefonas", value: settings.default_phone },
           { label: "Bendras el. pastas", value: settings.default_email },
         ]}
@@ -105,7 +105,7 @@ export default async function ContactPage() {
           <SectionHeading
             title="Visi filialai vienoje vietoje"
             subtitle="Greita perziura"
-            description="Perziurekite lokacijas, darbo laika ir pagrindinius kontaktus, tada pasirinkite tiesiogini kelia i filialo puslapi arba rezervacija."
+            description="Perziurekite lokacijas, darbo laika ir pagrindinius kontaktus, tada pasirinkite, ar norite perziureti filiala, paskambinti ar atsidaryti zemelapi."
             align="left"
             className="max-w-3xl"
           />
@@ -135,9 +135,9 @@ export default async function ContactPage() {
           <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]">
             <div className="min-w-0 w-full rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
               <SectionHeading
-                title="Uzklausos forma kaip atsarginis kelias"
+                title="Parasykite mums zinute"
                 subtitle="Pagalba"
-                description="Pilnas uzklausos backend gali buti pleciamas velesniame etape, taciau si forma jau parodo aisku pagalbos marsruta ir saugu fallback scenariju."
+                description="Jei jums patogiau rasyti nei skambinti, zemiau matysite uzklausos formos vieta. Greiciausiai atsakome telefonu arba el. pastu."
                 align="left"
                 className="max-w-3xl"
               />
@@ -178,11 +178,11 @@ export default async function ContactPage() {
                     className="h-auto min-h-12 w-full whitespace-normal px-6 py-3 text-sm leading-6 sm:text-base"
                     disabled
                   >
-                    Siuntimo backend bus prijungtas atskirai
+                    Laikinai neaktyvu
                   </PrimaryButton>
                   <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                    Kol kas naudokite auksciau esancias filialu korteles arba rasykite tiesiogiai
-                    el. pastu.
+                    Kol kas greiciausiai susisieksite telefonu arba el. pastu, naudodami
+                    auksciau esancia informacija.
                   </p>
                 </div>
               </form>

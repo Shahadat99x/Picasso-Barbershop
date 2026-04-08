@@ -17,12 +17,12 @@ import {
   getLocalizedContent,
   transformSpecialistForCard,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "About",
   description:
-    "Learn about the Picasso Barbershop brand, its specialist team, and how the premium experience is managed across Vilnius branches.",
+    "Learn about the Picasso Barbershop story, team, and the principles behind a calm, consistent premium experience in Vilnius.",
   path: getLocalizedRoute("about", "en"),
   locale: "en",
 });
@@ -78,11 +78,11 @@ export default async function EnAboutPage() {
       <PublicPageIntro
         eyebrow="About the brand"
         title="A brand built on calm execution, consistency, and repeat trust."
-        description="The Picasso Barbershop story now sits inside the same premium public system as the homepage, services, and branches pages, while the team preview remains connected to the live specialist module."
+        description="The Picasso Barbershop story begins with craft, respect for your time, and a service rhythm clients are happy to return to."
         stats={[
           { label: "Vilnius branches", value: String(branches.length) },
-          { label: "Featured specialists", value: String(specialists.length) },
-          { label: "Content model", value: "LT/EN" },
+          { label: "Team faces", value: String(specialists.length) },
+          { label: "Foundation", value: "Trust" },
         ]}
       />
 
@@ -100,12 +100,12 @@ export default async function EnAboutPage() {
                 <p>
                   Each branch keeps the same quality standard while adapting to a different city
                   rhythm. That shows up not only in the atmosphere, but also in the way services
-                  are explained, how consultations are framed, and how booking feels publicly.
+                  are explained, how consultations are framed, and how the visit flows from start to finish.
                 </p>
                 <p>
-                  The public site now reflects that same order: from first impression through to
-                  choosing a service or branch, each step is meant to reduce hesitation and make
-                  the next move feel clear.
+                  We want every client to feel certain from the first impression to the final
+                  details in the mirror. That is why we care not only about the result itself,
+                  but also about how the entire experience feels during the appointment.
                 </p>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default async function EnAboutPage() {
           <SectionHeading
             title="Why clients choose us"
             subtitle="Values"
-            description="The principles that shape both the service standard and the public-facing Picasso Barbershop experience."
+            description="The principles that shape both the service standard and the confidence clients feel each time they visit."
             align="left"
             className="max-w-3xl"
           />
@@ -174,8 +174,8 @@ export default async function EnAboutPage() {
           <Container>
             <SectionHeading
               title="Team preview"
-              subtitle="CMS-managed specialists"
-              description="A concise look at the specialists drawn from the live content module, used here to reinforce trust and service level."
+              subtitle="The people behind the chair"
+              description="A closer look at the barbers whose work is defined by precision, calm communication, and consistent results."
               align="left"
               className="max-w-3xl"
             />

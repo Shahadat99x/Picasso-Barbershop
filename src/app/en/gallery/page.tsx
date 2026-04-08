@@ -17,12 +17,12 @@ import {
   getVisibleGalleryItems,
   transformGalleryItemForMosaic,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Gallery",
   description:
-    "Browse the real CMS-driven Picasso Barbershop gallery with public images managed from the admin.",
+    "Browse the Picasso Barbershop gallery to get a feel for our work, in-salon atmosphere, and results across different branches.",
   path: getLocalizedRoute("gallery", "en"),
   locale: "en",
 });
@@ -41,11 +41,11 @@ export default async function EnGalleryPage() {
     <main>
       <PageHero
         eyebrow="Gallery"
-        title="A live gallery of work and interiors managed directly from the admin."
-        description="Public gallery images now use admin uploads, visibility rules, and English fallback content wherever translations are still incomplete."
+        title="Real work, real atmosphere, and finishes worth a closer look."
+        description="This gallery brings together selected cuts, details, and in-salon moments so you can feel the Picasso Barbershop style before you visit."
         stats={[
-          { value: String(mosaicItems.length), label: "visible frames" },
-          { value: String(branches.length), label: "active branches" },
+          { value: String(mosaicItems.length), label: "selected frames" },
+          { value: String(branches.length), label: "branches" },
           { value: String(services.length), label: "service directions" },
         ]}
         actions={
@@ -62,13 +62,18 @@ export default async function EnGalleryPage() {
 
       <Section className="bg-background">
         <Container>
-          <SectionHeading title="Latest work" subtitle="Images" align="left" />
+          <SectionHeading
+            title="Latest work"
+            subtitle="Style and atmosphere"
+            description="A closer look at finishes, texture, and the kind of calm in-salon detail that shapes the overall experience."
+            align="left"
+          />
           {mosaicItems.length > 0 ? (
             <GalleryMosaic items={mosaicItems} className="mt-12" />
           ) : (
             <div className="mt-12 rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-              The gallery is empty for now. Visible images will appear here as soon as they
-              are uploaded and published in the admin.
+              New work will be added here soon. In the meantime, explore our branches or
+              services to find the right fit for your next visit.
             </div>
           )}
         </Container>
@@ -76,7 +81,12 @@ export default async function EnGalleryPage() {
 
       <Section className="border-y border-border/50 bg-secondary/10">
         <Container>
-          <SectionHeading title="Where next?" subtitle="Quick routes" align="left" />
+          <SectionHeading
+            title="Where next?"
+            subtitle="Continue exploring"
+            description="If the gallery already feels close to the result you want, move on to the branch or service that suits you best."
+            align="left"
+          />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {branches.map((branch) => (
               <FeatureCard

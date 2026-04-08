@@ -17,12 +17,12 @@ import {
   getVisibleGalleryItems,
   transformGalleryItemForMosaic,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Galerija",
   description:
-    "Perziurekite realia admin valdoma Picasso Barbershop galerija su matomais darbais is skirtingu paslaugu ir filialu.",
+    "Perziurekite Picasso Barbershop galerija ir susipazinkite su darbu braizu, salono atmosfera bei rezultatais is skirtingu filialu.",
   path: getLocalizedRoute("gallery", "lt"),
   locale: "lt",
 });
@@ -41,11 +41,11 @@ export default async function GalleryPage() {
     <main>
       <PageHero
         eyebrow="Galerija"
-        title="Realiu darbu ir erdviu perziura, valdoma tiesiai is admin sistemos."
-        description="Galerijos vaizdai dabar naudoja admin ikeltus paveikslus, matomumo logika ir LT/EN alternatyvas ten, kur jos uzpildytos."
+        title="Tikri darbai, tikra atmosfera ir rezultatai, kuriuos norisi issaugoti."
+        description="Galerijoje matysite kruopsciai atrinktus kirpimus, detales ir salono akimirkas, padedancias pajausti Picasso Barbershop braiza dar pries apsilankant."
         stats={[
-          { value: String(mosaicItems.length), label: "matomi kadrai" },
-          { value: String(branches.length), label: "aktyvus filialai" },
+          { value: String(mosaicItems.length), label: "atrinkti kadrai" },
+          { value: String(branches.length), label: "filialai" },
           { value: String(services.length), label: "paslaugu kryptys" },
         ]}
         actions={
@@ -62,13 +62,18 @@ export default async function GalleryPage() {
 
       <Section className="bg-background">
         <Container>
-          <SectionHeading title="Naujausi darbai" subtitle="Vaizdai" align="left" />
+          <SectionHeading
+            title="Naujausi darbai"
+            subtitle="Stilius ir atmosfera"
+            description="Zvilgsnis i kirpimus, formas, teksturas ir erdve, kurioje svarbios tiek detales, tiek bendra nuotaika."
+            align="left"
+          />
           {mosaicItems.length > 0 ? (
             <GalleryMosaic items={mosaicItems} className="mt-12" />
           ) : (
             <div className="mt-12 rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-              Galerija dar tuscia. Ikelus matomus paveikslus admin sistemoje, jie
-              pasirodys cia automatiskai.
+              Netrukus pasidalinsime naujais darbais. Tuo metu kvieciame perziureti
+              filialus arba paslaugas.
             </div>
           )}
         </Container>
@@ -78,7 +83,8 @@ export default async function GalleryPage() {
         <Container>
           <SectionHeading
             title="Kur toliau?"
-            subtitle="Greitos kryptys"
+            subtitle="Tolimesnis pasirinkimas"
+            description="Jei galerijoje jau radote artima braiza, pereikite prie filialo arba paslaugos, kuri geriausiai atitinka jusu poreiki."
             align="left"
           />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

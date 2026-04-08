@@ -44,9 +44,7 @@ export function BlogCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-secondary/20 text-muted-foreground/30">
-            Cover Placeholder
-          </div>
+          <div className="h-full w-full bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.2),transparent_44%),linear-gradient(180deg,rgba(28,24,22,0.08),rgba(28,24,22,0.02))]" />
         )}
         {category && (
           <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-background/88 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-foreground backdrop-blur-sm">

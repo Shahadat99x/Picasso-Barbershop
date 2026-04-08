@@ -9,7 +9,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Branches",
   description:
-    "Compare active Picasso Barbershop branches, their contact details, opening hours, and booking routes across Vilnius.",
+    "Compare Picasso Barbershop branches in Vilnius and choose the location that best suits your routine, area, and preferred atmosphere.",
   path: getLocalizedRoute("branches", "en"),
   locale: "en",
 });
@@ -23,11 +23,11 @@ export default async function EnBranchesPage() {
       <PublicPageIntro
         eyebrow="Vilnius locations"
         title="Choose the branch that fits your rhythm best."
-        description="Every active branch reads from live CMS content and presents a clearer route into location details, atmosphere, and booking."
+        description="Each branch keeps the same service standard while offering a different neighborhood feel, pace, and point of convenience across the city."
         stats={[
-          { label: "Active branches", value: String(branchCards.length) },
+          { label: "Branches", value: String(branchCards.length) },
           { label: "City", value: "Vilnius" },
-          { label: "Booking", value: "Direct" },
+          { label: "Visits", value: "Direct" },
         ]}
       />
 
@@ -49,8 +49,8 @@ export default async function EnBranchesPage() {
             </div>
           ) : (
             <div className="rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-              No active branches are published yet. This page will populate once branch
-              content is enabled in the admin.
+              Branch details are being refreshed at the moment. Call us if you would like
+              help choosing the right location.
             </div>
           )}
         </div>

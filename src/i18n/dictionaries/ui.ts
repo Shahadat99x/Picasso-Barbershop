@@ -9,7 +9,7 @@ export const navDictionary = {
       about: "Apie mus",
       blog: "Blogas",
       contact: "Kontaktai",
-      book: "Aplankyti mus",
+      book: "Aplankyti filialą",
     },
     en: {
       home: "Home",
@@ -19,7 +19,7 @@ export const navDictionary = {
       about: "About",
       blog: "Blog",
       contact: "Contact",
-      book: "Visit us",
+      book: "Visit branch",
     },
 } satisfies Record<Locale, Record<string, string>>;
 
@@ -95,17 +95,17 @@ export const ctaDictionary = {
   lt: {
     heroTitle: "Premium kirpimas ir barzdaskirtis Vilniuje",
     heroSubtitle: "Trys filialai, profesionalūs meistrai, Jūsų stilius",
-    heroCta: "Aplankyti mus",
+    heroCta: "Aplankyti filialą",
     finalCtaTitle: "Pasiruošęs pokyčiams?",
-    finalCtaSubtitle: "Aplankykite mus jau šiandien ir pakelkite savo stilių į naują lygį",
-    finalCta: "Aplankyti mus",
+    finalCtaSubtitle: "Raskite sau patogiausią filialą ir užsukite tada, kai norisi tikslaus, tvarkingo rezultato.",
+    finalCta: "Aplankyti filialą",
   },
   en: {
     heroTitle: "Premium haircut and beard grooming in Vilnius",
     heroSubtitle: "Three branches, professional masters, your style",
-    heroCta: "Visit us",
+    heroCta: "Visit branch",
     finalCtaTitle: "Ready for a change?",
-    finalCtaSubtitle: "Visit us today and elevate your style to the next level",
-    finalCta: "Visit us",
+    finalCtaSubtitle: "Find the branch that suits your routine and stop by when you want a sharp, polished result.",
+    finalCta: "Visit branch",
   },
 } satisfies Record<Locale, Record<string, string>>;

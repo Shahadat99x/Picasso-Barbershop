@@ -17,12 +17,12 @@ import {
   getPrimaryOpeningHours,
   getSiteSettingsWithDefaults,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Contact",
   description:
-    "Find branch contact details, opening hours, and shared Picasso Barbershop contact information from admin-managed settings.",
+    "Find Picasso Barbershop branch contacts, opening hours, and directions so you can call, email, or visit the location that suits you best.",
   path: getLocalizedRoute("contact", "en"),
   locale: "en",
 });
@@ -38,7 +38,7 @@ export default async function EnContactPage() {
   ]);
   const highlights = [
     {
-      eyebrow: "Visit us",
+      eyebrow: "Walk in",
       title: "Walk-ins & Branches",
       description:
         "Drop by the salon directly - we welcome walk-ins without an appointment. Find your branch below.",
@@ -71,9 +71,9 @@ export default async function EnContactPage() {
       <PublicPageIntro
         eyebrow="Contact"
         title="Choose a branch or reach out directly when you need guidance."
-        description="The contact page uses live branch and settings data for phone numbers, email, opening hours, booking paths, and map directions."
+        description="You will find the key contacts, branch opening hours, and directions here, making it easy to call, email, or stop by in person."
         stats={[
-          { label: "Active branches", value: String(branches.length) },
+          { label: "Branches", value: String(branches.length) },
           { label: "Main phone", value: settings.default_phone },
           { label: "Main email", value: settings.default_email },
         ]}
@@ -105,7 +105,7 @@ export default async function EnContactPage() {
           <SectionHeading
             title="All branches in one place"
             subtitle="Quick access"
-            description="Review locations, opening hours, and core contact details, then move directly into the branch page or its booking path."
+            description="Review locations, opening hours, and contact details, then choose whether to view the branch, call directly, or open the map."
             align="left"
             className="max-w-3xl"
           />
@@ -135,9 +135,9 @@ export default async function EnContactPage() {
           <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]">
             <div className="min-w-0 w-full rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
               <SectionHeading
-                title="Enquiry form as a fallback route"
+                title="Leave us a message"
                 subtitle="Support"
-                description="A fuller enquiry backend can still be expanded later, but this shell already keeps the help path visible and offers a safe fallback scenario."
+                description="If writing is more convenient than calling, you can see where the enquiry form will appear below. For now, the fastest reply comes by phone or email."
                 align="left"
                 className="max-w-3xl"
               />
@@ -178,10 +178,11 @@ export default async function EnContactPage() {
                     className="h-auto min-h-12 w-full whitespace-normal px-6 py-3 text-sm leading-6 sm:text-base"
                     disabled
                   >
-                    Submission backend will be connected separately
+                    Temporarily unavailable
                   </PrimaryButton>
                   <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                    Until then, use the branch cards above or write directly to the main email.
+                    For now, the quickest way to reach us is by phone or direct email using
+                    the details above.
                   </p>
                 </div>
               </form>

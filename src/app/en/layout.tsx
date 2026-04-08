@@ -6,7 +6,7 @@ import {
   getSiteSettingsWithDefaults,
   SiteSettingsWithDefaults,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export default async function EnSiteLayout({
   children,

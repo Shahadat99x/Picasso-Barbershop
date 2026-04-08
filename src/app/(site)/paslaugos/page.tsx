@@ -14,7 +14,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Paslaugos",
   description:
-    "Atraskite realiu laiku valdomas Picasso Barbershop paslaugas, kainas ir trukmes visuose Vilniaus filialuose.",
+    "Perziurekite Picasso Barbershop paslaugas, kainas ir trukmes, kad lengvai issirinktumete jums tinkamiausia vizita Vilniuje.",
   path: getLocalizedRoute("services", "lt"),
   locale: "lt",
 });
@@ -38,9 +38,9 @@ export default async function ServicesIndexPage() {
       <PublicPageIntro
         eyebrow="Paslaugu kolekcija"
         title="Paslaugos, sudeliotos aiskiai ir uztikrintai."
-        description="Rinkitės is realiai administruojamo Picasso Barbershop paslaugu katalogo, kuriame svarbiausios kainos, trukmes ir aiškus kelias i rezervacija."
+        description="Perziurekite paslaugas pagal tai, kokio rezultato norite, kiek laiko galite skirti ir kuris filialas jums patogiausias."
         stats={[
-          { label: "Publikuota paslaugu", value: String(services.length) },
+          { label: "Paslaugu pasirinkimai", value: String(services.length) },
           { label: "Kategorijos", value: String(categoryEntries.length) },
           { label: "Miestas", value: "Vilnius" },
         ]}
@@ -57,7 +57,7 @@ export default async function ServicesIndexPage() {
                 <SectionHeading
                   title={category}
                   subtitle="Kategorija"
-                  description={`Sioje grupeje rasite ${categoryServices.length} administruojamas paslaugas, kurias galima perziureti ir pasirinkti pagal trukme, kaina bei jusu norima rezultata.`}
+                  description={`Sioje grupeje rasite ${categoryServices.length} pasirinkimus, kad butu lengva palyginti trukme, kaina ir rezultata pries apsilankant.`}
                   align="left"
                   className="max-w-3xl"
                 />
@@ -85,8 +85,8 @@ export default async function ServicesIndexPage() {
           <Section className="bg-background">
             <Container>
               <div className="rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-                Paslaugu dar nepublikuota. Turinis pasirodys cia, kai jis bus aktyvuotas
-                admin sistemoje.
+                Siuo metu atnaujiname paslaugu sarasa. Jei reikia greitos rekomendacijos,
+                susisiekite su artimiausiu filialu.
               </div>
             </Container>
           </Section>

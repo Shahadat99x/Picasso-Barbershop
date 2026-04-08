@@ -19,7 +19,7 @@ export function BranchCard({
   hours,
   imageUrl,
   href,
-  detailLabel = "View details",
+  detailLabel = "View branch",
   className,
   ...props
 }: BranchCardProps) {
@@ -42,9 +42,7 @@ export function BranchCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground/50 bg-secondary/30 transition-colors duration-500 group-hover:bg-transparent">
-            Image Placeholder
-          </div>
+          <div className="h-full w-full bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.22),transparent_48%),linear-gradient(180deg,rgba(30,25,22,0.16),rgba(30,25,22,0.04))] transition-colors duration-500 group-hover:bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.3),transparent_52%),linear-gradient(180deg,rgba(30,25,22,0.1),rgba(30,25,22,0.02))]" />
         )}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
