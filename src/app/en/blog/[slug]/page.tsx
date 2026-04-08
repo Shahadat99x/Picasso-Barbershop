@@ -28,7 +28,7 @@ import {
 } from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import { createArticleSchema, createBreadcrumbSchema } from "@/lib/schema";
-import { getBookingPath, getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -129,8 +129,8 @@ export default async function EnBlogPostPage({ params }: PageProps) {
 
       <PublicDetailHero
         backHref={getLocalizedRoute("blog", "en")}
-        backLabel="< Back to all articles"
-        eyebrow="Editorial"
+        backLabel="< Back to journal"
+        eyebrow="Journal"
         title={title}
         description={excerpt}
         meta={[
@@ -179,7 +179,7 @@ export default async function EnBlogPostPage({ params }: PageProps) {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-[#201c19] px-6 text-center text-sm leading-7 text-[#c7b9ac]">
-                A cover image will appear here once one is assigned to the article in the admin.
+                A cover image will be added here soon.
               </div>
             )}
           </div>
@@ -192,7 +192,7 @@ export default async function EnBlogPostPage({ params }: PageProps) {
             <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
               <div className="mb-8 border-b border-border/50 pb-6">
                 <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Article body
+                  Reading
                 </span>
                 <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
@@ -257,11 +257,11 @@ export default async function EnBlogPostPage({ params }: PageProps) {
                   Next step
                 </span>
                 <h2 className="mt-4 text-2xl font-medium tracking-tight">
-                  Move from reading into a practical action.
+                  Turn reading into a confident next step.
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[#c7b9ac]">
                   If the article helped narrow your choice, continue into services, branches, or
-                  contact us directly.
+                  direct contact and choose what feels right for your next visit.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
                   <Link href={getLocalizedRoute("contact", "en")}>
@@ -287,7 +287,7 @@ export default async function EnBlogPostPage({ params }: PageProps) {
             <SectionHeading
               title="Continue reading"
               subtitle="Related articles"
-              description="Additional editorial context for readers who want to keep exploring the subject before visiting."
+              description="Additional reading for anyone who wants to explore the subject a little further before visiting."
               align="left"
               className="max-w-3xl"
             />

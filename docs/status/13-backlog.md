@@ -48,6 +48,7 @@
 - admin-managed About page editorial blocks if the owner wants to edit brand-story/value content without code changes
 - richer promotion placements if marketing needs more than a single featured public banner
 - stronger public content preview workflow before publishing large LT/EN updates
+- fuller visual refinement pass for the public header once editorial copy and navigation behavior are fully stabilized
 
 ## Notes
 

@@ -329,3 +329,11 @@ Public-facing copy on the marketing site must remain customer-facing and must no
 Reason:
 
 The public website is the highest-priority product surface and needs to read like a finished premium brand experience, not a product handoff or system demo. Editorially, the site should speak about craft, trust, atmosphere, services, branches, and direct contact rather than how content is stored or managed behind the scenes.
+
+## Decision 042
+
+Public header and navigation UX should be clarified through stronger active-page state and a cleaner language switcher without changing the route structure or overall information architecture.
+
+Reason:
+
+The existing header already matches the intended IA, but users need a clearer signal about where they are and a calmer, more intentional language-switching control. Strengthening active-state feedback and switcher presentation improves usability on both desktop and mobile while preserving the LT-default and `/en` route strategy.

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "../ui/PrimaryButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { PublicNavLinks } from "./PublicNavLinks";
 import { getMainNav } from "@/config/navigation";
 import { navDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
@@ -155,17 +156,8 @@ export function MobileNav({
               </div>
 
               <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] pt-6">
-                <nav className="flex flex-col gap-2">
-                  {nav.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={closeMenu}
-                      className="rounded-2xl border border-border/60 bg-background/70 px-4 py-4 text-base font-medium tracking-tight text-foreground transition-colors hover:border-primary/20 hover:text-primary"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+                <nav className="flex flex-col gap-2" aria-label={locale === "en" ? "Primary navigation" : "Pagrindine navigacija"}>
+                  <PublicNavLinks items={nav} locale={locale} variant="mobile" onNavigate={closeMenu} />
                 </nav>
 
                 <div className="mt-auto space-y-5 pt-8">

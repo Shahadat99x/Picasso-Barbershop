@@ -16,7 +16,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Blogas",
   description:
-    "Skaitykite administruojamus Picasso Barbershop straipsnius apie stiliu, prieziura ir pasirinkimus tarp paslaugu bei filialu.",
+    "Skaitykite Picasso Barbershop straipsnius apie stiliu, prieziura ir praktinius pasirinkimus pries kita apsilankyma.",
   path: getLocalizedRoute("blog", "lt"),
   locale: "lt",
 });
@@ -31,14 +31,14 @@ export default async function BlogIndexPage() {
       <PublicPageIntro
         eyebrow="Tinklarastis"
         title="Redakciniai straipsniai apie stiliu, prieziura ir aiskesnius pasirinkimus."
-        description="Picasso Barbershop straipsniai dabar skaitomi is realaus CMS ir pateikiami tuo paciu premium ritmu kaip paslaugos, filialai ir pagrindinis puslapis."
+        description="Cia rasite ramius, aiskius straipsnius apie kirpimus, prieziura ir smulkius sprendimus, kurie padeda lengviau pasirengti kitam vizitui."
         stats={[
-          { label: "Publikuota straipsniu", value: String(transformedPosts.length) },
+          { label: "Straipsniai", value: String(transformedPosts.length) },
           {
             label: "Kategorijos",
             value: String(new Set(posts.map((post) => post.category)).size),
           },
-          { label: "Lokalizacija", value: "LT/EN" },
+          { label: "Temos", value: "Prieziura ir stilius" },
         ]}
       />
 
@@ -48,7 +48,7 @@ export default async function BlogIndexPage() {
             <SectionHeading
               title="Teminis straipsnis"
               subtitle="Rekomendacija"
-              description="Pirmasis akcentas tiems, kurie nori pradeti nuo redakcinio turinio, kuris tiesiogiai siejasi su praktiniais pasirinkimais pries rezervacija."
+              description="Pirmasis pasirinkimas tiems, kurie nori pradeti nuo naudingo skaitymo ir po jo lengviau apsispresti del kito zingsnio."
               align="left"
               className="max-w-3xl"
             />
@@ -96,12 +96,12 @@ export default async function BlogIndexPage() {
               </div>
             ) : featuredPost ? (
               <div className="rounded-[1.8rem] border border-border/60 bg-background px-6 py-8 text-center text-muted-foreground">
-                Kol kas publikuotas vienas straipsnis. Papildomi irasai atsiras cia, kai jie bus
-                aktyvuoti admin sistemoje.
+                Kol kas cia rasite viena pagrindini straipsni. Netrukus papildysime zurnala
+                naujomis temomis.
               </div>
             ) : (
               <div className="rounded-[1.8rem] border border-border/60 bg-background px-6 py-8 text-center text-muted-foreground">
-                Daugiau straipsniu atsiras, kai jie bus publikuoti admin sistemoje.
+                Nauji straipsniai ruošiami. Tuo metu kvieciame perziureti paslaugas arba filialus.
               </div>
             )}
           </div>
@@ -120,8 +120,8 @@ export default async function BlogIndexPage() {
                   Nuo redakcinio turinio prie aiskaus pasirinkimo.
                 </h2>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-[#c7b9ac] md:text-base">
-                  Jei ieskote praktinio kelio po skaitymo, pereikite i paslaugu arba filialu
-                  puslapius ir rinkites tolimesni zingsni be trukdziu.
+                  Jei straipsnis padejo susidelioti mintis, toliau galite ramiai pereiti prie
+                  paslaugu arba filialu ir issirinkti tai, kas jums labiausiai tinka.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">

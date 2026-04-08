@@ -1,10 +1,12 @@
 import { Locale, defaultLocale } from "@/i18n/locales";
+import type { PublicRouteKey } from "@/lib/site-routes";
 import { navDictionary, footerDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
 
 export interface NavItem {
   label: string;
   href: string;
+  routeKey?: PublicRouteKey;
 }
 
 export interface FooterNavItem {
@@ -18,12 +20,12 @@ export interface FooterNavItem {
 export function getMainNav(locale: Locale = defaultLocale): NavItem[] {
   const t = navDictionary[locale];
   return [
-    { label: t.services, href: getLocalizedRoute("services", locale) },
-    { label: t.branches, href: getLocalizedRoute("branches", locale) },
-    { label: t.gallery, href: getLocalizedRoute("gallery", locale) },
-    { label: t.about, href: getLocalizedRoute("about", locale) },
-    { label: t.blog, href: getLocalizedRoute("blog", locale) },
-    { label: t.contact, href: getLocalizedRoute("contact", locale) },
+    { label: t.services, href: getLocalizedRoute("services", locale), routeKey: "services" },
+    { label: t.branches, href: getLocalizedRoute("branches", locale), routeKey: "branches" },
+    { label: t.gallery, href: getLocalizedRoute("gallery", locale), routeKey: "gallery" },
+    { label: t.about, href: getLocalizedRoute("about", locale), routeKey: "about" },
+    { label: t.blog, href: getLocalizedRoute("blog", locale), routeKey: "blog" },
+    { label: t.contact, href: getLocalizedRoute("contact", locale), routeKey: "contact" },
   ];
 }
 

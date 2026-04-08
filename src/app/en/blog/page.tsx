@@ -16,7 +16,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Blog",
   description:
-    "Read published Picasso Barbershop articles about grooming, style, and choosing the right service or branch.",
+    "Read Picasso Barbershop journal articles on grooming, style, and practical choices before your next visit.",
   path: getLocalizedRoute("blog", "en"),
   locale: "en",
 });
@@ -31,14 +31,14 @@ export default async function EnBlogPage() {
       <PublicPageIntro
         eyebrow="Editorial journal"
         title="Articles on grooming, style, and clearer decisions before you book."
-        description="The Picasso Barbershop editorial index now reads from the live CMS and follows the same premium rhythm as the homepage, services, and branches flows."
+        description="This journal brings together calm, useful reading on cuts, care, and the small decisions that make the next appointment feel easier."
         stats={[
-          { label: "Published articles", value: String(transformedPosts.length) },
+          { label: "Articles", value: String(transformedPosts.length) },
           {
             label: "Categories",
             value: String(new Set(posts.map((post) => post.category)).size),
           },
-          { label: "Localization", value: "LT/EN" },
+          { label: "Focus", value: "Care and style" },
         ]}
       />
 
@@ -48,7 +48,7 @@ export default async function EnBlogPage() {
             <SectionHeading
               title="Featured article"
               subtitle="Editorial pick"
-              description="A strong starting point for readers who want practical editorial context before moving into a service or branch decision."
+              description="A strong place to begin if you want useful reading first and a clearer decision afterward."
               align="left"
               className="max-w-3xl"
             />
@@ -96,12 +96,11 @@ export default async function EnBlogPage() {
               </div>
             ) : featuredPost ? (
               <div className="rounded-[1.8rem] border border-border/60 bg-background px-6 py-8 text-center text-muted-foreground">
-                Only one article is published for now. Additional entries will appear here as they
-                are activated through the admin.
+                There is one main article here for now. More journal entries will be added soon.
               </div>
             ) : (
               <div className="rounded-[1.8rem] border border-border/60 bg-background px-6 py-8 text-center text-muted-foreground">
-                More articles will appear once they are published in the admin.
+                New articles are on the way. In the meantime, feel free to explore services or branches.
               </div>
             )}
           </div>
@@ -120,8 +119,8 @@ export default async function EnBlogPage() {
                   Move from editorial context into a clear next step.
                 </h2>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-[#c7b9ac] md:text-base">
-                  If you are ready to move beyond reading, continue to services or branches and
-                  make a practical selection without friction.
+                  If the article helped sharpen your thinking, continue into services or branches
+                  and choose what feels right for your next visit.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
