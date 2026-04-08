@@ -1,9 +1,14 @@
 import { defaultLocale, type Locale } from "@/i18n/locales";
 import { siteConfig } from "@/config/navigation";
+import { unstable_cache } from "next/cache";
 import { hasSupabaseAdminEnv } from "@/lib/supabase/env";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
 import { getOpeningHoursDayLabel } from "@/lib/opening-hours";
+import {
+  PUBLIC_CACHE_REVALIDATE_SECONDS,
+  PUBLIC_CACHE_TAGS,
+} from "@/lib/public-cache";
 import {
   getLocalizedDetailRoute,
   getLocalizedRoute,
@@ -295,6 +300,17 @@ async function runPublicQuery<T>(
     logPublicDataError(scope, error);
     return fallback;
   }
+}
+
+function createPublicDataCache<Args extends unknown[], T>(
+  key: string,
+  tags: string[],
+  query: (...args: Args) => Promise<T>,
+) : (...args: Args) => Promise<T> {
+  return unstable_cache(query, [key], {
+    revalidate: PUBLIC_CACHE_REVALIDATE_SECONDS,
+    tags,
+  }) as (...args: Args) => Promise<T>;
 }
 
 function getLocalizedFieldValue<T>(
@@ -647,8 +663,11 @@ export function getPromotionCtaText(
   return localizedCta || (locale === "en" ? "Learn more" : "Sužinoti daugiau");
 }
 
-export async function getSiteSettings() {
-  return runPublicQuery<PublicSiteSettings | null>(
+const getCachedSiteSettings = createPublicDataCache(
+  "site-settings",
+  [PUBLIC_CACHE_TAGS.siteSettings],
+  async () =>
+    runPublicQuery<PublicSiteSettings | null>(
     "site settings",
     null,
     async (client) =>
@@ -657,7 +676,11 @@ export async function getSiteSettings() {
         .select("*")
         .eq("settings_key", "default")
         .maybeSingle(),
-  );
+    ),
+);
+
+export async function getSiteSettings() {
+  return getCachedSiteSettings();
 }
 
 export async function getSiteSettingsWithDefaults(): Promise<SiteSettingsWithDefaults> {
@@ -696,8 +719,11 @@ export async function getSiteSettingsWithDefaults(): Promise<SiteSettingsWithDef
   };
 }
 
-export async function getPublishedServices(limit?: number) {
-  return runPublicQuery<PublicService[]>("services", [], async (client) => {
+const getCachedPublishedServices = createPublicDataCache(
+  "published-services",
+  [PUBLIC_CACHE_TAGS.services],
+  async (limit?: number) =>
+    runPublicQuery<PublicService[]>("services", [], async (client) => {
     let query = client
       .from("services")
       .select("*")
@@ -710,37 +736,58 @@ export async function getPublishedServices(limit?: number) {
     }
 
     return query;
-  });
+    }),
+);
+
+export async function getPublishedServices(limit?: number) {
+  return getCachedPublishedServices(limit);
 }
 
 export async function getFeaturedServices(limit = 6) {
   return getPublishedServices(limit);
 }
 
-export async function getServiceBySlug(slug: string) {
-  return runPublicQuery<PublicService | null>("service detail", null, async (client) =>
+const getCachedServiceBySlug = createPublicDataCache(
+  "service-by-slug",
+  [PUBLIC_CACHE_TAGS.services],
+  async (slug: string) =>
+    runPublicQuery<PublicService | null>("service detail", null, async (client) =>
     client
       .from("services")
       .select("*")
       .eq("is_published", true)
       .or(`slug_lt.eq.${slug},slug_en.eq.${slug}`)
       .maybeSingle(),
-  );
+    ),
+);
+
+export async function getServiceBySlug(slug: string) {
+  return getCachedServiceBySlug(slug);
 }
 
-export async function getServiceById(id: string) {
-  return runPublicQuery<PublicService | null>("service by id", null, async (client) =>
+const getCachedServiceById = createPublicDataCache(
+  "service-by-id",
+  [PUBLIC_CACHE_TAGS.services],
+  async (id: string) =>
+    runPublicQuery<PublicService | null>("service by id", null, async (client) =>
     client
       .from("services")
       .select("*")
       .eq("id", id)
       .eq("is_published", true)
       .maybeSingle(),
-  );
+    ),
+);
+
+export async function getServiceById(id: string) {
+  return getCachedServiceById(id);
 }
 
-export async function getActiveBranches(limit?: number) {
-  return runPublicQuery<PublicBranch[]>("branches", [], async (client) => {
+const getCachedActiveBranches = createPublicDataCache(
+  "active-branches",
+  [PUBLIC_CACHE_TAGS.branches],
+  async (limit?: number) =>
+    runPublicQuery<PublicBranch[]>("branches", [], async (client) => {
     let query = client
       .from("branches")
       .select("*")
@@ -752,33 +799,54 @@ export async function getActiveBranches(limit?: number) {
     }
 
     return query;
-  });
+    }),
+);
+
+export async function getActiveBranches(limit?: number) {
+  return getCachedActiveBranches(limit);
 }
 
-export async function getBranchBySlug(slug: string) {
-  return runPublicQuery<PublicBranch | null>("branch detail", null, async (client) =>
+const getCachedBranchBySlug = createPublicDataCache(
+  "branch-by-slug",
+  [PUBLIC_CACHE_TAGS.branches],
+  async (slug: string) =>
+    runPublicQuery<PublicBranch | null>("branch detail", null, async (client) =>
     client
       .from("branches")
       .select("*")
       .eq("is_active", true)
       .or(`slug_lt.eq.${slug},slug_en.eq.${slug}`)
       .maybeSingle(),
-  );
+    ),
+);
+
+export async function getBranchBySlug(slug: string) {
+  return getCachedBranchBySlug(slug);
 }
 
-export async function getBranchById(id: string) {
-  return runPublicQuery<PublicBranch | null>("branch by id", null, async (client) =>
+const getCachedBranchById = createPublicDataCache(
+  "branch-by-id",
+  [PUBLIC_CACHE_TAGS.branches],
+  async (id: string) =>
+    runPublicQuery<PublicBranch | null>("branch by id", null, async (client) =>
     client
       .from("branches")
       .select("*")
       .eq("id", id)
       .eq("is_active", true)
       .maybeSingle(),
-  );
+    ),
+);
+
+export async function getBranchById(id: string) {
+  return getCachedBranchById(id);
 }
 
-export async function getActiveSpecialists(limit?: number) {
-  return runPublicQuery<PublicSpecialist[]>("specialists", [], async (client) => {
+const getCachedActiveSpecialists = createPublicDataCache(
+  "active-specialists",
+  [PUBLIC_CACHE_TAGS.specialists],
+  async (limit?: number) =>
+    runPublicQuery<PublicSpecialist[]>("specialists", [], async (client) => {
     let query = client
       .from("specialists")
       .select("*")
@@ -791,26 +859,40 @@ export async function getActiveSpecialists(limit?: number) {
     }
 
     return query;
-  });
+    }),
+);
+
+export async function getActiveSpecialists(limit?: number) {
+  return getCachedActiveSpecialists(limit);
 }
 
 export async function getFeaturedSpecialists(limit = 4) {
   return getActiveSpecialists(limit);
 }
 
-export async function getSpecialistBySlug(slug: string) {
-  return runPublicQuery<PublicSpecialist | null>("specialist detail", null, async (client) =>
+const getCachedSpecialistBySlug = createPublicDataCache(
+  "specialist-by-slug",
+  [PUBLIC_CACHE_TAGS.specialists],
+  async (slug: string) =>
+    runPublicQuery<PublicSpecialist | null>("specialist detail", null, async (client) =>
     client
       .from("specialists")
       .select("*")
       .eq("is_active", true)
       .eq("slug", slug)
       .maybeSingle(),
-  );
+    ),
+);
+
+export async function getSpecialistBySlug(slug: string) {
+  return getCachedSpecialistBySlug(slug);
 }
 
-export async function getVisibleGalleryItems(limit?: number) {
-  return runPublicQuery<PublicGalleryItem[]>("gallery items", [], async (client) => {
+const getCachedVisibleGalleryItems = createPublicDataCache(
+  "visible-gallery-items",
+  [PUBLIC_CACHE_TAGS.gallery],
+  async (limit?: number) =>
+    runPublicQuery<PublicGalleryItem[]>("gallery items", [], async (client) => {
     let query = client
       .from("gallery_items")
       .select("*")
@@ -823,15 +905,22 @@ export async function getVisibleGalleryItems(limit?: number) {
     }
 
     return query;
-  });
+    }),
+);
+
+export async function getVisibleGalleryItems(limit?: number) {
+  return getCachedVisibleGalleryItems(limit);
 }
 
 export async function getFeaturedGalleryItems(limit = 6) {
   return getVisibleGalleryItems(limit);
 }
 
-export async function getVisibleTestimonials(limit?: number) {
-  return runPublicQuery<PublicTestimonial[]>("testimonials", [], async (client) => {
+const getCachedVisibleTestimonials = createPublicDataCache(
+  "visible-testimonials",
+  [PUBLIC_CACHE_TAGS.testimonials],
+  async (limit?: number) =>
+    runPublicQuery<PublicTestimonial[]>("testimonials", [], async (client) => {
     let query = client
       .from("testimonials")
       .select("*")
@@ -844,11 +933,18 @@ export async function getVisibleTestimonials(limit?: number) {
     }
 
     return query;
-  });
+    }),
+);
+
+export async function getVisibleTestimonials(limit?: number) {
+  return getCachedVisibleTestimonials(limit);
 }
 
-export async function getPublishedBlogPosts(limit?: number) {
-  return runPublicQuery<PublicBlogPost[]>("blog posts", [], async (client) => {
+const getCachedPublishedBlogPosts = createPublicDataCache(
+  "published-blog-posts",
+  [PUBLIC_CACHE_TAGS.blog],
+  async (limit?: number) =>
+    runPublicQuery<PublicBlogPost[]>("blog posts", [], async (client) => {
     let query = client
       .from("blog_posts")
       .select("*")
@@ -862,23 +958,37 @@ export async function getPublishedBlogPosts(limit?: number) {
     }
 
     return query;
-  });
+    }),
+);
+
+export async function getPublishedBlogPosts(limit?: number) {
+  return getCachedPublishedBlogPosts(limit);
 }
 
-export async function getBlogPostBySlug(slug: string) {
-  return runPublicQuery<PublicBlogPost | null>("blog detail", null, async (client) =>
+const getCachedBlogPostBySlug = createPublicDataCache(
+  "blog-post-by-slug",
+  [PUBLIC_CACHE_TAGS.blog],
+  async (slug: string) =>
+    runPublicQuery<PublicBlogPost | null>("blog detail", null, async (client) =>
     client
       .from("blog_posts")
       .select("*")
       .eq("is_published", true)
       .or(`slug_lt.eq.${slug},slug_en.eq.${slug}`)
       .maybeSingle(),
-  );
+    ),
+);
+
+export async function getBlogPostBySlug(slug: string) {
+  return getCachedBlogPostBySlug(slug);
 }
 
-export async function getActivePromotions(limit?: number) {
-  const now = new Date();
-  const promotions = await runPublicQuery<PublicPromotion[]>(
+const getCachedActivePromotions = createPublicDataCache(
+  "active-promotions",
+  [PUBLIC_CACHE_TAGS.promotions],
+  async (limit?: number) => {
+    const now = new Date();
+    const promotions = await runPublicQuery<PublicPromotion[]>(
     "promotions",
     [],
     async (client) => {
@@ -895,26 +1005,34 @@ export async function getActivePromotions(limit?: number) {
 
       return query;
     },
-  );
+    );
 
-  return promotions.filter((promotion) => {
-    const startsAt = promotion.starts_at ? new Date(promotion.starts_at) : null;
-    const endsAt = promotion.ends_at ? new Date(promotion.ends_at) : null;
+    return promotions.filter((promotion) => {
+      const startsAt = promotion.starts_at ? new Date(promotion.starts_at) : null;
+      const endsAt = promotion.ends_at ? new Date(promotion.ends_at) : null;
 
-    if (startsAt && startsAt > now) {
-      return false;
-    }
+      if (startsAt && startsAt > now) {
+        return false;
+      }
 
-    if (endsAt && endsAt < now) {
-      return false;
-    }
+      if (endsAt && endsAt < now) {
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    });
+  },
+);
+
+export async function getActivePromotions(limit?: number) {
+  return getCachedActivePromotions(limit);
 }
 
-export async function getAvailableBranchesForService(serviceId: string) {
-  const availability = await runPublicQuery<{ branch_id: string }[]>(
+const getCachedAvailableBranchesForService = createPublicDataCache(
+  "available-branches-for-service",
+  [PUBLIC_CACHE_TAGS.services, PUBLIC_CACHE_TAGS.branches],
+  async (serviceId: string) => {
+    const availability = await runPublicQuery<{ branch_id: string }[]>(
     "service availability",
     [],
     async (client) =>
@@ -922,27 +1040,35 @@ export async function getAvailableBranchesForService(serviceId: string) {
         .from("service_branch_availability")
         .select("branch_id")
         .eq("service_id", serviceId)
-        .eq("is_available", true),
-  );
+      .eq("is_available", true),
+    );
 
-  const branchIds = availability.map((item) => item.branch_id).filter(Boolean);
+    const branchIds = availability.map((item) => item.branch_id).filter(Boolean);
 
-  if (branchIds.length === 0) {
-    return [];
-  }
+    if (branchIds.length === 0) {
+      return [];
+    }
 
-  return runPublicQuery<PublicBranch[]>("service branches", [], async (client) =>
-    client
-      .from("branches")
-      .select("*")
-      .in("id", branchIds)
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true }),
-  );
+    return runPublicQuery<PublicBranch[]>("service branches", [], async (client) =>
+      client
+        .from("branches")
+        .select("*")
+        .in("id", branchIds)
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true }),
+    );
+  },
+);
+
+export async function getAvailableBranchesForService(serviceId: string) {
+  return getCachedAvailableBranchesForService(serviceId);
 }
 
-export async function getAvailableServicesForBranch(branchId: string) {
-  const availability = await runPublicQuery<{ service_id: string }[]>(
+const getCachedAvailableServicesForBranch = createPublicDataCache(
+  "available-services-for-branch",
+  [PUBLIC_CACHE_TAGS.services, PUBLIC_CACHE_TAGS.branches],
+  async (branchId: string) => {
+    const availability = await runPublicQuery<{ service_id: string }[]>(
     "branch availability",
     [],
     async (client) =>
@@ -950,27 +1076,35 @@ export async function getAvailableServicesForBranch(branchId: string) {
         .from("service_branch_availability")
         .select("service_id")
         .eq("branch_id", branchId)
-        .eq("is_available", true),
-  );
+      .eq("is_available", true),
+    );
 
-  const serviceIds = availability.map((item) => item.service_id).filter(Boolean);
+    const serviceIds = availability.map((item) => item.service_id).filter(Boolean);
 
-  if (serviceIds.length === 0) {
-    return [];
-  }
+    if (serviceIds.length === 0) {
+      return [];
+    }
 
-  return runPublicQuery<PublicService[]>("branch services", [], async (client) =>
-    client
-      .from("services")
-      .select("*")
-      .in("id", serviceIds)
-      .eq("is_published", true)
-      .order("sort_order", { ascending: true }),
-  );
+    return runPublicQuery<PublicService[]>("branch services", [], async (client) =>
+      client
+        .from("services")
+        .select("*")
+        .in("id", serviceIds)
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true }),
+    );
+  },
+);
+
+export async function getAvailableServicesForBranch(branchId: string) {
+  return getCachedAvailableServicesForBranch(branchId);
 }
 
-export async function getGalleryItemsForService(serviceId: string, limit = 6) {
-  return runPublicQuery<PublicGalleryItem[]>("service gallery", [], async (client) =>
+const getCachedGalleryItemsForService = createPublicDataCache(
+  "gallery-items-for-service",
+  [PUBLIC_CACHE_TAGS.gallery, PUBLIC_CACHE_TAGS.services],
+  async (serviceId: string, limit: number = 6) =>
+    runPublicQuery<PublicGalleryItem[]>("service gallery", [], async (client) =>
     client
       .from("gallery_items")
       .select("*")
@@ -979,11 +1113,18 @@ export async function getGalleryItemsForService(serviceId: string, limit = 6) {
       .order("is_featured", { ascending: false })
       .order("sort_order", { ascending: true })
       .limit(limit),
-  );
+    ),
+);
+
+export async function getGalleryItemsForService(serviceId: string, limit = 6) {
+  return getCachedGalleryItemsForService(serviceId, limit);
 }
 
-export async function getGalleryItemsForBranch(branchId: string, limit = 6) {
-  return runPublicQuery<PublicGalleryItem[]>("branch gallery", [], async (client) =>
+const getCachedGalleryItemsForBranch = createPublicDataCache(
+  "gallery-items-for-branch",
+  [PUBLIC_CACHE_TAGS.gallery, PUBLIC_CACHE_TAGS.branches],
+  async (branchId: string, limit: number = 6) =>
+    runPublicQuery<PublicGalleryItem[]>("branch gallery", [], async (client) =>
     client
       .from("gallery_items")
       .select("*")
@@ -992,11 +1133,18 @@ export async function getGalleryItemsForBranch(branchId: string, limit = 6) {
       .order("is_featured", { ascending: false })
       .order("sort_order", { ascending: true })
       .limit(limit),
-  );
+    ),
+);
+
+export async function getGalleryItemsForBranch(branchId: string, limit = 6) {
+  return getCachedGalleryItemsForBranch(branchId, limit);
 }
 
-export async function getBlogPostsForService(serviceId: string, limit = 3) {
-  return runPublicQuery<PublicBlogPost[]>("service blog posts", [], async (client) =>
+const getCachedBlogPostsForService = createPublicDataCache(
+  "blog-posts-for-service",
+  [PUBLIC_CACHE_TAGS.blog, PUBLIC_CACHE_TAGS.services],
+  async (serviceId: string, limit: number = 3) =>
+    runPublicQuery<PublicBlogPost[]>("service blog posts", [], async (client) =>
     client
       .from("blog_posts")
       .select("*")
@@ -1005,11 +1153,18 @@ export async function getBlogPostsForService(serviceId: string, limit = 3) {
       .not("published_at", "is", null)
       .order("published_at", { ascending: false })
       .limit(limit),
-  );
+    ),
+);
+
+export async function getBlogPostsForService(serviceId: string, limit = 3) {
+  return getCachedBlogPostsForService(serviceId, limit);
 }
 
-export async function getBlogPostsForBranch(branchId: string, limit = 3) {
-  return runPublicQuery<PublicBlogPost[]>("branch blog posts", [], async (client) =>
+const getCachedBlogPostsForBranch = createPublicDataCache(
+  "blog-posts-for-branch",
+  [PUBLIC_CACHE_TAGS.blog, PUBLIC_CACHE_TAGS.branches],
+  async (branchId: string, limit: number = 3) =>
+    runPublicQuery<PublicBlogPost[]>("branch blog posts", [], async (client) =>
     client
       .from("blog_posts")
       .select("*")
@@ -1018,7 +1173,11 @@ export async function getBlogPostsForBranch(branchId: string, limit = 3) {
       .not("published_at", "is", null)
       .order("published_at", { ascending: false })
       .limit(limit),
-  );
+    ),
+);
+
+export async function getBlogPostsForBranch(branchId: string, limit = 3) {
+  return getCachedBlogPostsForBranch(branchId, limit);
 }
 
 export function transformServiceForCard(

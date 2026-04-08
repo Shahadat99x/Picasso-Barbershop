@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,6 @@ import type { Database } from "@/lib/supabase/types";
 type SiteSettings = Database["public"]["Tables"]["site_settings"]["Row"];
 
 export function SettingsForm({ initialData }: { initialData?: SiteSettings | null }) {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);

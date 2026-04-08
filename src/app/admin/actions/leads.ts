@@ -4,10 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
-import type { Database } from "@/lib/supabase/types";
 import type { LeadStatus } from "@/lib/supabase/types";
-
-type LeadUpdate = Database["public"]["Tables"]["leads"]["Update"];
 
 export async function getLeads() {
   await requireAuthenticatedAdminUser();

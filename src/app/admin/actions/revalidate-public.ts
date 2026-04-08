@@ -1,5 +1,6 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import type { Database } from "@/lib/supabase/types";
 import { getLocalizedDetailRoute, getLocalizedRoute } from "@/lib/site-routes";
 
@@ -10,6 +11,10 @@ type PromotionRow = Database["public"]["Tables"]["promotions"]["Row"];
 
 function revalidatePublicPaths(paths: string[]) {
   [...new Set(paths)].forEach((path) => revalidatePath(path));
+}
+
+function revalidatePublicTags(tags: string[]) {
+  [...new Set(tags)].forEach((tag) => revalidateTag(tag, "max"));
 }
 
 export function revalidateServicePublicPaths(service?: Pick<ServiceRow, "slug_lt" | "slug_en"> | null) {
@@ -31,6 +36,7 @@ export function revalidateServicePublicPaths(service?: Pick<ServiceRow, "slug_lt
   }
 
   revalidatePublicPaths(paths);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.services]);
 }
 
 export function revalidateBranchPublicPaths(branch?: Pick<BranchRow, "slug_lt" | "slug_en"> | null) {
@@ -56,6 +62,7 @@ export function revalidateBranchPublicPaths(branch?: Pick<BranchRow, "slug_lt" |
   }
 
   revalidatePublicPaths(paths);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.branches]);
 }
 
 export function revalidateSpecialistPublicPaths(
@@ -74,6 +81,7 @@ export function revalidateSpecialistPublicPaths(
   }
 
   revalidatePublicPaths(paths);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.specialists]);
 }
 
 export function revalidatePromotionPublicPaths(_promotion?: Pick<PromotionRow, "id"> | null) {
@@ -82,4 +90,47 @@ export function revalidatePromotionPublicPaths(_promotion?: Pick<PromotionRow, "
     getLocalizedRoute("home", "lt"),
     getLocalizedRoute("home", "en"),
   ]);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.promotions]);
+}
+
+export function revalidateBlogPublicPaths() {
+  revalidatePublicPaths([
+    getLocalizedRoute("home", "lt"),
+    getLocalizedRoute("home", "en"),
+    getLocalizedRoute("blog", "lt"),
+    getLocalizedRoute("blog", "en"),
+  ]);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.blog]);
+}
+
+export function revalidateGalleryPublicPaths() {
+  revalidatePublicPaths([
+    getLocalizedRoute("home", "lt"),
+    getLocalizedRoute("home", "en"),
+    getLocalizedRoute("gallery", "lt"),
+    getLocalizedRoute("gallery", "en"),
+  ]);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.gallery]);
+}
+
+export function revalidateSiteSettingsPublicPaths() {
+  revalidatePublicPaths([
+    getLocalizedRoute("home", "lt"),
+    getLocalizedRoute("home", "en"),
+    getLocalizedRoute("about", "lt"),
+    getLocalizedRoute("about", "en"),
+    getLocalizedRoute("contact", "lt"),
+    getLocalizedRoute("contact", "en"),
+    "/",
+    "/en",
+  ]);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.siteSettings]);
+}
+
+export function revalidateTestimonialPublicPaths() {
+  revalidatePublicPaths([
+    getLocalizedRoute("home", "lt"),
+    getLocalizedRoute("home", "en"),
+  ]);
+  revalidatePublicTags([PUBLIC_CACHE_TAGS.testimonials]);
 }

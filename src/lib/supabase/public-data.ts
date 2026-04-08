@@ -5,14 +5,6 @@
  */
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { Database } from "@/lib/supabase/types";
-
-type Branch = Database["public"]["Tables"]["branches"]["Row"];
-type Service = Database["public"]["Tables"]["services"]["Row"];
-type GalleryItem = Database["public"]["Tables"]["gallery_items"]["Row"];
-type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
-type Testimonial = Database["public"]["Tables"]["testimonials"]["Row"];
-type Promotion = Database["public"]["Tables"]["promotions"]["Row"];
 
 /**
  * Get all active branches

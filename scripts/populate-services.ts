@@ -2,9 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Minimal types for the script
-type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
-
 // Service data from user
 const rawServices = [
   {
