@@ -28,49 +28,56 @@ export function SiteHeader({
   const displayName = businessName || "Picasso Barbershop";
   const bookUrl = bookingUrl || "/kontaktai";
   const homeHref = getLocalizedRoute("home", locale);
-  
+
   return (
-    <header className="site-header sticky top-0 z-40 w-full border-b border-white/8 bg-background/72 shadow-[0_8px_28px_rgba(17,17,17,0.06)] backdrop-blur-xl">
-      <Container className="flex h-20 items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
+    <header className="site-header sticky top-0 z-40 w-full px-2 pt-3 sm:px-3 sm:pt-4">
+      <Container className="px-0 md:px-0 lg:px-0">
+        <div className="flex min-h-[4.75rem] items-center justify-between gap-3 rounded-[1.85rem] border border-[#e5d7c8]/80 bg-[rgba(249,246,240,0.82)] px-4 py-3 shadow-[0_10px_30px_rgba(46,33,20,0.08)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(249,246,240,0.72)] sm:px-5 lg:min-h-[5.25rem] lg:px-6">
           <Link
             href={homeHref}
-            className="flex items-center gap-3 text-2xl font-bold tracking-tight transition-opacity hover:opacity-90"
+            className="flex min-w-0 items-center gap-3 rounded-full pr-2 text-foreground transition-colors hover:text-primary"
           >
             {logoUrl ? (
-              <div className="relative h-10 w-10 overflow-hidden rounded-full border border-border/60 bg-background">
+              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[#ddd0c0]/80 bg-white/80 shadow-[0_6px_16px_rgba(67,49,29,0.08)]">
                 <Image
                   src={logoUrl}
                   alt={displayName}
                   fill
-                  sizes="40px"
-                  className="object-contain p-1"
+                  sizes="44px"
+                  className="object-contain p-1.5"
                 />
               </div>
             ) : null}
-            <span>{displayName}</span>
+            <div className="min-w-0">
+              <span className="block truncate text-[1.05rem] font-semibold tracking-[0.04em] text-foreground sm:text-[1.125rem] lg:text-[1.2rem]">
+                {displayName}
+              </span>
+            </div>
           </Link>
+
+          <nav
+            className="hidden min-[840px]:flex items-center rounded-full border border-[#e4d8ca]/90 bg-white/58 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
+            aria-label={locale === "en" ? "Primary navigation" : "Pagrindine navigacija"}
+          >
+            <PublicNavLinks items={nav} locale={locale} />
+          </nav>
+
+          <div className="hidden min-[840px]:flex items-center gap-3 lg:gap-4">
+            <LanguageSwitcher />
+            <Link href={bookUrl}>
+              <PrimaryButton className="h-11 rounded-full border border-[#1f1712]/5 bg-primary px-5 text-sm font-semibold shadow-[0_10px_24px_rgba(32,24,18,0.16)] hover:bg-primary/92 lg:px-6">
+                {t.book}
+              </PrimaryButton>
+            </Link>
+          </div>
+
+          <MobileNav
+            locale={locale}
+            businessName={displayName}
+            bookingHref={bookUrl}
+            logoUrl={logoUrl}
+          />
         </div>
-
-        {/* Desktop Nav */}
-        <nav className="hidden min-[840px]:flex items-center gap-2 lg:gap-3" aria-label={locale === "en" ? "Primary navigation" : "Pagrindine navigacija"}>
-          <PublicNavLinks items={nav} locale={locale} />
-        </nav>
-
-        <div className="hidden min-[840px]:flex items-center gap-4 lg:gap-6">
-          <LanguageSwitcher />
-          <Link href={bookUrl}>
-            <PrimaryButton className="h-10 px-5 text-sm lg:px-6">{t.book}</PrimaryButton>
-          </Link>
-        </div>
-
-        {/* Mobile Nav */}
-        <MobileNav
-          locale={locale}
-          businessName={displayName}
-          bookingHref={bookUrl}
-          logoUrl={logoUrl}
-        />
       </Container>
     </header>
   );

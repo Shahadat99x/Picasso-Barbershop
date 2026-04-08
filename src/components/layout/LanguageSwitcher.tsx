@@ -69,7 +69,7 @@ export function LanguageSwitcher({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border border-border/60 bg-background/88 p-1 shadow-sm shadow-black/5",
+        "inline-flex items-center rounded-full border border-[#e3d6c8]/85 bg-white/64 p-1 shadow-[0_8px_18px_rgba(52,38,24,0.07)]",
         className,
       )}
       role="group"
@@ -80,10 +80,10 @@ export function LanguageSwitcher({
         type="button"
         onClick={() => switchLocale("lt")}
         className={cn(
-          "rounded-full px-3 py-1.5 text-sm font-semibold transition-colors",
+          "rounded-full px-3.5 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.22em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
           currentLocale === "lt"
-            ? "bg-secondary text-foreground"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-[#f1e6d8] text-foreground shadow-[0_6px_14px_rgba(61,45,29,0.09)]"
+            : "text-muted-foreground hover:bg-white/72 hover:text-foreground"
         )}
         aria-pressed={currentLocale === "lt"}
         aria-label="Switch to Lithuanian"
@@ -94,10 +94,10 @@ export function LanguageSwitcher({
         type="button"
         onClick={() => switchLocale("en")}
         className={cn(
-          "rounded-full px-3 py-1.5 text-sm font-semibold transition-colors",
+          "rounded-full px-3.5 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.22em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
           currentLocale === "en"
-            ? "bg-secondary text-foreground"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-[#f1e6d8] text-foreground shadow-[0_6px_14px_rgba(61,45,29,0.09)]"
+            : "text-muted-foreground hover:bg-white/72 hover:text-foreground"
         )}
         aria-pressed={currentLocale === "en"}
         aria-label="Switch to English"
