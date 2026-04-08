@@ -321,3 +321,11 @@ Admin sidebar branding block is hidden on sub-lg screens.
 Reason:
 
 On mobile and tablet, the sidebar renders as a horizontal scrolling navigation strip. The full branding block (logo, name, description paragraph) consumed too much vertical space in this mode without adding navigation value. Hiding it below lg frees space for content. The compact navigation items also use reduced padding and icon sizes on smaller screens for better density.
+
+## Decision 041
+
+Public-facing copy on the marketing site must remain customer-facing and must not explain CMS, admin, data-model, or implementation details.
+
+Reason:
+
+The public website is the highest-priority product surface and needs to read like a finished premium brand experience, not a product handoff or system demo. Editorially, the site should speak about craft, trust, atmosphere, services, branches, and direct contact rather than how content is stored or managed behind the scenes.

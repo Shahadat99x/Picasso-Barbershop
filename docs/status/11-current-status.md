@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase 4 — Admin responsiveness and usability hardening (Completed)
+Phase 5.5 - Public frontend editorial and copy cleanup (Completed)
 
-This phase made the admin dashboard and all CRUD module screens genuinely usable on tablets and mobile devices. Sidebar navigation, dashboard cards, module list tables, forms, and action buttons now respond properly to smaller viewports.
+This phase removed developer, demo, and system-style wording from the key public marketing pages and replaced it with calmer, customer-facing salon copy in both Lithuanian and English. Shared CTA wording now follows the current branch-first direction, and placeholder text no longer leaks onto public cards when media is missing.
 
 ## Completed Phases
 
@@ -29,6 +29,7 @@ This phase made the admin dashboard and all CRUD module screens genuinely usable
 - Phase 5b - Localized SEO expansion
 - Phase 5d - Public data wiring and route integrity
 - Phase 4 (responsive) - Admin responsiveness and usability hardening
+- Phase 5.5 - Public frontend editorial and copy cleanup
 
 ## In Progress
 
@@ -61,6 +62,20 @@ These surfaces remain intentionally static/editorial for now:
 - homepage why-choose-us/value framing
 - homepage final CTA copy
 - about page story/value/closing CTA copy
+
+## Phase 5.5 Delivery Summary
+
+Public editorial cleanup:
+
+- homepage, services, branches, gallery, about, and contact pages were rewritten to sound customer-facing instead of implementation-facing
+- LT and EN metadata on the touched index pages now describe the brand, services, branches, and contact journey without referencing admin/CMS behavior
+- empty states on the touched public pages now read like polished customer-facing fallbacks instead of admin activation notices
+
+Shared public language alignment:
+
+- global header/mobile booking CTA wording now aligns to the branch-first direction (`Aplankyti filialą` / `Visit branch`)
+- hero and page-level service-discovery CTAs now use service exploration wording instead of generic or inconsistent labels
+- branch card fallback labels and public card media fallbacks were cleaned up so missing images do not show placeholder copy
 
 ## Phase 5d Delivery Summary
 
