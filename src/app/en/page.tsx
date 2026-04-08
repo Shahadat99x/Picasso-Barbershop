@@ -38,7 +38,7 @@ import { createLocalBusinessSchema } from "@/lib/schema";
 export const metadata = createLocalizedPageMetadata({
   title: "Premium salon in Vilnius",
   description:
-    "Discover premium services, three Vilnius branches, real client testimonials, and an easy booking path with Picasso Barbershop.",
+    "Discover premium services, three Vilnius branches, real client testimonials, and the calm, polished Picasso Barbershop experience.",
   path: "/",
   locale: "en",
 });
@@ -86,8 +86,8 @@ export default async function EnHomePage() {
           <Container>
             <SectionHeading
               title="Signature services"
-              subtitle="Selected from real CMS-managed offerings"
-              description="A concise edit of real services managed in the CMS, with a stronger focus on craft, finish quality, and appointment feel."
+              subtitle="Popular choices for a polished everyday look"
+              description="A concise edit for clients who want to understand where to start and choose a service by result, timing, and overall finish."
               align="left"
               className="max-w-3xl"
             />

@@ -38,7 +38,7 @@ import { createLocalBusinessSchema } from "@/lib/schema";
 export const metadata = createLocalizedPageMetadata({
   title: "Premium grozio salonas Vilniuje",
   description:
-    "Atraskite premium paslaugas, tris Vilniaus filialus, tikrus klientu atsiliepimus ir patogu rezervacijos kelia su Picasso Barbershop.",
+    "Atraskite premium paslaugas, tris Vilniaus filialus, tikrus klientu atsiliepimus ir uztikrinta Picasso Barbershop patirti.",
   path: "/",
   locale: "lt",
 });
@@ -86,8 +86,8 @@ export default async function HomePage() {
           <Container>
             <SectionHeading
               title="Pagrindines paslaugos"
-              subtitle="Pasirinktos pagal tai, ka klientai renkasi dazniausiai"
-              description="Trumpa atranka is realiai administruojamu paslaugu, kur meistriskumas, tempas ir rezultato kokybe svarbiausi nuo pirmo zvilgsnio."
+              subtitle="Populiariausi pasirinkimai kasdieniam stiliui"
+              description="Trumpa atranka tiems, kurie nori greitai suprasti, nuo ko pradeti, ir issirinkti paslauga pagal rezultata, laika bei prieziuros ritma."
               align="left"
               className="max-w-3xl"
             />

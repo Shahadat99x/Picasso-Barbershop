@@ -17,12 +17,12 @@ import {
   getLocalizedContent,
   transformSpecialistForCard,
 } from "@/lib/public-data";
-import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Apie mus",
   description:
-    "Susipazinkite su Picasso Barbershop istorija, komanda ir tuo, kaip premium patirtis valdoma per kelis filialus Vilniuje.",
+    "Susipazinkite su Picasso Barbershop istorija, komanda ir principais, kurie kuria ramu, uztikrinta premium aptarnavima Vilniuje.",
   path: getLocalizedRoute("about", "lt"),
   locale: "lt",
 });
@@ -78,11 +78,11 @@ export default async function AboutPage() {
       <PublicPageIntro
         eyebrow="Apie zenkla"
         title="Prekinis zenklas, pastatytas ant ramaus darbo, nuoseklumo ir pasitikejimo."
-        description="Picasso Barbershop istorija pateikiama tuo paciu premium ritmu kaip ir pagrindiniai paslaugu bei filialu puslapiai, o komandos perziura lieka prijungta prie realaus specialistu modulio."
+        description="Picasso Barbershop istorija prasideda nuo amato, pagarbos laikui ir nuoseklaus darbo, prie kurio klientai nori grizti vel ir vel."
         stats={[
           { label: "Vilniaus filialai", value: String(branches.length) },
-          { label: "Rodyti specialistai", value: String(specialists.length) },
-          { label: "Turinio modelis", value: "LT/EN" },
+          { label: "Komandos veidai", value: String(specialists.length) },
+          { label: "Pagrindas", value: "Pasitikejimas" },
         ]}
       />
 
@@ -100,12 +100,12 @@ export default async function AboutPage() {
                 <p>
                   Kiekvienas filialas islaiko ta pati kokybes standarta, taciau prisitaiko prie
                   savo miesto ritmo. Tai reiskia ne tik stiliaus ar interjero krypti, bet ir
-                  aisku paslaugu pateikima, konsultacijos logika bei rezervacijos patirti.
+                  aisku paslaugu pateikima, konsultacijos eiga ir aptarnavimo nuosekluma.
                 </p>
                 <p>
-                  Viesas puslapis siandien atspindi ta pacia tvarka: nuo pirmo ispudzio iki
-                  paslaugos ar filialo pasirinkimo viskas sukurta taip, kad klientui nereiketu
-                  spelioti, koks bus kitas zingsnis.
+                  Mums svarbu, kad klientas jaustusi uztikrintai nuo pirmo zvilgsnio iki
+                  paskutines detales prie veidrodzio. Del to daug demesio skiriame ne tik
+                  rezultatui, bet ir tam, kaip visa patirtis jauciasi vizito metu.
                 </p>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default async function AboutPage() {
           <SectionHeading
             title="Kodel klientai renkasi mus"
             subtitle="Vertes"
-            description="Pagrindiniai principai, kurie formuoja ir paslaugu kokybe, ir visa viesa Picasso Barbershop patirti."
+            description="Pagrindiniai principai, kurie formuoja tiek paslaugu kokybe, tiek pasitikejima, kuri klientai jaucia kiekvieno apsilankymo metu."
             align="left"
             className="max-w-3xl"
           />
@@ -174,8 +174,8 @@ export default async function AboutPage() {
           <Container>
             <SectionHeading
               title="Komandos perziura"
-              subtitle="CMS valdomi specialistai"
-              description="Trumpa specialistu perziura is realaus turinio modulio, skirta pasitikejimui ir bendram komandos lygiui perteikti."
+              subtitle="Zmones uz kedes"
+              description="Trumpa pazintis su meistrais, kuriu darbas remiasi tikslumu, ramiu bendravimu ir nuosekliu rezultatu."
               align="left"
               className="max-w-3xl"
             />

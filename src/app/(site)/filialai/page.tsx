@@ -9,7 +9,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Filialai",
   description:
-    "Perziurekite visus aktyvius Picasso Barbershop filialus, ju kontaktus, darbo laika ir rezervacijos galimybes Vilniuje.",
+    "Atraskite Picasso Barbershop filialus Vilniuje ir issirinkite lokacija pagal patoguma, atmosfera bei kasdienio marsruto ritma.",
   path: getLocalizedRoute("branches", "lt"),
   locale: "lt",
 });
@@ -23,11 +23,11 @@ export default async function BranchesIndexPage() {
       <PublicPageIntro
         eyebrow="Vilniaus lokacijos"
         title="Pasirinkite filiala taip, kaip rinktumes jusu ritmui."
-        description="Kiekvienas aktyvus filialas naudoja realius administruojamus duomenis ir leidzia greitai ivertinti vieta, atmosfera bei rezervacijos kelia."
+        description="Kiekvienas filialas islaiko ta pati paslaugu standarta, taciau skirtingai tinka pagal miesto dali, dienos tempa ir jums patogiausia sustojima."
         stats={[
-          { label: "Aktyvus filialai", value: String(branchCards.length) },
+          { label: "Filialai", value: String(branchCards.length) },
           { label: "Miestas", value: "Vilnius" },
-          { label: "Rezervacija", value: "Greita" },
+          { label: "Apsilankymas", value: "Tiesiogiai" },
         ]}
       />
 
@@ -49,8 +49,8 @@ export default async function BranchesIndexPage() {
             </div>
           ) : (
             <div className="rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-              Aktyviu filialu dar nera. Jie atsiras cia, kai bus sukurti arba ijungti
-              admin sistemoje.
+              Siuo metu atnaujiname filialu informacija. Jei reikia pagalbos renkantis,
+              susisiekite su mumis telefonu.
             </div>
           )}
         </div>

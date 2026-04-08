@@ -1,7 +1,7 @@
 import React from "react";
 import { Locale, defaultLocale } from "@/i18n/locales";
 import { PublicHeroSignature } from "@/components/public/hero/public-hero-signature";
-import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
+import { getLocalizedRoute } from "@/lib/site-routes";
 
 const heroImage = {
   src: "/images/hero/picasso-team-hero.jpg",
@@ -25,7 +25,7 @@ const heroContent: Record<
     description:
       "Preciziski kirpimai, astrus barzdos formavimas ir premium barbershop atmosfera, sukurta pasitikejimui ir detalems.",
     cta: "Aplankyti filialą",
-    secondaryCta: "Musu paslaugos",
+    secondaryCta: "Ziureti paslaugas",
     imageAlt: "Picasso Barbershop komanda salone",
   },
   en: {
@@ -34,7 +34,7 @@ const heroContent: Record<
     description:
       "Expert cuts, sharp beard work, and a premium barbershop atmosphere designed around confidence and detail.",
     cta: "Visit branch",
-    secondaryCta: "Our Services",
+    secondaryCta: "Explore services",
     imageAlt: "Picasso Barbershop team inside the salon",
   },
 };

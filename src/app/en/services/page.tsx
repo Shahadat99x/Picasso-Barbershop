@@ -14,7 +14,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Services",
   description:
-    "Browse CMS-managed service listings, prices, and durations across every public Picasso Barbershop branch page.",
+    "Browse Picasso Barbershop services, prices, and timings so you can choose the right appointment across our Vilnius branches.",
   path: getLocalizedRoute("services", "en"),
   locale: "en",
 });
@@ -38,9 +38,9 @@ export default async function EnServicesPage() {
       <PublicPageIntro
         eyebrow="Service collection"
         title="Services arranged with clarity and a premium feel."
-        description="Browse the live Picasso Barbershop service catalogue with real pricing, durations, and a cleaner route from discovery into booking."
+        description="Browse services by result, timing, and branch fit so it is easy to choose the right visit with confidence."
         stats={[
-          { label: "Published services", value: String(services.length) },
+          { label: "Service options", value: String(services.length) },
           { label: "Categories", value: String(categoryEntries.length) },
           { label: "City", value: "Vilnius" },
         ]}
@@ -57,7 +57,7 @@ export default async function EnServicesPage() {
                 <SectionHeading
                   title={category}
                   subtitle="Category"
-                  description={`This group includes ${categoryServices.length} live services, making it easier to scan price, timing, and fit before you book.`}
+                  description={`This group includes ${categoryServices.length} options, making it easier to compare price, timing, and fit before your visit.`}
                   align="left"
                   className="max-w-3xl"
                 />
@@ -85,8 +85,8 @@ export default async function EnServicesPage() {
           <Section className="bg-background">
             <Container>
               <div className="rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-                No services are published yet. This section will populate once content is
-                activated in the admin.
+                The service list is being refreshed at the moment. Contact your preferred
+                branch if you would like a quick recommendation.
               </div>
             </Container>
           </Section>
