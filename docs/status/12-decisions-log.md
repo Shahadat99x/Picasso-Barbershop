@@ -337,3 +337,11 @@ Public header and navigation UX should be clarified through stronger active-page
 Reason:
 
 The existing header already matches the intended IA, but users need a clearer signal about where they are and a calmer, more intentional language-switching control. Strengthening active-state feedback and switcher presentation improves usability on both desktop and mobile while preserving the LT-default and `/en` route strategy.
+
+## Decision 043
+
+The public header uses a floating rounded shell with grouped navigation, while Home remains implicit through the brand/logo link instead of becoming a separate top-level nav item.
+
+Reason:
+
+This keeps the header visually premium and editorial without expanding the information architecture. The grouped nav improves clarity, the floating shell gives the public site a calmer luxury feel, and keeping Home on the logo preserves the simple booking-first navigation model already defined for LT and EN routes.

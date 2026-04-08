@@ -23,7 +23,7 @@ export function PublicNavLinks({
 }: PublicNavLinksProps) {
   const pathname = usePathname();
   const activeRouteKey = pathname ? getRouteKeyFromPath(pathname) : null;
-  const activeLabel = locale === "en" ? "Current" : "Aktyvu";
+  const activeLabel = locale === "en" ? "Current" : "Aktyvus";
 
   return (
     <>
@@ -41,15 +41,26 @@ export function PublicNavLinks({
               onClick={onNavigate}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center justify-between rounded-2xl border px-4 py-4 text-base font-medium tracking-tight transition-colors",
+                "flex items-center justify-between rounded-[1.4rem] border px-4 py-4 text-base font-medium tracking-tight transition-all",
                 isActive
-                  ? "border-primary/25 bg-secondary/30 text-foreground shadow-sm shadow-black/5"
-                  : "border-border/60 bg-background/70 text-foreground hover:border-primary/20 hover:text-primary",
+                  ? "border-[#decfbc] bg-[rgba(244,234,220,0.88)] text-foreground shadow-[0_10px_22px_rgba(61,45,29,0.08)]"
+                  : "border-[#e6d9cc]/85 bg-white/58 text-foreground/88 hover:border-[#d8c8b5] hover:bg-white/74 hover:text-foreground",
               )}
             >
-              <span>{item.label}</span>
+              <span className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "h-2.5 w-2.5 rounded-full border transition-colors",
+                    isActive
+                      ? "border-primary/15 bg-primary"
+                      : "border-[#d7cabd] bg-transparent",
+                  )}
+                  aria-hidden="true"
+                />
+                <span>{item.label}</span>
+              </span>
               {isActive ? (
-                <span className="rounded-full border border-primary/20 bg-background px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-primary">
+                <span className="rounded-full border border-primary/12 bg-white/82 px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-primary shadow-sm shadow-black/5">
                   {activeLabel}
                 </span>
               ) : null}
@@ -64,20 +75,20 @@ export function PublicNavLinks({
             onClick={onNavigate}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "relative rounded-full px-3 py-2 text-sm font-medium transition-all",
+              "inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all",
               isActive
-                ? "bg-secondary/55 text-foreground shadow-sm shadow-black/5"
-                : "text-foreground/80 hover:text-foreground",
+                ? "bg-[#f2e7d9] text-foreground shadow-[0_8px_18px_rgba(61,45,29,0.09)]"
+                : "text-foreground/72 hover:bg-white/55 hover:text-foreground",
             )}
           >
-            {item.label}
             <span
               className={cn(
-                "absolute inset-x-3 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent transition-opacity",
-                isActive ? "opacity-100" : "opacity-0",
+                "h-1.5 w-1.5 rounded-full transition-colors",
+                isActive ? "bg-primary" : "bg-[#d5c8bc]",
               )}
               aria-hidden="true"
             />
+            {item.label}
           </Link>
         );
       })}
