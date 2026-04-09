@@ -258,6 +258,22 @@ Reason:
 The admin forms previously used raw URL text inputs for images, which required manual Cloudinary uploads and copy-pasting URLs. This created a poor UX. The solution includes:
 
 - ImageUpload component with drag-and-drop, click-to-upload, and URL paste fallback
+
+## Decision 034
+
+Phase 6 standardizes public image rendering around `next/image` plus a shared Cloudinary-aware preprocessing layer that injects automatic format and quality transforms before delivery.
+
+Reason:
+
+The public site is image-heavy and relies on Cloudinary as the media source of truth. Centralizing the delivery logic keeps responsive sizing consistent across homepage, services, branches, gallery, and blog surfaces without degrading the premium crop direction.
+
+## Decision 035
+
+Phase 6 moves public Supabase-backed route data onto a 5-minute Next.js cache with tag-based invalidation from admin mutations.
+
+Reason:
+
+The public site should not stay fully dynamic for mostly editorial content. A short revalidation window improves real-world performance and deployability while explicit tag invalidation keeps admin changes from lingering unnecessarily.
 - Server-side Cloudinary upload API route that keeps secrets secure
 - Integration in Blog, Gallery, Specialists, Promotions, and Settings modules
 - File validation (type: JPEG/PNG/WebP/GIF, max 10MB)

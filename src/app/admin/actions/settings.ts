@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateSiteSettingsPublicPaths } from "./revalidate-public";
 
 type SiteSettingsUpdate = Database["public"]["Tables"]["site_settings"]["Update"];
 
@@ -50,6 +51,7 @@ export async function updateSiteSettings(input: SiteSettingsUpdate) {
     }
 
     revalidatePath("/admin/settings");
+    revalidateSiteSettingsPublicPaths();
     return { data };
   } else {
     // Create new settings
@@ -64,6 +66,7 @@ export async function updateSiteSettings(input: SiteSettingsUpdate) {
     }
 
     revalidatePath("/admin/settings");
+    revalidateSiteSettingsPublicPaths();
     return { data };
   }
 }

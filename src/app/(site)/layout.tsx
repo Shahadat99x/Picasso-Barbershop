@@ -26,6 +26,7 @@ export default async function SiteLayout({
       />
       <div className="flex-1">{children}</div>
       <SiteFooter 
+        locale="lt"
         businessName={settings.business_name}
         description="Premium grooming, haircut, beard, and salon experiences across three Vilnius branches."
         footerText={getSiteFooterCopy(settings, "lt")}

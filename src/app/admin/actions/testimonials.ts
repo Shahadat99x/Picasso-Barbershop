@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateTestimonialPublicPaths } from "./revalidate-public";
 
 type TestimonialInsert = Database["public"]["Tables"]["testimonials"]["Insert"];
 type TestimonialUpdate = Database["public"]["Tables"]["testimonials"]["Update"];
@@ -54,6 +55,7 @@ export async function createTestimonial(input: TestimonialInsert) {
   }
 
   revalidatePath("/admin/testimonials");
+  revalidateTestimonialPublicPaths();
   return { data };
 }
 
@@ -73,6 +75,7 @@ export async function updateTestimonial(id: string, input: TestimonialUpdate) {
   }
 
   revalidatePath("/admin/testimonials");
+  revalidateTestimonialPublicPaths();
   return { data };
 }
 
@@ -87,5 +90,6 @@ export async function deleteTestimonial(id: string) {
   }
 
   revalidatePath("/admin/testimonials");
+  revalidateTestimonialPublicPaths();
   return { success: true };
 }

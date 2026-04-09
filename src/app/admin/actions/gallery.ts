@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateGalleryPublicPaths } from "./revalidate-public";
 
 type GalleryItemInsert = Database["public"]["Tables"]["gallery_items"]["Insert"];
 type GalleryItemUpdate = Database["public"]["Tables"]["gallery_items"]["Update"];
@@ -54,6 +55,7 @@ export async function createGalleryItem(input: GalleryItemInsert) {
   }
 
   revalidatePath("/admin/gallery");
+  revalidateGalleryPublicPaths();
   return { data };
 }
 
@@ -73,6 +75,7 @@ export async function updateGalleryItem(id: string, input: GalleryItemUpdate) {
   }
 
   revalidatePath("/admin/gallery");
+  revalidateGalleryPublicPaths();
   return { data };
 }
 
@@ -87,5 +90,6 @@ export async function deleteGalleryItem(id: string) {
   }
 
   revalidatePath("/admin/gallery");
+  revalidateGalleryPublicPaths();
   return { success: true };
 }

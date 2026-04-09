@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuthenticatedAdminUser } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
+import { revalidateBlogPublicPaths } from "./revalidate-public";
 
 type BlogPostInsert = Database["public"]["Tables"]["blog_posts"]["Insert"];
 type BlogPostUpdate = Database["public"]["Tables"]["blog_posts"]["Update"];
@@ -54,6 +55,7 @@ export async function createBlogPost(input: BlogPostInsert) {
   }
 
   revalidatePath("/admin/blog");
+  revalidateBlogPublicPaths();
   return { data };
 }
 
@@ -73,6 +75,7 @@ export async function updateBlogPost(id: string, input: BlogPostUpdate) {
   }
 
   revalidatePath("/admin/blog");
+  revalidateBlogPublicPaths();
   return { data };
 }
 
@@ -87,5 +90,6 @@ export async function deleteBlogPost(id: string) {
   }
 
   revalidatePath("/admin/blog");
+  revalidateBlogPublicPaths();
   return { success: true };
 }

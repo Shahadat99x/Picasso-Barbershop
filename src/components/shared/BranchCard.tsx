@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { MapPin, Clock } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface BranchCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -34,11 +34,11 @@ export function BranchCard({
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
         {imageUrl ? (
-          <Image
+          <OptimizedImage
             src={imageUrl}
             alt={name}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

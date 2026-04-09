@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 import { cn } from "@/lib/utils";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
 interface BlogCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -36,11 +36,11 @@ export function BlogCard({
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
         {imageUrl ? (
-          <Image
+          <OptimizedImage
             src={imageUrl}
             alt={title}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

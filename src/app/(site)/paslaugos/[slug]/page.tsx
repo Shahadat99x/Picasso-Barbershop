@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -11,6 +10,7 @@ import { PublicDetailHero } from "@/components/public/page/public-detail-hero";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
 import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
+import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { StructuredData } from "@/components/shared/StructuredData";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { GallerySection } from "@/components/sections/GallerySection";
@@ -146,12 +146,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         visual={
           <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] bg-[#1a1a1a]">
             {service.cover_image_url ? (
-              <Image
+              <OptimizedImage
                 src={service.cover_image_url}
                 alt={title}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 34vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 34vw"
                 className="object-cover"
               />
             ) : (

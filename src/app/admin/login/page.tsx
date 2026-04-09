@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
