@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CheckCircle2, MapPin, Scissors, ShieldCheck } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
@@ -130,16 +129,18 @@ export default async function EnAboutPage() {
                 ))}
               </div>
               <div className="mt-8 flex flex-col gap-3">
-                <Link href={getLocalizedRoute("services", "en")}>
-                  <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                    View services
-                  </PrimaryButton>
-                </Link>
-                <Link href={getLocalizedRoute("branches", "en")}>
-                  <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                    View branches
-                  </SecondaryButton>
-                </Link>
+                <PrimaryButton
+                  href={getLocalizedRoute("services", "en")}
+                  className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                >
+                  View services
+                </PrimaryButton>
+                <SecondaryButton
+                  href={getLocalizedRoute("branches", "en")}
+                  className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                >
+                  View branches
+                </SecondaryButton>
               </div>
             </div>
           </div>
@@ -217,12 +218,12 @@ export default async function EnAboutPage() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link href={getLocalizedRoute("contact", "en")}>
-                  <PrimaryButton className="w-full">Contact us</PrimaryButton>
-                </Link>
-                <Link href={getLocalizedRoute("services", "en")}>
-                  <SecondaryButton className="w-full">View services</SecondaryButton>
-                </Link>
+                <PrimaryButton href={getLocalizedRoute("contact", "en")} className="w-full">
+                  Contact us
+                </PrimaryButton>
+                <SecondaryButton href={getLocalizedRoute("services", "en")} className="w-full">
+                  View services
+                </SecondaryButton>
               </div>
             </div>
           </div>

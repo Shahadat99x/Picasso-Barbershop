@@ -28,8 +28,8 @@ export function FeaturedArticleCard({
   readLabel = "Read article",
 }: FeaturedArticleCardProps) {
   return (
-    <Link href={href} className="group block">
-      <article className="overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-sm shadow-black/5 transition-all hover:shadow-md">
+    <Link href={href} className="focus-ring group block rounded-[2rem]">
+      <article className="overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-sm shadow-black/5 transition-all hover:shadow-md group-focus-visible:border-primary/40 motion-reduce:transition-none">
         <div className="grid gap-0 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <div className="relative min-h-[18rem] overflow-hidden bg-muted md:min-h-[24rem]">
             <OptimizedImage
@@ -37,7 +37,7 @@ export function FeaturedArticleCard({
               alt={imageAlt}
               fill
               sizes="(max-width: 1024px) 100vw, 52vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.03] group-focus-visible:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
             />
           </div>
 
@@ -59,7 +59,7 @@ export function FeaturedArticleCard({
                 <time>{date}</time>
                 <span>{readingTime}</span>
               </div>
-              <span className="font-medium text-primary">{readLabel}</span>
+              <span className="font-medium text-primary group-focus-visible:underline">{readLabel}</span>
             </div>
           </div>
         </div>

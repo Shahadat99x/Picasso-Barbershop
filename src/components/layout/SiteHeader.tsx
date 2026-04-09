@@ -35,7 +35,7 @@ export function SiteHeader({
         <div className="flex min-h-[4.75rem] items-center justify-between gap-3 rounded-[1.85rem] border border-[#e5d7c8]/80 bg-[rgba(249,246,240,0.82)] px-4 py-3 shadow-[0_10px_30px_rgba(46,33,20,0.08)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(249,246,240,0.72)] sm:px-5 lg:min-h-[5.25rem] lg:px-6">
           <Link
             href={homeHref}
-            className="flex min-w-0 items-center gap-3 rounded-full pr-2 text-foreground transition-colors hover:text-primary"
+            className="focus-ring flex min-w-0 items-center gap-3 rounded-full pr-2 text-foreground transition-colors hover:text-primary"
           >
             {logoUrl ? (
               <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[#ddd0c0]/80 bg-white/80 shadow-[0_6px_16px_rgba(67,49,29,0.08)]">
@@ -64,11 +64,12 @@ export function SiteHeader({
 
           <div className="hidden min-[840px]:flex items-center gap-3 lg:gap-4">
             <LanguageSwitcher />
-            <Link href={bookUrl}>
-              <PrimaryButton className="h-11 rounded-full border border-[#1f1712]/5 bg-primary px-5 text-sm font-semibold shadow-[0_10px_24px_rgba(32,24,18,0.16)] hover:bg-primary/92 lg:px-6">
-                {t.book}
-              </PrimaryButton>
-            </Link>
+            <PrimaryButton
+              href={bookUrl}
+              className="h-11 rounded-full border border-[#1f1712]/5 bg-primary px-5 text-sm font-semibold shadow-[0_10px_24px_rgba(32,24,18,0.16)] hover:bg-primary/92 lg:px-6"
+            >
+              {t.book}
+            </PrimaryButton>
           </div>
 
           <MobileNav

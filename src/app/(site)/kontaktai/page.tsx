@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { CalendarClock, Mail, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import { PublicContactForm } from "@/components/public/forms/PublicContactForm";
 import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
 import { FeatureCard } from "@/components/shared/FeatureCard";
@@ -90,7 +90,7 @@ export default async function ContactPage() {
                 description={highlight.description}
                 icon={highlight.icon}
                 footer={
-                  <a href={highlight.href} className="text-sm font-medium text-primary hover:underline">
+                  <a href={highlight.href} className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline">
                     {highlight.linkLabel}
                   </a>
                 }
@@ -141,51 +141,14 @@ export default async function ContactPage() {
                 align="left"
                 className="max-w-3xl"
               />
-
-              <form className="mt-8 grid min-w-0 gap-5 md:grid-cols-2">
-                <label className="min-w-0">
-                  <span className="mb-2 block text-sm font-medium text-foreground">Vardas</span>
-                  <input
-                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
-                    placeholder="Jusu vardas"
-                  />
-                </label>
-                <label className="min-w-0">
-                  <span className="mb-2 block text-sm font-medium text-foreground">Telefonas</span>
-                  <input
-                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
-                    placeholder="+370 6XX XXXXX"
-                  />
-                </label>
-                <label className="min-w-0">
-                  <span className="mb-2 block text-sm font-medium text-foreground">El. pastas</span>
-                  <input
-                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
-                    placeholder="vardas@example.com"
-                  />
-                </label>
-                <label className="min-w-0 md:col-span-2">
-                  <span className="mb-2 block text-sm font-medium text-foreground">Zinute</span>
-                  <textarea
-                    rows={5}
-                    className="w-full rounded-2xl border border-border/60 bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary/40"
-                    placeholder="Kuo galime padeti?"
-                  />
-                </label>
-
-                <div className="min-w-0 md:col-span-2">
-                  <PrimaryButton
-                    className="h-auto min-h-12 w-full whitespace-normal px-6 py-3 text-sm leading-6 sm:text-base"
-                    disabled
-                  >
-                    Laikinai neaktyvu
-                  </PrimaryButton>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                    Kol kas greiciausiai susisieksite telefonu arba el. pastu, naudodami
-                    auksciau esancia informacija.
-                  </p>
-                </div>
-              </form>
+              <PublicContactForm
+                locale="lt"
+                sourcePage={getLocalizedRoute("contact", "lt")}
+                branches={branches.map((branch) => ({
+                  id: branch.id,
+                  name: getLocalizedContent(branch, "name", "lt"),
+                }))}
+              />
             </div>
 
             <div className="min-w-0 space-y-6">
@@ -201,16 +164,18 @@ export default async function ContactPage() {
                   greiciausi veiksmai.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <a href={`tel:${settings.default_phone.replace(/\s+/g, "")}`}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Skambinti
-                    </PrimaryButton>
-                  </a>
-                  <Link href={getLocalizedRoute("branches", "lt")}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Visi filialai
-                    </SecondaryButton>
-                  </Link>
+                  <PrimaryButton
+                    href={`tel:${settings.default_phone.replace(/\s+/g, "")}`}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    Skambinti
+                  </PrimaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("branches", "lt")}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    Visi filialai
+                  </SecondaryButton>
                 </div>
               </div>
 
@@ -224,7 +189,7 @@ export default async function ContactPage() {
                       href={settings.social_instagram}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                      className="focus-ring inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
                     >
                       Instagram
                     </a>
@@ -234,7 +199,7 @@ export default async function ContactPage() {
                       href={settings.social_facebook}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                      className="focus-ring inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
                     >
                       Facebook
                     </a>
@@ -244,7 +209,7 @@ export default async function ContactPage() {
                       href={settings.social_tiktok}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
+                      className="focus-ring inline-flex items-center gap-2 rounded-full border border-border/60 bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/20"
                     >
                       TikTok
                     </a>

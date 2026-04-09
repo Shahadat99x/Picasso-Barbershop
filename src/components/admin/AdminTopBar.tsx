@@ -25,7 +25,7 @@ export function AdminTopBar({ email }: AdminTopBarProps) {
           <form action={signOutAdminAction}>
             <button
               type="submit"
-              className="inline-flex h-9 items-center justify-center rounded-xl border border-slate-300 px-3 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 sm:h-11 sm:rounded-2xl sm:px-5 sm:text-sm"
+              className="focus-ring inline-flex h-9 items-center justify-center rounded-xl border border-slate-300 px-3 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 sm:h-11 sm:rounded-2xl sm:px-5 sm:text-sm"
             >
               Sign out
             </button>

@@ -18,13 +18,18 @@ export default async function EnSiteLayout({
   
   return (
     <div className="relative flex min-h-screen flex-col">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <SiteHeader 
         locale="en" 
         businessName={settings.business_name}
         bookingUrl={getLocalizedRoute("branches", "en")}
         logoUrl={settings.logo_url}
       />
-      <div className="flex-1">{children}</div>
+      <div id="main-content" tabIndex={-1} className="flex-1 outline-none">
+        {children}
+      </div>
       <SiteFooter 
         locale="en"
         businessName={settings.business_name}

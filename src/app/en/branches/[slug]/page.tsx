@@ -120,17 +120,18 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <a href="#contact">
-              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Visit branch
-              </PrimaryButton>
-            </a>
+            <PrimaryButton href="#contact" className="h-12 w-full px-8 text-base sm:w-auto">
+              Visit branch
+            </PrimaryButton>
             {branch.map_url ? (
-              <a href={branch.map_url} target="_blank" rel="noreferrer">
-                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                  Open map
-                </SecondaryButton>
-              </a>
+              <SecondaryButton
+                href={branch.map_url}
+                target="_blank"
+                rel="noreferrer"
+                className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+              >
+                Open map
+              </SecondaryButton>
             ) : null}
           </>
         }
@@ -194,7 +195,7 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
                         <p className="mt-3 text-sm leading-7 text-muted-foreground">
                           {address}. You can easily find us following street signs or use your{" "}
                           {branch.map_url ? (
-                            <a href={branch.map_url} target="_blank" rel="noreferrer" className="text-primary underline hover:text-primary/80">map app</a>
+                            <a href={branch.map_url} target="_blank" rel="noreferrer" className="focus-ring rounded-sm text-primary underline hover:text-primary/80">map app</a>
                           ) : "map app"}{" "}
                           for exact directions.
                         </p>
@@ -261,7 +262,7 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
                       </div>
                       <a
                         href={`tel:${branch.phone.replace(/\s+/g, "")}`}
-                        className="mt-2 inline-block text-[#f5efe7] transition-colors hover:text-[#d2af88]"
+                        className="focus-ring-inverse mt-2 inline-block rounded-sm text-[#f5efe7] transition-colors hover:text-[#d2af88]"
                       >
                         {branch.phone}
                       </a>
@@ -277,7 +278,7 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
                         </div>
                         <a
                           href={`mailto:${branch.email}`}
-                          className="mt-2 inline-block text-[#f5efe7] transition-colors hover:text-[#d2af88]"
+                          className="focus-ring-inverse mt-2 inline-block rounded-sm text-[#f5efe7] transition-colors hover:text-[#d2af88]"
                         >
                           {branch.email}
                         </a>
@@ -309,17 +310,21 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
                 ) : null}
 
                 <div className="mt-8 flex flex-col gap-3">
-                  <a href={`tel:${branch.phone.replace(/\s+/g, "")}`}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Call branch
-                    </PrimaryButton>
-                  </a>
+                  <PrimaryButton
+                    href={`tel:${branch.phone.replace(/\s+/g, "")}`}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    Call branch
+                  </PrimaryButton>
                   {branch.map_url ? (
-                    <a href={branch.map_url} target="_blank" rel="noreferrer">
-                      <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                        Open map
-                      </SecondaryButton>
-                    </a>
+                    <SecondaryButton
+                      href={branch.map_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                    >
+                      Open map
+                    </SecondaryButton>
                   ) : null}
                 </div>
               </div>

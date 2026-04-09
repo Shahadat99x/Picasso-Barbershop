@@ -60,10 +60,10 @@ export function SiteFooter({
               {copy}
             </p>
             <div className="mt-6 flex flex-col gap-2 text-sm text-[#d9cfc5]">
-              <a href={`mailto:${email}`} className="transition-colors hover:text-white">
+              <a href={`mailto:${email}`} className="focus-ring-inverse rounded-md transition-colors hover:text-white">
                 {email}
               </a>
-              <a href={`tel:${phone.replace(/\s+/g, "")}`} className="transition-colors hover:text-white">
+              <a href={`tel:${phone.replace(/\s+/g, "")}`} className="focus-ring-inverse rounded-md transition-colors hover:text-white">
                 {phone}
               </a>
             </div>
@@ -74,7 +74,7 @@ export function SiteFooter({
             <ul className="space-y-3 text-sm text-[#c8bbaf]">
               {footerNav.explore.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="transition-colors hover:text-white">
+                  <Link href={item.href} className="focus-ring-inverse rounded-md transition-colors hover:text-white">
                     {item.label}
                   </Link>
                 </li>
@@ -87,7 +87,7 @@ export function SiteFooter({
             <ul className="space-y-3 text-sm text-[#c8bbaf]">
               {footerNav.legal.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="transition-colors hover:text-white">
+                  <Link href={item.href} className="focus-ring-inverse rounded-md transition-colors hover:text-white">
                     {item.label}
                   </Link>
                 </li>
@@ -107,7 +107,7 @@ export function SiteFooter({
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors hover:text-white"
+                className="focus-ring-inverse rounded-md transition-colors hover:text-white"
               >
                 {item.label}
               </a>

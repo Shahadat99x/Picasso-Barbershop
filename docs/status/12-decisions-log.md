@@ -361,3 +361,19 @@ The public header uses a floating rounded shell with grouped navigation, while H
 Reason:
 
 This keeps the header visually premium and editorial without expanding the information architecture. The grouped nav improves clarity, the floating shell gives the public site a calmer luxury feel, and keeping Home on the logo preserves the simple booking-first navigation model already defined for LT and EN routes.
+
+## Decision 044
+
+Phase 6a standardizes public accessibility hardening through shared focus-ring utilities, skip links, keyboard-safe mobile navigation behavior, and reduced-motion-safe interaction defaults.
+
+Reason:
+
+Accessibility issues were spread across the public shell rather than isolated to one page. Solving them in shared layout, button, and navigation layers creates consistent keyboard and focus behavior across LT and EN routes without changing the route strategy or visual direction.
+
+## Decision 045
+
+The public contact page now submits lightweight enquiries through a small server-side API route that writes into the existing `leads` table, while keeping validation and messaging localized in the frontend.
+
+Reason:
+
+The previous contact form was only a placeholder, which created a real UX and accessibility problem. A minimal route-based submission flow keeps the implementation deployable, works with the current single-role admin lead inbox, avoids reopening the broader content/admin scope, and gives the public site a usable contact path now.

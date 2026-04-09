@@ -58,7 +58,7 @@ export function GalleryMosaic({ items, className }: GalleryMosaicProps) {
               alt={item.alt}
               fill
               sizes={getSizes(item.layout)}
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-white md:p-6">

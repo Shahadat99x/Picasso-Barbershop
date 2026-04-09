@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
@@ -40,11 +39,12 @@ export function GallerySection({
         <GalleryMosaic items={items} className="mt-12" />
 
         <div className="mt-10 text-center">
-          <Link href={getLocalizedRoute("gallery", locale)}>
-            <SecondaryButton className="border-border/70 bg-background px-8">
-              {locale === "en" ? "Explore the full gallery" : "Ziureti visa galerija"}
-            </SecondaryButton>
-          </Link>
+          <SecondaryButton
+            href={getLocalizedRoute("gallery", locale)}
+            className="border-border/70 bg-background px-8"
+          >
+            {locale === "en" ? "Explore the full gallery" : "Ziureti visa galerija"}
+          </SecondaryButton>
         </div>
       </Container>
     </Section>

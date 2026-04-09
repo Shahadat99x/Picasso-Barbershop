@@ -27,13 +27,14 @@ export function ServiceCard({
   const CardContent = (
     <div
       className={cn(
-        "group relative flex h-full flex-col justify-between overflow-hidden rounded-[1.85rem] border border-border/60 bg-card/95 p-6 shadow-sm shadow-black/5 transition-all",
-        href && "hover:border-primary/50 cursor-pointer",
+        "relative flex h-full flex-col justify-between overflow-hidden rounded-[1.85rem] border border-border/60 bg-card/95 p-6 shadow-sm shadow-black/5 transition-all motion-reduce:transition-none",
+        !href && "group",
+        href && "cursor-pointer hover:border-primary/50 group-focus-visible:border-primary/50",
         className
       )}
       {...props}
     >
-      <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none" />
 
       <div>
         <div className="mb-5 flex items-center justify-between gap-3">
@@ -41,12 +42,12 @@ export function ServiceCard({
             {duration}
           </span>
           {href ? (
-            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary/80 transition-colors group-hover:text-primary">
+            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary/80 transition-colors group-hover:text-primary group-focus-visible:text-primary motion-reduce:transition-none">
               {detailLabel}
             </span>
           ) : null}
         </div>
-        <h3 className="mb-3 text-2xl font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
+        <h3 className="mb-3 text-2xl font-medium tracking-tight text-foreground transition-colors group-hover:text-primary group-focus-visible:text-primary motion-reduce:transition-none">
           {title}
         </h3>
         <p className="text-sm leading-7 text-muted-foreground">{description}</p>
@@ -59,7 +60,7 @@ export function ServiceCard({
           </span>
           <span className="text-2xl font-medium tracking-tight text-foreground">{price}</span>
         </div>
-        <div className="rounded-full border border-border/60 bg-background px-3 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground transition-colors group-hover:border-primary/25 group-hover:text-primary/80">
+        <div className="rounded-full border border-border/60 bg-background px-3 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground transition-colors group-hover:border-primary/25 group-hover:text-primary/80 group-focus-visible:border-primary/25 group-focus-visible:text-primary/80 motion-reduce:transition-none">
           {href ? `${detailLabel} ->` : duration}
         </div>
       </div>
@@ -67,7 +68,7 @@ export function ServiceCard({
   );
 
   if (href) {
-    return <Link href={href} className="block h-full">{CardContent}</Link>;
+    return <Link href={href} className="focus-ring group block h-full rounded-[1.85rem]">{CardContent}</Link>;
   }
 
   return CardContent;
