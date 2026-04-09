@@ -1,8 +1,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { MapPin, Clock } from "lucide-react";
-import Link from "next/link";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
+import { getSlugFromHref } from "@/lib/analytics";
 
 interface BranchCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -86,7 +87,20 @@ export function BranchCard({
   );
 
   if (href) {
-    return <Link href={href} className="focus-ring group block h-full rounded-[1.85rem]">{CardContent}</Link>;
+    return (
+      <TrackedLink
+        href={href}
+        analyticsEvent="branch_visit_intent"
+        analyticsParams={{
+          branch_slug: getSlugFromHref(href),
+          cta_label: detailLabel,
+          placement: "branch_card",
+        }}
+        className="focus-ring group block h-full rounded-[1.85rem]"
+      >
+        {CardContent}
+      </TrackedLink>
+    );
   }
 
   return CardContent;

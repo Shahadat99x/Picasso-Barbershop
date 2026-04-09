@@ -42,6 +42,11 @@ export function FinalCtaSection({ locale = defaultLocale }: FinalCtaSectionProps
           </p>
           <PrimaryButton
             href={getLocalizedRoute("branches", locale)}
+            analyticsEvent="branch_visit_intent"
+            analyticsParams={{
+              cta_label: copy.cta,
+              placement: "final_cta",
+            }}
             className="h-14 border-none bg-[#d2af88] px-10 text-base font-semibold text-[#18120d] hover:bg-[#dec09c]"
           >
             {copy.cta}

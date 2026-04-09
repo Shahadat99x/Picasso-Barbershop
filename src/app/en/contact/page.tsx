@@ -5,6 +5,7 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { PublicContactForm } from "@/components/public/forms/PublicContactForm";
 import { PublicPageIntro } from "@/components/public/page/public-page-intro";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 import { BranchSummaryCard } from "@/components/shared/BranchSummaryCard";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -90,9 +91,23 @@ export default async function EnContactPage() {
                 description={highlight.description}
                 icon={highlight.icon}
                 footer={
-                  <a href={highlight.href} className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline">
+                  <TrackedLink
+                    href={highlight.href}
+                    analyticsEvent={
+                      highlight.href.startsWith("tel:")
+                        ? "phone_click"
+                        : highlight.href.includes("/branches")
+                          ? "branch_visit_intent"
+                          : "cta_click"
+                    }
+                    analyticsParams={{
+                      cta_label: highlight.linkLabel,
+                      placement: "contact_highlight",
+                    }}
+                    className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline"
+                  >
                     {highlight.linkLabel}
-                  </a>
+                  </TrackedLink>
                 }
               />
             ))}
@@ -165,12 +180,22 @@ export default async function EnContactPage() {
                 <div className="mt-6 flex flex-col gap-3">
                   <PrimaryButton
                     href={`tel:${settings.default_phone.replace(/\s+/g, "")}`}
+                    analyticsEvent="phone_click"
+                    analyticsParams={{
+                      cta_label: "Call now",
+                      placement: "contact_sidebar",
+                    }}
                     className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
                   >
                     Call now
                   </PrimaryButton>
                   <SecondaryButton
                     href={getLocalizedRoute("branches", "en")}
+                    analyticsEvent="branch_visit_intent"
+                    analyticsParams={{
+                      cta_label: "All branches",
+                      placement: "contact_sidebar",
+                    }}
                     className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
                   >
                     All branches

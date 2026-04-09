@@ -130,11 +130,26 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <PrimaryButton href={getLocalizedRoute("contact", "lt")} className="h-12 w-full px-8 text-base sm:w-auto">
+            <PrimaryButton
+              href={getLocalizedRoute("contact", "lt")}
+              analyticsEvent="cta_click"
+              analyticsParams={{
+                service_slug: resolvedSlug,
+                cta_label: "Susisiekti",
+                placement: "service_detail_hero",
+              }}
+              className="h-12 w-full px-8 text-base sm:w-auto"
+            >
               Susisiekti
             </PrimaryButton>
             <SecondaryButton
               href={getLocalizedRoute("branches", "lt")}
+              analyticsEvent="branch_visit_intent"
+              analyticsParams={{
+                service_slug: resolvedSlug,
+                cta_label: "Perziureti filialus",
+                placement: "service_detail_hero",
+              }}
               className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
             >
               Perziureti filialus
@@ -219,12 +234,24 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 <div className="mt-8 flex flex-col gap-3">
                   <PrimaryButton
                     href={getLocalizedRoute("branches", "lt")}
+                    analyticsEvent="branch_visit_intent"
+                    analyticsParams={{
+                      service_slug: resolvedSlug,
+                      cta_label: "Žiūrėti filialus",
+                      placement: "service_detail_sidebar",
+                    }}
                     className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
                   >
                     Žiūrėti filialus
                   </PrimaryButton>
                   <SecondaryButton
                     href={getLocalizedRoute("contact", "lt")}
+                    analyticsEvent="cta_click"
+                    analyticsParams={{
+                      service_slug: resolvedSlug,
+                      cta_label: "Susisiekti",
+                      placement: "service_detail_sidebar",
+                    }}
                     className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
                   >
                     Susisiekti
