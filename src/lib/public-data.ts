@@ -85,6 +85,7 @@ export interface SiteSettingsWithDefaults {
   default_email: string;
   logo_url: string | null;
   favicon_url: string | null;
+  analytics_ga4_id: string | null;
   social_instagram: string | null;
   social_facebook: string | null;
   social_tiktok: string | null;
@@ -153,12 +154,18 @@ const galleryLayoutPattern: GalleryLayout[] = [
   "square",
 ];
 
+const envGa4MeasurementId =
+  process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID?.trim() ||
+  process.env.GA4_MEASUREMENT_ID?.trim() ||
+  null;
+
 const defaultSettings: SiteSettingsWithDefaults = {
   business_name: siteConfig.name,
   default_phone: siteConfig.contactPhone,
   default_email: siteConfig.contactEmail,
   logo_url: null,
   favicon_url: null,
+  analytics_ga4_id: envGa4MeasurementId,
   social_instagram: siteConfig.sameAs[0] ?? null,
   social_facebook: siteConfig.sameAs[1] ?? null,
   social_tiktok: null,
@@ -696,6 +703,7 @@ export async function getSiteSettingsWithDefaults(): Promise<SiteSettingsWithDef
     default_email: settings.default_email || defaultSettings.default_email,
     logo_url: settings.logo_url,
     favicon_url: settings.favicon_url,
+    analytics_ga4_id: settings.analytics_ga4_id || defaultSettings.analytics_ga4_id,
     social_instagram:
       normalizeSocialUrl(settings.social_instagram, "instagram") ||
       defaultSettings.social_instagram,

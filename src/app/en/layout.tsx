@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { PublicAnalytics } from "@/components/analytics/PublicAnalytics";
 import { StickyMobileBookingCTA } from "@/components/shared/StickyMobileBookingCTA";
 import {
   getSiteFooterCopy,
@@ -41,6 +42,7 @@ export default async function EnSiteLayout({
         socialFacebook={settings.social_facebook}
         socialTikTok={settings.social_tiktok}
       />
+      <PublicAnalytics measurementId={settings.analytics_ga4_id} />
       <StickyMobileBookingCTA bookingUrl={getLocalizedRoute("branches", "en")} label="Visit branch" />
     </div>
   );
