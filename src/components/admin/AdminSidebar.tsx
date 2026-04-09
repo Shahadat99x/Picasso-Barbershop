@@ -68,7 +68,7 @@ export function AdminSidebar() {
                   <Link
                     href={item.href}
                     className={[
-                      "group flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm transition-colors sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3",
+                      "focus-ring group flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm transition-colors sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3",
                       isActive
                         ? "bg-white text-[#0f172a] shadow-sm"
                         : "text-white/72 hover:bg-white/6 hover:text-white",

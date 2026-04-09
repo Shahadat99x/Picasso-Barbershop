@@ -18,13 +18,18 @@ export default async function SiteLayout({
   
   return (
     <div className="relative flex min-h-screen flex-col">
+      <a href="#main-content" className="skip-link">
+        Pereiti prie pagrindinio turinio
+      </a>
       <SiteHeader 
         locale="lt" 
         businessName={settings.business_name}
         bookingUrl={getLocalizedRoute("branches", "lt")}
         logoUrl={settings.logo_url}
       />
-      <div className="flex-1">{children}</div>
+      <div id="main-content" tabIndex={-1} className="flex-1 outline-none">
+        {children}
+      </div>
       <SiteFooter 
         locale="lt"
         businessName={settings.business_name}

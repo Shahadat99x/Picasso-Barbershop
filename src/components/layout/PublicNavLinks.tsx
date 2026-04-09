@@ -41,10 +41,10 @@ export function PublicNavLinks({
               onClick={onNavigate}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center justify-between rounded-[1.4rem] border px-4 py-4 text-base font-medium tracking-tight transition-all",
+                "focus-ring flex items-center justify-between rounded-[1.4rem] border px-4 py-4 text-base font-medium tracking-tight transition-all motion-reduce:transition-none",
                 isActive
                   ? "border-[#decfbc] bg-[rgba(244,234,220,0.88)] text-foreground shadow-[0_10px_22px_rgba(61,45,29,0.08)]"
-                  : "border-[#e6d9cc]/85 bg-white/58 text-foreground/88 hover:border-[#d8c8b5] hover:bg-white/74 hover:text-foreground",
+                  : "border-[#e6d9cc]/85 bg-white/58 text-foreground/88 hover:border-[#d8c8b5] hover:bg-white/74 hover:text-foreground focus-visible:border-[#d8c8b5] focus-visible:bg-white/74 focus-visible:text-foreground",
               )}
             >
               <span className="flex items-center gap-3">
@@ -75,10 +75,10 @@ export function PublicNavLinks({
             onClick={onNavigate}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all",
+              "focus-ring inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all motion-reduce:transition-none",
               isActive
                 ? "bg-[#f2e7d9] text-foreground shadow-[0_8px_18px_rgba(61,45,29,0.09)]"
-                : "text-foreground/72 hover:bg-white/55 hover:text-foreground",
+                : "text-foreground/72 hover:bg-white/55 hover:text-foreground focus-visible:bg-white/55 focus-visible:text-foreground",
             )}
           >
             <span

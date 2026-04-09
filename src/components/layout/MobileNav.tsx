@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useState, useSyncExternalStore } from "react";
+import React, { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { PrimaryButton } from "../ui/PrimaryButton";
@@ -10,6 +10,7 @@ import { getMainNav } from "@/config/navigation";
 import { navDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
 
@@ -30,11 +31,17 @@ export function MobileNav({
 }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dialogId = useId();
+  const titleId = useId();
   const isMounted = useSyncExternalStore(
     () => () => undefined,
     () => true,
     () => false,
   );
+  const pathname = usePathname();
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLElement | null>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
 
   const nav = getMainNav(locale);
   const t = navDictionary[locale];
@@ -42,6 +49,14 @@ export function MobileNav({
 
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((currentState) => !currentState);
+
+  useEffect(() => {
+    if (isOpen) {
+      closeMenu();
+    }
+    // pathname changes only when navigation completes, which is when the menu should close.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof document === "undefined") {
@@ -74,16 +89,55 @@ export function MobileNav({
       return;
     }
 
+    lastFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const fallbackFocusTarget = triggerRef.current;
+
+    const focusInitialControl = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeMenu();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) {
+        return;
+      }
+
+      const focusableElements = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => !element.hasAttribute("disabled") && !element.getAttribute("aria-hidden"));
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      const activeElement = document.activeElement;
+
+      if (event.shiftKey && activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      window.cancelAnimationFrame(focusInitialControl);
       window.removeEventListener("keydown", handleKeyDown);
+      const focusTarget = lastFocusedElementRef.current ?? fallbackFocusTarget;
+      focusTarget?.focus();
     };
   }, [isOpen]);
 
@@ -109,11 +163,12 @@ export function MobileNav({
           <div className="absolute inset-y-0 right-0 flex w-full justify-end pl-8 pt-3 sm:pl-10 sm:pt-4">
             <section
               id={dialogId}
+              ref={dialogRef}
               role="dialog"
               aria-modal="true"
-              aria-label={locale === "en" ? "Mobile menu" : "Mobilus meniu"}
+              aria-labelledby={titleId}
               className={cn(
-                "flex h-[calc(100%-0.75rem)] w-full max-w-sm flex-col overflow-hidden rounded-[2rem] border border-[#e2d6c7]/80 bg-[rgba(249,246,240,0.95)] shadow-[0_20px_60px_rgba(28,21,15,0.18)] transition-transform duration-300 ease-out sm:h-[calc(100%-1rem)] sm:max-w-[25.5rem]",
+                "flex h-[calc(100%-0.75rem)] w-full max-w-sm flex-col overflow-hidden rounded-[2rem] border border-[#e2d6c7]/80 bg-[rgba(249,246,240,0.95)] shadow-[0_20px_60px_rgba(28,21,15,0.18)] transition-transform duration-300 ease-out motion-reduce:transition-none sm:h-[calc(100%-1rem)] sm:max-w-[25.5rem]",
                 "pt-[calc(env(safe-area-inset-top)+0.85rem)]",
                 isOpen ? "translate-x-0" : "translate-x-full",
               )}
@@ -139,16 +194,17 @@ export function MobileNav({
                     <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                       {locale === "en" ? "Navigation" : "Navigacija"}
                     </span>
-                    <span className="block truncate text-lg font-medium tracking-tight text-foreground">
+                    <span id={titleId} className="block truncate text-lg font-medium tracking-tight text-foreground">
                       {businessName}
                     </span>
                   </div>
                 </Link>
 
                 <button
+                  ref={closeButtonRef}
                   type="button"
                   onClick={closeMenu}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#e1d5c7]/80 bg-white/72 text-muted-foreground transition-all hover:bg-white hover:text-foreground"
+                  className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#e1d5c7]/80 bg-white/72 text-muted-foreground transition-all hover:bg-white hover:text-foreground motion-reduce:transition-none"
                   aria-label={locale === "en" ? "Close menu" : "Uzdaryti meniu"}
                 >
                   <X className="h-5 w-5" />
@@ -180,12 +236,14 @@ export function MobileNav({
                       <div className="shrink-0">
                         <LanguageSwitcher className="justify-end" onSwitch={closeMenu} />
                       </div>
-                    </div>
-                    <Link href={bookingHref} onClick={closeMenu}>
-                      <PrimaryButton className="h-12 w-full rounded-full border border-[#1f1712]/5 bg-primary text-base font-semibold shadow-[0_12px_26px_rgba(32,24,18,0.15)] hover:bg-primary/92">
-                        {t.book}
-                      </PrimaryButton>
-                    </Link>
+                      </div>
+                    <PrimaryButton
+                      href={bookingHref}
+                      onClick={closeMenu}
+                      className="h-12 w-full rounded-full border border-[#1f1712]/5 bg-primary text-base font-semibold shadow-[0_12px_26px_rgba(32,24,18,0.15)] hover:bg-primary/92"
+                    >
+                      {t.book}
+                    </PrimaryButton>
                   </div>
                 </div>
               </div>
@@ -200,11 +258,13 @@ export function MobileNav({
     <>
       <div className="min-[840px]:hidden">
         <button
+          ref={triggerRef}
           type="button"
           onClick={toggleMenu}
           aria-expanded={isOpen}
           aria-controls={dialogId}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#e3d7ca]/75 bg-white/62 text-foreground transition-all hover:bg-white/80 hover:text-primary"
+          aria-haspopup="dialog"
+          className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#e3d7ca]/75 bg-white/62 text-foreground transition-all hover:bg-white/80 hover:text-primary motion-reduce:transition-none"
         >
           <Menu className="h-6 w-6" />
           <span className="sr-only">

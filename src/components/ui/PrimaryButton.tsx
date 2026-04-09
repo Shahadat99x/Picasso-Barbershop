@@ -1,22 +1,61 @@
 import * as React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const PrimaryButton = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
-  ({ className, children, ...props }, ref) => {
+type PrimaryButtonLinkProps = {
+  href: string;
+  prefetch?: boolean;
+} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href"> & {
+    className?: string;
+  };
+
+type PrimaryButtonProps =
+  | (React.ComponentProps<typeof Button> & {
+      href?: undefined;
+      prefetch?: never;
+    })
+  | PrimaryButtonLinkProps;
+
+function isExternalHref(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:") || href.startsWith("tel:");
+}
+
+export function primaryButtonStyles(className?: string) {
+  return cn(
+    "inline-flex items-center justify-center rounded-full bg-primary text-base font-medium text-primary-foreground transition-all",
+    "h-12 px-8 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "motion-reduce:transform-none motion-reduce:transition-none",
+    className,
+  );
+}
+
+export function PrimaryButton(props: PrimaryButtonProps) {
+  if ("href" in props && props.href) {
+    const { className, children, href, prefetch, rel, ...linkProps } = props;
+    const computedRel =
+      rel ?? (linkProps.target === "_blank" && isExternalHref(href) ? "noopener noreferrer" : undefined);
+
+    if (isExternalHref(href)) {
+      return (
+        <a href={href} rel={computedRel} className={primaryButtonStyles(className)} {...linkProps}>
+          {children}
+        </a>
+      );
+    }
+
     return (
-      <Button
-        ref={ref}
-        className={cn(
-          "bg-primary text-primary-foreground hover:bg-primary/90",
-          "h-12 px-8 text-base font-medium rounded-full transition-all",
-          className
-        )}
-        {...props}
-      >
+      <Link href={href} prefetch={prefetch} className={primaryButtonStyles(className)} {...linkProps}>
         {children}
-      </Button>
+      </Link>
     );
   }
-);
-PrimaryButton.displayName = "PrimaryButton";
+
+  const { className, children, ...buttonProps } = props as React.ComponentProps<typeof Button>;
+
+  return (
+    <Button className={primaryButtonStyles(className as string | undefined)} {...buttonProps}>
+      {children}
+    </Button>
+  );
+}
