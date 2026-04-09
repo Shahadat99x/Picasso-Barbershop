@@ -2,7 +2,6 @@ import React from "react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import Link from "next/link";
 import { Locale, defaultLocale } from "@/i18n/locales";
 import { getLocalizedRoute } from "@/lib/site-routes";
 
@@ -41,11 +40,12 @@ export function FinalCtaSection({ locale = defaultLocale }: FinalCtaSectionProps
           <p className="mx-auto mb-10 max-w-xl text-primary-foreground/78 leading-8 md:text-lg">
             {copy.description}
           </p>
-          <Link href={getLocalizedRoute("branches", locale)}>
-            <PrimaryButton className="h-14 border-none bg-[#d2af88] px-10 text-base font-semibold text-[#18120d] hover:bg-[#dec09c]">
-              {copy.cta}
-            </PrimaryButton>
-          </Link>
+          <PrimaryButton
+            href={getLocalizedRoute("branches", locale)}
+            className="h-14 border-none bg-[#d2af88] px-10 text-base font-semibold text-[#18120d] hover:bg-[#dec09c]"
+          >
+            {copy.cta}
+          </PrimaryButton>
         </div>
       </Container>
     </Section>

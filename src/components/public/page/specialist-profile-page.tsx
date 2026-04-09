@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/Container";
@@ -279,21 +278,21 @@ export async function SpecialistProfilePage({
         meta={heroMeta}
         actions={
           <>
-            <Link href={getBookingPath(locale)}>
-              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                {copy.bookLabel}
-              </PrimaryButton>
-            </Link>
-            <Link href={getLocalizedRoute("services", locale)}>
-              <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                {copy.servicesLabel}
-              </SecondaryButton>
-            </Link>
-            <Link href={getLocalizedRoute("branches", locale)}>
-              <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                {copy.branchesLabel}
-              </SecondaryButton>
-            </Link>
+            <PrimaryButton href={getBookingPath(locale)} className="h-12 w-full px-8 text-base sm:w-auto">
+              {copy.bookLabel}
+            </PrimaryButton>
+            <SecondaryButton
+              href={getLocalizedRoute("services", locale)}
+              className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+            >
+              {copy.servicesLabel}
+            </SecondaryButton>
+            <SecondaryButton
+              href={getLocalizedRoute("branches", locale)}
+              className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+            >
+              {copy.branchesLabel}
+            </SecondaryButton>
           </>
         }
         visual={
@@ -393,21 +392,24 @@ export async function SpecialistProfilePage({
                     : copy.ctaBranchPending}
                 </p>
                 <div className="mt-8 flex flex-col gap-3">
-                  <Link href={getBookingPath(locale)}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      {copy.bookLabel}
-                    </PrimaryButton>
-                  </Link>
-                  <Link href={getLocalizedRoute("services", locale)}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      {copy.servicesLabel}
-                    </SecondaryButton>
-                  </Link>
-                  <Link href={getLocalizedRoute("branches", locale)}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      {copy.branchesLabel}
-                    </SecondaryButton>
-                  </Link>
+                  <PrimaryButton
+                    href={getBookingPath(locale)}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    {copy.bookLabel}
+                  </PrimaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("services", locale)}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    {copy.servicesLabel}
+                  </SecondaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("branches", locale)}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    {copy.branchesLabel}
+                  </SecondaryButton>
                 </div>
               </div>
             </div>

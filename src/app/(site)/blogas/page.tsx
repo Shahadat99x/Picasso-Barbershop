@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
@@ -125,16 +123,18 @@ export default async function BlogIndexPage() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link href={getLocalizedRoute("services", "lt")}>
-                  <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                    Ziureti paslaugas
-                  </PrimaryButton>
-                </Link>
-                <Link href={getLocalizedRoute("branches", "lt")}>
-                  <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                    Ziureti filialus
-                  </SecondaryButton>
-                </Link>
+                <PrimaryButton
+                  href={getLocalizedRoute("services", "lt")}
+                  className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                >
+                  Ziureti paslaugas
+                </PrimaryButton>
+                <SecondaryButton
+                  href={getLocalizedRoute("branches", "lt")}
+                  className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                >
+                  Ziureti filialus
+                </SecondaryButton>
               </div>
             </div>
           </div>

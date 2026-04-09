@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -131,16 +130,15 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getLocalizedRoute("contact", "en")}>
-              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Contact us
-              </PrimaryButton>
-            </Link>
-            <Link href={getLocalizedRoute("branches", "en")}>
-              <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                View branches
-              </SecondaryButton>
-            </Link>
+            <PrimaryButton href={getLocalizedRoute("contact", "en")} className="h-12 w-full px-8 text-base sm:w-auto">
+              Contact us
+            </PrimaryButton>
+            <SecondaryButton
+              href={getLocalizedRoute("branches", "en")}
+              className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+            >
+              View branches
+            </SecondaryButton>
           </>
         }
         visual={
@@ -219,16 +217,18 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
                     : "Branch availability has not been configured yet. Contact us and we will help you choose the best timing."}
                 </p>
                 <div className="mt-8 flex flex-col gap-3">
-                  <Link href={getLocalizedRoute("branches", "en")}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Browse branches
-                    </PrimaryButton>
-                  </Link>
-                  <Link href={getLocalizedRoute("contact", "en")}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Contact us
-                    </SecondaryButton>
-                  </Link>
+                  <PrimaryButton
+                    href={getLocalizedRoute("branches", "en")}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    Browse branches
+                  </PrimaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("contact", "en")}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    Contact us
+                  </SecondaryButton>
                 </div>
 
                 <div className="mt-8 border-t border-white/10 pt-6">

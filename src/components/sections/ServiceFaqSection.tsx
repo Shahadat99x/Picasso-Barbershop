@@ -40,14 +40,14 @@ export function ServiceFaqSection({
                 open={index === 0}
               >
                 <summary
-                  className="flex w-full cursor-pointer items-center justify-between py-6 text-left list-none"
+                  className="focus-ring flex w-full cursor-pointer list-none items-center justify-between rounded-xl py-6 text-left"
                 >
-                  <span className="pr-8 text-lg font-medium transition-colors group-hover:text-primary">
+                  <span className="pr-8 text-lg font-medium transition-colors group-hover:text-primary motion-reduce:transition-none">
                     {faq.question}
                   </span>
                   <ChevronDown
                     className={cn(
-                      "h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 group-open:rotate-180 group-open:text-primary",
+                      "h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 group-open:rotate-180 group-open:text-primary motion-reduce:transform-none motion-reduce:transition-none",
                     )}
                   />
                 </summary>

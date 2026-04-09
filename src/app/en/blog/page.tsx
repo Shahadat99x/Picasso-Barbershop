@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
@@ -124,16 +122,18 @@ export default async function EnBlogPage() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link href={getLocalizedRoute("services", "en")}>
-                  <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                    View services
-                  </PrimaryButton>
-                </Link>
-                <Link href={getLocalizedRoute("branches", "en")}>
-                  <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                    View branches
-                  </SecondaryButton>
-                </Link>
+                <PrimaryButton
+                  href={getLocalizedRoute("services", "en")}
+                  className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                >
+                  View services
+                </PrimaryButton>
+                <SecondaryButton
+                  href={getLocalizedRoute("branches", "en")}
+                  className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                >
+                  View branches
+                </SecondaryButton>
               </div>
             </div>
           </div>

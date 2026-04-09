@@ -140,29 +140,27 @@ export default async function BlogArticlePage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getLocalizedRoute("contact", "lt")}>
-              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Susisiekti
-              </PrimaryButton>
-            </Link>
+            <PrimaryButton href={getLocalizedRoute("contact", "lt")} className="h-12 w-full px-8 text-base sm:w-auto">
+              Susisiekti
+            </PrimaryButton>
             {relatedService ? (
-              <Link
+              <SecondaryButton
                 href={getLocalizedDetailRoute(
                   "services",
                   getLocalizedSlug(relatedService, "lt"),
                   "lt",
                 )}
+                className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
               >
-                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                  Ziureti paslauga
-                </SecondaryButton>
-              </Link>
+                Ziureti paslauga
+              </SecondaryButton>
             ) : (
-              <Link href={getLocalizedRoute("services", "lt")}>
-                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                  Ziureti paslaugas
-                </SecondaryButton>
-              </Link>
+              <SecondaryButton
+                href={getLocalizedRoute("services", "lt")}
+                className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+              >
+                Ziureti paslaugas
+              </SecondaryButton>
             )}
           </>
         }
@@ -223,7 +221,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
                         getLocalizedSlug(relatedService, "lt"),
                         "lt",
                       )}
-                      className="text-sm font-medium text-primary hover:underline"
+                      className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline"
                     >
                       Ziureti paslauga
                     </Link>
@@ -244,7 +242,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
                         getLocalizedSlug(relatedBranch, "lt"),
                         "lt",
                       )}
-                      className="text-sm font-medium text-primary hover:underline"
+                      className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline"
                     >
                       Ziureti filiala
                     </Link>
@@ -264,16 +262,18 @@ export default async function BlogArticlePage({ params }: PageProps) {
                   paslaugos, filialo arba tiesioginio kontakto.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <Link href={getLocalizedRoute("contact", "lt")}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Susisiekti
-                    </PrimaryButton>
-                  </Link>
-                  <Link href={getLocalizedRoute("branches", "lt")}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Ziureti filialus
-                    </SecondaryButton>
-                  </Link>
+                  <PrimaryButton
+                    href={getLocalizedRoute("contact", "lt")}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    Susisiekti
+                  </PrimaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("branches", "lt")}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    Ziureti filialus
+                  </SecondaryButton>
                 </div>
               </div>
             </aside>

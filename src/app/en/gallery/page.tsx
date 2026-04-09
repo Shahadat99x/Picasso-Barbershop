@@ -50,12 +50,12 @@ export default async function EnGalleryPage() {
         ]}
         actions={
           <>
-            <Link href={getLocalizedRoute("contact", "en")}>
-              <PrimaryButton className="w-full sm:w-auto">Contact us</PrimaryButton>
-            </Link>
-            <Link href={getLocalizedRoute("branches", "en")}>
-              <SecondaryButton className="w-full sm:w-auto">View branches</SecondaryButton>
-            </Link>
+            <PrimaryButton href={getLocalizedRoute("contact", "en")} className="w-full sm:w-auto">
+              Contact us
+            </PrimaryButton>
+            <SecondaryButton href={getLocalizedRoute("branches", "en")} className="w-full sm:w-auto">
+              View branches
+            </SecondaryButton>
           </>
         }
       />

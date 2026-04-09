@@ -140,29 +140,27 @@ export default async function EnBlogPostPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getLocalizedRoute("contact", "en")}>
-              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Contact us
-              </PrimaryButton>
-            </Link>
+            <PrimaryButton href={getLocalizedRoute("contact", "en")} className="h-12 w-full px-8 text-base sm:w-auto">
+              Contact us
+            </PrimaryButton>
             {relatedService ? (
-              <Link
+              <SecondaryButton
                 href={getLocalizedDetailRoute(
                   "services",
                   getLocalizedSlug(relatedService, "en"),
                   "en",
                 )}
+                className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
               >
-                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                  View service
-                </SecondaryButton>
-              </Link>
+                View service
+              </SecondaryButton>
             ) : (
-              <Link href={getLocalizedRoute("services", "en")}>
-                <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                  View services
-                </SecondaryButton>
-              </Link>
+              <SecondaryButton
+                href={getLocalizedRoute("services", "en")}
+                className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+              >
+                View services
+              </SecondaryButton>
             )}
           </>
         }
@@ -223,7 +221,7 @@ export default async function EnBlogPostPage({ params }: PageProps) {
                         getLocalizedSlug(relatedService, "en"),
                         "en",
                       )}
-                      className="text-sm font-medium text-primary hover:underline"
+                      className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline"
                     >
                       View service
                     </Link>
@@ -244,7 +242,7 @@ export default async function EnBlogPostPage({ params }: PageProps) {
                         getLocalizedSlug(relatedBranch, "en"),
                         "en",
                       )}
-                      className="text-sm font-medium text-primary hover:underline"
+                      className="focus-ring rounded-sm text-sm font-medium text-primary hover:underline"
                     >
                       View branch
                     </Link>
@@ -264,16 +262,18 @@ export default async function EnBlogPostPage({ params }: PageProps) {
                   direct contact and choose what feels right for your next visit.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
-                  <Link href={getLocalizedRoute("contact", "en")}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Contact us
-                    </PrimaryButton>
-                  </Link>
-                  <Link href={getLocalizedRoute("branches", "en")}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      View branches
-                    </SecondaryButton>
-                  </Link>
+                  <PrimaryButton
+                    href={getLocalizedRoute("contact", "en")}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    Contact us
+                  </PrimaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("branches", "en")}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    View branches
+                  </SecondaryButton>
                 </div>
               </div>
             </aside>

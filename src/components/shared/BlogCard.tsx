@@ -28,8 +28,9 @@ export function BlogCard({
   const cardContent = (
     <div
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[1.85rem] border border-border/60 bg-card transition-all hover:shadow-md hover:shadow-black/5",
-        href && "cursor-pointer hover:border-primary/40",
+        "flex h-full flex-col overflow-hidden rounded-[1.85rem] border border-border/60 bg-card transition-all hover:shadow-md hover:shadow-black/5 motion-reduce:transition-none",
+        !href && "group",
+        href && "cursor-pointer hover:border-primary/40 group-focus-visible:border-primary/40",
         className,
       )}
       {...props}
@@ -41,7 +42,7 @@ export function BlogCard({
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transform-none motion-reduce:transition-none"
           />
         ) : (
           <div className="h-full w-full bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.2),transparent_44%),linear-gradient(180deg,rgba(28,24,22,0.08),rgba(28,24,22,0.02))]" />
@@ -57,7 +58,7 @@ export function BlogCard({
           <time>{date}</time>
           {readingTime ? <span>{readingTime}</span> : null}
         </div>
-        <h3 className="mb-4 text-[1.55rem] font-medium tracking-tight transition-colors group-hover:text-primary/70">
+        <h3 className="mb-4 text-[1.55rem] font-medium tracking-tight transition-colors group-hover:text-primary/70 group-focus-visible:text-primary/70 motion-reduce:transition-none">
           {title}
         </h3>
         <p className="mt-auto line-clamp-3 text-sm leading-7 text-muted-foreground">
@@ -69,7 +70,7 @@ export function BlogCard({
 
   if (href) {
     return (
-      <Link href={href} className="block h-full">
+      <Link href={href} className="focus-ring group block h-full rounded-[1.85rem]">
         {cardContent}
       </Link>
     );

@@ -26,8 +26,9 @@ export function BranchCard({
   const CardContent = (
     <div
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[1.85rem] border border-border/60 bg-card shadow-sm shadow-black/5 transition-all",
-        href && "hover:border-primary/50 cursor-pointer",
+        "flex h-full flex-col overflow-hidden rounded-[1.85rem] border border-border/60 bg-card shadow-sm shadow-black/5 transition-all motion-reduce:transition-none",
+        !href && "group",
+        href && "cursor-pointer hover:border-primary/50 group-focus-visible:border-primary/50",
         className
       )}
       {...props}
@@ -39,10 +40,10 @@ export function BranchCard({
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transform-none motion-reduce:transition-none"
           />
         ) : (
-          <div className="h-full w-full bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.22),transparent_48%),linear-gradient(180deg,rgba(30,25,22,0.16),rgba(30,25,22,0.04))] transition-colors duration-500 group-hover:bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.3),transparent_52%),linear-gradient(180deg,rgba(30,25,22,0.1),rgba(30,25,22,0.02))]" />
+          <div className="h-full w-full bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.22),transparent_48%),linear-gradient(180deg,rgba(30,25,22,0.16),rgba(30,25,22,0.04))] transition-colors duration-500 group-hover:bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.3),transparent_52%),linear-gradient(180deg,rgba(30,25,22,0.1),rgba(30,25,22,0.02))] group-focus-visible:bg-[radial-gradient(circle_at_top,rgba(210,175,136,0.3),transparent_52%),linear-gradient(180deg,rgba(30,25,22,0.1),rgba(30,25,22,0.02))] motion-reduce:transition-none" />
         )}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
@@ -52,13 +53,13 @@ export function BranchCard({
             Vilnius
           </span>
           {href ? (
-            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary/80 transition-colors group-hover:text-primary">
+            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary/80 transition-colors group-hover:text-primary group-focus-visible:text-primary motion-reduce:transition-none">
               {detailLabel}
             </span>
           ) : null}
         </div>
 
-        <h3 className="mb-4 text-[1.7rem] font-medium tracking-tight transition-colors group-hover:text-primary">
+        <h3 className="mb-4 text-[1.7rem] font-medium tracking-tight transition-colors group-hover:text-primary group-focus-visible:text-primary motion-reduce:transition-none">
           {name}
         </h3>
         
@@ -75,7 +76,7 @@ export function BranchCard({
 
         {href && (
           <div className="mt-auto border-t border-border/50 pt-4 text-right">
-            <span className="pointer-events-none text-sm font-medium text-primary/80 transition-colors group-hover:text-primary">
+            <span className="pointer-events-none text-sm font-medium text-primary/80 transition-colors group-hover:text-primary group-focus-visible:text-primary motion-reduce:transition-none">
               {detailLabel} {"->"}
             </span>
           </div>
@@ -85,7 +86,7 @@ export function BranchCard({
   );
 
   if (href) {
-    return <Link href={href} className="block h-full">{CardContent}</Link>;
+    return <Link href={href} className="focus-ring group block h-full rounded-[1.85rem]">{CardContent}</Link>;
   }
 
   return CardContent;

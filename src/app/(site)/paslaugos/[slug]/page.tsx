@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -131,16 +130,15 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         ]}
         actions={
           <>
-            <Link href={getLocalizedRoute("contact", "lt")}>
-              <PrimaryButton className="h-12 w-full px-8 text-base sm:w-auto">
-                Susisiekti
-              </PrimaryButton>
-            </Link>
-            <Link href={getLocalizedRoute("branches", "lt")}>
-              <SecondaryButton className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto">
-                Perziureti filialus
-              </SecondaryButton>
-            </Link>
+            <PrimaryButton href={getLocalizedRoute("contact", "lt")} className="h-12 w-full px-8 text-base sm:w-auto">
+              Susisiekti
+            </PrimaryButton>
+            <SecondaryButton
+              href={getLocalizedRoute("branches", "lt")}
+              className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
+            >
+              Perziureti filialus
+            </SecondaryButton>
           </>
         }
         visual={
@@ -219,16 +217,18 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                     : "Siai paslaugai filialai dar nepriskirti. Susisiekite ir suderinsime jums patogiausia laika."}
                 </p>
                 <div className="mt-8 flex flex-col gap-3">
-                  <Link href={getLocalizedRoute("branches", "lt")}>
-                    <PrimaryButton className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]">
-                      Žiūrėti filialus
-                    </PrimaryButton>
-                  </Link>
-                  <Link href={getLocalizedRoute("contact", "lt")}>
-                    <SecondaryButton className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]">
-                      Susisiekti
-                    </SecondaryButton>
-                  </Link>
+                  <PrimaryButton
+                    href={getLocalizedRoute("branches", "lt")}
+                    className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
+                  >
+                    Žiūrėti filialus
+                  </PrimaryButton>
+                  <SecondaryButton
+                    href={getLocalizedRoute("contact", "lt")}
+                    className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
+                  >
+                    Susisiekti
+                  </SecondaryButton>
                 </div>
 
                 <div className="mt-8 border-t border-white/10 pt-6">

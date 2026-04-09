@@ -50,12 +50,12 @@ export default async function GalleryPage() {
         ]}
         actions={
           <>
-            <Link href={getLocalizedRoute("contact", "lt")}>
-              <PrimaryButton className="w-full sm:w-auto">Susisiekti</PrimaryButton>
-            </Link>
-            <Link href={getLocalizedRoute("branches", "lt")}>
-              <SecondaryButton className="w-full sm:w-auto">Ziureti filialus</SecondaryButton>
-            </Link>
+            <PrimaryButton href={getLocalizedRoute("contact", "lt")} className="w-full sm:w-auto">
+              Susisiekti
+            </PrimaryButton>
+            <SecondaryButton href={getLocalizedRoute("branches", "lt")} className="w-full sm:w-auto">
+              Ziureti filialus
+            </SecondaryButton>
           </>
         }
       />

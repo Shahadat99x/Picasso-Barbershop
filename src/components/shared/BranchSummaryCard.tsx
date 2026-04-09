@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { ArrowUpRight, Clock3, MapPin, Phone } from "lucide-react";
 
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -32,9 +31,6 @@ export function BranchSummaryCard({
   bookingLabel = "Call branch",
   mapAriaLabel,
 }: BranchSummaryCardProps) {
-  const isDirectLink =
-    bookingHref.startsWith("tel:") || bookingHref.startsWith("mailto:");
-
   return (
     <article className="rounded-[2rem] border border-border/60 bg-card p-6 shadow-sm shadow-black/5">
       <div className="flex items-start justify-between gap-4">
@@ -49,7 +45,7 @@ export function BranchSummaryCard({
             href={mapUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex rounded-full border border-border/60 bg-background p-3 text-primary transition-colors hover:bg-secondary/20"
+            className="focus-ring inline-flex rounded-full border border-border/60 bg-background p-3 text-primary transition-colors hover:bg-secondary/20"
             aria-label={mapAriaLabel || `Open map for ${name}`}
           >
             <ArrowUpRight className="h-4 w-4" />
@@ -64,7 +60,7 @@ export function BranchSummaryCard({
         </div>
         <div className="flex items-start gap-3">
           <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-          <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-foreground">
+          <a href={`tel:${phone.replace(/\s+/g, "")}`} className="focus-ring rounded-sm hover:text-foreground">
             {phone}
           </a>
         </div>
@@ -75,18 +71,12 @@ export function BranchSummaryCard({
       </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <Link href={branchHref} className="flex-1">
-          <SecondaryButton className="w-full">{branchLabel}</SecondaryButton>
-        </Link>
-        {isDirectLink ? (
-          <a href={bookingHref} className="flex-1">
-            <PrimaryButton className="w-full">{bookingLabel}</PrimaryButton>
-          </a>
-        ) : (
-          <Link href={bookingHref} className="flex-1">
-            <PrimaryButton className="w-full">{bookingLabel}</PrimaryButton>
-          </Link>
-        )}
+        <SecondaryButton href={branchHref} className="w-full flex-1">
+          {branchLabel}
+        </SecondaryButton>
+        <PrimaryButton href={bookingHref} className="w-full flex-1">
+          {bookingLabel}
+        </PrimaryButton>
       </div>
     </article>
   );
