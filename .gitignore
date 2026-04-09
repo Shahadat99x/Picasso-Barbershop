@@ -30,6 +30,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# local audit / generated reports
+/.audit-artifacts/
+/.audit*
+/build-stderr.txt
+/build-stdout.txt
+/eslint-out.txt
+/lint-output*.txt
+
 # env files (can opt-in for committing if needed)
 .env*
 
