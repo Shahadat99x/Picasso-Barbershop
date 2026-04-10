@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Bus, Car, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
@@ -116,11 +116,36 @@ export default async function BranchDetailPage({ params }: PageProps) {
         meta={[
           { label: "Darbo laikas", value: primaryHours },
           { label: "Telefonas", value: branch.phone },
-          { label: "Paslaugos", value: <Link href={getLocalizedRoute("services", "lt")} className="underline hover:text-white transition-colors">Žiūrėti paslaugas</Link> },
+          {
+            label: "Paslaugos",
+            value: (
+              <TrackedLink
+                href={getLocalizedRoute("services", "lt")}
+                analyticsEvent="service_explore_intent"
+                analyticsParams={{
+                  branch_slug: resolvedSlug,
+                  cta_label: "Žiūrėti paslaugas",
+                  placement: "branch_detail_meta",
+                }}
+                className="underline transition-colors hover:text-white"
+              >
+                Žiūrėti paslaugas
+              </TrackedLink>
+            ),
+          },
         ]}
         actions={
           <>
-            <PrimaryButton href="#kontaktai" className="h-12 w-full px-8 text-base sm:w-auto">
+            <PrimaryButton
+              href="#kontaktai"
+              analyticsEvent="cta_click"
+              analyticsParams={{
+                branch_slug: resolvedSlug,
+                cta_label: "Aplankyti filialą",
+                placement: "branch_detail_hero",
+              }}
+              className="h-12 w-full px-8 text-base sm:w-auto"
+            >
               Aplankyti filialą
             </PrimaryButton>
             {branch.map_url ? (
@@ -128,6 +153,12 @@ export default async function BranchDetailPage({ params }: PageProps) {
                 href={branch.map_url}
                 target="_blank"
                 rel="noreferrer"
+                analyticsEvent="map_open"
+                analyticsParams={{
+                  branch_slug: resolvedSlug,
+                  cta_label: "Atidaryti žemėlapyje",
+                  placement: "branch_detail_hero",
+                }}
                 className="h-12 w-full border-[#715435] bg-[#1a1613] px-8 text-base text-[#f5efe7] hover:bg-[#241d19] hover:text-[#f5efe7] sm:w-auto"
               >
                 Atidaryti žemėlapyje
@@ -195,7 +226,19 @@ export default async function BranchDetailPage({ params }: PageProps) {
                         <p className="mt-3 text-sm leading-7 text-muted-foreground">
                           {address}. Mus lengvai rasite vadovaudamiesi gatvės nuorodomis arba naudodami{" "}
                           {branch.map_url ? (
-                            <a href={branch.map_url} target="_blank" rel="noreferrer" className="focus-ring rounded-sm text-primary underline hover:text-primary/80">žemėlapio programėlę</a>
+                            <TrackedLink
+                              href={branch.map_url}
+                              target="_blank"
+                              analyticsEvent="map_open"
+                              analyticsParams={{
+                                branch_slug: resolvedSlug,
+                                cta_label: "žemėlapio programėlę",
+                                placement: "branch_detail_copy",
+                              }}
+                              className="focus-ring rounded-sm text-primary underline hover:text-primary/80"
+                            >
+                              žemėlapio programėlę
+                            </TrackedLink>
                           ) : "žemėlapį"}{" "}
                           tiksliam maršrutui.
                         </p>
@@ -260,12 +303,18 @@ export default async function BranchDetailPage({ params }: PageProps) {
                       <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#bba998]">
                         Telefonas
                       </div>
-                      <a
+                      <TrackedLink
                         href={`tel:${branch.phone.replace(/\s+/g, "")}`}
+                        analyticsEvent="phone_click"
+                        analyticsParams={{
+                          branch_slug: resolvedSlug,
+                          cta_label: branch.phone,
+                          placement: "branch_detail_contact",
+                        }}
                         className="focus-ring-inverse mt-2 inline-block rounded-sm text-[#f5efe7] transition-colors hover:text-[#d2af88]"
                       >
                         {branch.phone}
-                      </a>
+                      </TrackedLink>
                     </div>
                   </div>
 
@@ -312,6 +361,12 @@ export default async function BranchDetailPage({ params }: PageProps) {
                 <div className="mt-8 flex flex-col gap-3">
                   <PrimaryButton
                     href={`tel:${branch.phone.replace(/\s+/g, "")}`}
+                    analyticsEvent="phone_click"
+                    analyticsParams={{
+                      branch_slug: resolvedSlug,
+                      cta_label: "Skambinti filialui",
+                      placement: "branch_detail_sidebar",
+                    }}
                     className="w-full bg-[#d2af88] text-[#18120d] hover:bg-[#dec09c]"
                   >
                     Skambinti filialui
@@ -321,6 +376,12 @@ export default async function BranchDetailPage({ params }: PageProps) {
                       href={branch.map_url}
                       target="_blank"
                       rel="noreferrer"
+                      analyticsEvent="map_open"
+                      analyticsParams={{
+                        branch_slug: resolvedSlug,
+                        cta_label: "Atidaryti zemelapyje",
+                        placement: "branch_detail_sidebar",
+                      }}
                       className="w-full border-[#6f5335] bg-transparent text-[#f5efe7] hover:bg-[#231c18] hover:text-[#f5efe7]"
                     >
                       Atidaryti zemelapyje

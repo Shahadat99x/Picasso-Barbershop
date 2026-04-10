@@ -66,6 +66,11 @@ export function SiteHeader({
             <LanguageSwitcher />
             <PrimaryButton
               href={bookUrl}
+              analyticsEvent="branch_visit_intent"
+              analyticsParams={{
+                cta_label: t.book,
+                placement: "site_header",
+              }}
               className="h-11 rounded-full border border-[#1f1712]/5 bg-primary px-5 text-sm font-semibold shadow-[0_10px_24px_rgba(32,24,18,0.16)] hover:bg-primary/92 lg:px-6"
             >
               {t.book}

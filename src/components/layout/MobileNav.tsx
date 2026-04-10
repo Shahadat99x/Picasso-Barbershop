@@ -240,6 +240,11 @@ export function MobileNav({
                     <PrimaryButton
                       href={bookingHref}
                       onClick={closeMenu}
+                      analyticsEvent="branch_visit_intent"
+                      analyticsParams={{
+                        cta_label: t.book,
+                        placement: "mobile_nav",
+                      }}
                       className="h-12 w-full rounded-full border border-[#1f1712]/5 bg-primary text-base font-semibold shadow-[0_12px_26px_rgba(32,24,18,0.15)] hover:bg-primary/92"
                     >
                       {t.book}

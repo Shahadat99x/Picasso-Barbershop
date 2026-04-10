@@ -1,7 +1,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-import Link from "next/link";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
+import { getSlugFromHref } from "@/lib/analytics";
 
 interface ServiceCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -68,7 +69,20 @@ export function ServiceCard({
   );
 
   if (href) {
-    return <Link href={href} className="focus-ring group block h-full rounded-[1.85rem]">{CardContent}</Link>;
+    return (
+      <TrackedLink
+        href={href}
+        analyticsEvent="service_explore_intent"
+        analyticsParams={{
+          cta_label: detailLabel,
+          service_slug: getSlugFromHref(href),
+          placement: "service_card",
+        }}
+        className="focus-ring group block h-full rounded-[1.85rem]"
+      >
+        {CardContent}
+      </TrackedLink>
+    );
   }
 
   return CardContent;

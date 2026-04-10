@@ -1,17 +1,36 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  trackEvent,
+  type AnalyticsEventName,
+  type AnalyticsEventParams,
+} from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+
+interface ButtonAnalyticsProps {
+  analyticsEvent?: AnalyticsEventName;
+  analyticsParams?: AnalyticsEventParams;
+}
+
+type BaseButtonProps = React.ComponentProps<typeof Button>;
+type BaseButtonClickEvent = Parameters<
+  NonNullable<BaseButtonProps["onClick"]>
+>[0];
 
 type PrimaryButtonLinkProps = {
   href: string;
   prefetch?: boolean;
-} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href"> & {
+} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href"> &
+  ButtonAnalyticsProps & {
     className?: string;
   };
 
 type PrimaryButtonProps =
-  | (React.ComponentProps<typeof Button> & {
+  | (React.ComponentProps<typeof Button> &
+      ButtonAnalyticsProps & {
       href?: undefined;
       prefetch?: never;
     })
@@ -32,29 +51,80 @@ export function primaryButtonStyles(className?: string) {
 
 export function PrimaryButton(props: PrimaryButtonProps) {
   if ("href" in props && props.href) {
-    const { className, children, href, prefetch, rel, ...linkProps } = props;
+    const {
+      analyticsEvent,
+      analyticsParams,
+      className,
+      children,
+      href,
+      onClick,
+      prefetch,
+      rel,
+      ...linkProps
+    } = props;
     const computedRel =
       rel ?? (linkProps.target === "_blank" && isExternalHref(href) ? "noopener noreferrer" : undefined);
+    const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
+      onClick?.(event);
+
+      if (event.defaultPrevented || !analyticsEvent) {
+        return;
+      }
+
+      trackEvent(analyticsEvent, analyticsParams);
+    };
 
     if (isExternalHref(href)) {
       return (
-        <a href={href} rel={computedRel} className={primaryButtonStyles(className)} {...linkProps}>
+        <a
+          href={href}
+          rel={computedRel}
+          onClick={handleClick}
+          className={primaryButtonStyles(className)}
+          {...linkProps}
+        >
           {children}
         </a>
       );
     }
 
     return (
-      <Link href={href} prefetch={prefetch} className={primaryButtonStyles(className)} {...linkProps}>
+      <Link
+        href={href}
+        prefetch={prefetch}
+        onClick={handleClick}
+        className={primaryButtonStyles(className)}
+        {...linkProps}
+      >
         {children}
       </Link>
     );
   }
 
-  const { className, children, ...buttonProps } = props as React.ComponentProps<typeof Button>;
+  const {
+    analyticsEvent,
+    analyticsParams,
+    className,
+    children,
+    onClick,
+    ...buttonProps
+  } = props as BaseButtonProps & ButtonAnalyticsProps;
+  const handleClick = (event: BaseButtonClickEvent) => {
+    onClick?.(event);
+
+    if (event.defaultPrevented || !analyticsEvent) {
+      return;
+    }
+
+    trackEvent(analyticsEvent, analyticsParams);
+  };
 
   return (
-    <Button className={primaryButtonStyles(className as string | undefined)} {...buttonProps}>
+    <Button
+      className={primaryButtonStyles(className as string | undefined)}
+      onClick={handleClick}
+      {...buttonProps}
+    >
       {children}
     </Button>
   );

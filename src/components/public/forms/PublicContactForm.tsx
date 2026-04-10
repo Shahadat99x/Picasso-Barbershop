@@ -7,6 +7,7 @@ import {
   type PublicContactFormState,
   type PublicContactValues,
 } from "@/lib/public-contact";
+import { trackEvent } from "@/lib/analytics";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -125,6 +126,11 @@ export function PublicContactForm({
       setValues(nextState.values);
 
       if (nextState.status === "success") {
+        trackEvent("contact_submit_success", {
+          cta_label: t.submit,
+          form_name: "public_contact",
+          has_branch_preference: Boolean(values.preferredBranchId),
+        });
         formRef.current.reset();
       }
     } catch {

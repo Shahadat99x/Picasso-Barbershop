@@ -3,6 +3,7 @@ import { Container } from "./Container";
 import { getFooterNav } from "@/config/navigation";
 import { footerDictionary } from "@/i18n/dictionaries/ui";
 import { getLocalizedRoute } from "@/lib/site-routes";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 import Link from "next/link";
 import type { Locale } from "@/i18n/locales";
 
@@ -63,9 +64,17 @@ export function SiteFooter({
               <a href={`mailto:${email}`} className="focus-ring-inverse rounded-md transition-colors hover:text-white">
                 {email}
               </a>
-              <a href={`tel:${phone.replace(/\s+/g, "")}`} className="focus-ring-inverse rounded-md transition-colors hover:text-white">
+              <TrackedLink
+                href={`tel:${phone.replace(/\s+/g, "")}`}
+                analyticsEvent="phone_click"
+                analyticsParams={{
+                  cta_label: phone,
+                  placement: "site_footer",
+                }}
+                className="focus-ring-inverse rounded-md transition-colors hover:text-white"
+              >
                 {phone}
-              </a>
+              </TrackedLink>
             </div>
           </div>
           

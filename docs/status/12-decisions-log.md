@@ -377,3 +377,11 @@ The public contact page now submits lightweight enquiries through a small server
 Reason:
 
 The previous contact form was only a placeholder, which created a real UX and accessibility problem. A minimal route-based submission flow keeps the implementation deployable, works with the current single-role admin lead inbox, avoids reopening the broader content/admin scope, and gives the public site a usable contact path now.
+
+## Decision 046
+
+Phase 6b keeps public analytics optional and lightweight: GA4 loads only when a measurement ID exists, preferring the existing `site_settings.analytics_ga4_id` value with an environment fallback via `NEXT_PUBLIC_GA4_MEASUREMENT_ID` (or `GA4_MEASUREMENT_ID`), while Search Console readiness uses an optional `GOOGLE_SITE_VERIFICATION` meta token.
+
+Reason:
+
+The project already had a lightweight settings slot for a GA4 ID, and deployment planning called for clean environment/config discipline. This approach keeps analytics production-ready without hardcoding IDs, avoids a heavy consent/dashboard scope, preserves public SEO behavior, and makes future Google-side setup straightforward from either admin settings or environment configuration.

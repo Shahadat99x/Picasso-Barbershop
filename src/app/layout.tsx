@@ -12,6 +12,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const defaultTitle = settings.default_meta_title_lt || siteConfig.name;
   const defaultDescription =
     settings.default_meta_description_lt || siteConfig.description;
+  const googleSiteVerification =
+    process.env.GOOGLE_SITE_VERIFICATION?.trim() ||
+    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() ||
+    undefined;
 
   return {
     metadataBase: new URL(siteConfig.siteUrl),
@@ -43,6 +47,11 @@ export async function generateMetadata(): Promise<Metadata> {
       description: defaultDescription,
       images: [siteConfig.defaultOgImage],
     },
+    verification: googleSiteVerification
+      ? {
+          google: googleSiteVerification,
+        }
+      : undefined,
     icons: settings.favicon_url
       ? {
           icon: settings.favicon_url,
