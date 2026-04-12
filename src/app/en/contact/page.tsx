@@ -135,7 +135,7 @@ export default async function EnContactPage() {
                 mapUrl={getMapUrl(getLocalizedContent(branch, "address", "en"), branch.map_url)}
                 branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "en"), "en")}
                 bookingHref={`tel:${branch.phone.replace(/\s+/g, "")}`}
-                eyebrow="Branch"
+                eyebrow={branch.city}
                 branchLabel="View branch"
                 bookingLabel="Call branch"
                 mapAriaLabel={`Open map for ${getLocalizedContent(branch, "name", "en")}`}

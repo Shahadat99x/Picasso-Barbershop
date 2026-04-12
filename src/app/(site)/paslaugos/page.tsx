@@ -6,6 +6,8 @@ import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import {
+  getActiveBranches,
+  getBranchCityCount,
   getPublishedServices,
   transformServiceForCard,
 } from "@/lib/public-data";
@@ -14,13 +16,16 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Paslaugos",
   description:
-    "Perziurekite Picasso Barbershop paslaugas, kainas ir trukmes, kad lengvai issirinktumete jums tinkamiausia vizita Vilniuje.",
+    "Perziurekite Picasso Barbershop paslaugas, kainas ir trukmes, kad lengvai issirinktumete jums tinkamiausia vizita Vilniuje arba Kaune.",
   path: getLocalizedRoute("services", "lt"),
   locale: "lt",
 });
 
 export default async function ServicesIndexPage() {
-  const services = await getPublishedServices();
+  const [services, branches] = await Promise.all([
+    getPublishedServices(),
+    getActiveBranches(),
+  ]);
   const groupedServices = services.reduce<Record<string, ReturnType<typeof transformServiceForCard>[]>>(
     (accumulator, service) => {
       const category = service.category || "Kitos paslaugos";
@@ -32,17 +37,18 @@ export default async function ServicesIndexPage() {
     {},
   );
   const categoryEntries = Object.entries(groupedServices);
+  const cityCount = getBranchCityCount(branches);
 
   return (
     <main>
       <PublicPageIntro
         eyebrow="Paslaugu kolekcija"
         title="Paslaugos, sudeliotos aiskiai ir uztikrintai."
-        description="Perziurekite paslaugas pagal tai, kokio rezultato norite, kiek laiko galite skirti ir kuris filialas jums patogiausias."
+        description="Perziurekite paslaugas pagal rezultata, trukme ir filialo patoguma, o tikslu lokaciju pasiula rasite kiekvienos paslaugos detaliame puslapyje."
         stats={[
           { label: "Paslaugu pasirinkimai", value: String(services.length) },
           { label: "Kategorijos", value: String(categoryEntries.length) },
-          { label: "Miestas", value: "Vilnius" },
+          { label: "Miestai", value: String(cityCount) },
         ]}
       />
 

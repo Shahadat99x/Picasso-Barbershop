@@ -37,9 +37,9 @@ import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 import { createLocalBusinessSchema } from "@/lib/schema";
 
 export const metadata = createLocalizedPageMetadata({
-  title: "Premium salon in Vilnius",
+  title: "Premium salon in Vilnius and Kaunas",
   description:
-    "Discover premium services, three Vilnius branches, real client testimonials, and the calm, polished Picasso Barbershop experience.",
+    "Discover premium services, Picasso Barbershop branches in Vilnius and Kaunas, real client testimonials, and the calm, polished brand experience.",
   path: "/",
   locale: "en",
 });
@@ -125,9 +125,9 @@ export default async function EnHomePage() {
         <Section id="branches" className="bg-[linear-gradient(180deg,#f5f0ea_0%,#f8f5f0_100%)]">
           <Container>
             <SectionHeading
-              title="Branches in Vilnius"
+              title="Branches in Vilnius and Kaunas"
               subtitle="Find the location that suits your routine"
-              description="Each branch keeps the same premium service standard, while fitting a different part of the city and a different daily rhythm."
+              description="Each branch keeps the same premium service standard, while fitting a different city, neighborhood, and daily rhythm."
               align="center"
               className="max-w-3xl"
             />
@@ -136,6 +136,7 @@ export default async function EnHomePage() {
                 <BranchCard
                   key={branch.href}
                   name={branch.name}
+                  cityLabel={branch.cityLabel}
                   address={branch.address}
                   hours={branch.hours}
                   imageUrl={branch.imageUrl}

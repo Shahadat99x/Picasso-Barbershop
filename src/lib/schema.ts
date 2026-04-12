@@ -25,7 +25,7 @@ export function createLocalBusinessSchema() {
       addressCountry: "LT",
     },
     priceRange: siteConfig.priceRange,
-    areaServed: "Vilnius",
+    areaServed: ["Vilnius", "Kaunas"],
     sameAs: siteConfig.sameAs,
   };
 }

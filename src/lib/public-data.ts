@@ -109,6 +109,7 @@ export interface TransformedService {
 
 export interface TransformedBranch {
   name: string;
+  cityLabel: string;
   address: string;
   hours: string;
   imageUrl?: string;
@@ -179,12 +180,12 @@ const defaultSettings: SiteSettingsWithDefaults = {
   social_tiktok: null,
   footer_text_lt: null,
   footer_text_en: null,
-  default_meta_title_lt: "Picasso Barbershop | Premium grozio salonas Vilniuje",
-  default_meta_title_en: "Picasso Barbershop | Premium salon in Vilnius",
+  default_meta_title_lt: "Picasso Barbershop | Premium grozio salonas Vilniuje ir Kaune",
+  default_meta_title_en: "Picasso Barbershop | Premium salon in Vilnius and Kaunas",
   default_meta_description_lt:
-    "Premium grozio, kirpimo ir barzdos paslaugos per tris Picasso Barbershop filialus Vilniuje.",
+    "Premium grozio, kirpimo ir barzdos paslaugos Picasso Barbershop filialuose Vilniuje ir Kaune.",
   default_meta_description_en:
-    "Premium grooming, haircut, and barber services across three Picasso Barbershop branches in Vilnius.",
+    "Premium grooming, haircut, and barber services across Picasso Barbershop branches in Vilnius and Kaunas.",
   theme_color: "#171717",
 };
 
@@ -224,6 +225,10 @@ function toStringArray(value: unknown) {
   return value
     .map((item) => (typeof item === "string" ? item.trim() : ""))
     .filter(Boolean);
+}
+
+function normalizeCityValue(value: string | null | undefined) {
+  return value?.trim().toLowerCase() || "";
 }
 
 function splitParagraphs(value: string) {
@@ -1216,11 +1221,18 @@ export function transformBranchForCard(
 ): TransformedBranch {
   return {
     name: getLocalizedContent(branch, "name", locale),
+    cityLabel: branch.city,
     address: getLocalizedContent(branch, "address", locale) || branch.city,
     hours: getPrimaryOpeningHours(branch, locale),
     imageUrl: branch.cover_image_url ?? branch.gallery_preview_image_url ?? undefined,
     href: getLocalizedDetailRoute("branches", getLocalizedSlug(branch, locale), locale),
   };
+}
+
+export function getBranchCityCount(branches: PublicBranch[]) {
+  return new Set(
+    branches.map((branch) => normalizeCityValue(branch.city)).filter(Boolean),
+  ).size;
 }
 
 export function transformSpecialistForCard(

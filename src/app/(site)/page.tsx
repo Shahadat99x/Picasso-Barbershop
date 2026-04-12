@@ -37,9 +37,9 @@ import { getBookingPath, getLocalizedRoute } from "@/lib/site-routes";
 import { createLocalBusinessSchema } from "@/lib/schema";
 
 export const metadata = createLocalizedPageMetadata({
-  title: "Premium grozio salonas Vilniuje",
+  title: "Premium grozio salonas Vilniuje ir Kaune",
   description:
-    "Atraskite premium paslaugas, tris Vilniaus filialus, tikrus klientu atsiliepimus ir uztikrinta Picasso Barbershop patirti.",
+    "Atraskite premium paslaugas, Picasso Barbershop filialus Vilniuje ir Kaune, tikrus klientu atsiliepimus ir uztikrinta patirti.",
   path: "/",
   locale: "lt",
 });
@@ -125,9 +125,9 @@ export default async function HomePage() {
         <Section id="branches" className="bg-[linear-gradient(180deg,#f5f0ea_0%,#f8f5f0_100%)]">
           <Container>
             <SectionHeading
-              title="Filialai Vilniuje"
+              title="Filialai Vilniuje ir Kaune"
               subtitle="Raskite jums patogiausia lokacija"
-              description="Kiekviena lokacija islaiko ta pati premium aptarnavimo lygi, bet skirtingai prisitaiko prie miesto ritmo ir jusu dienotvarkes."
+              description="Kiekviena lokacija islaiko ta pati premium aptarnavimo lygi, bet skirtingai prisitaiko prie miesto, rajono ir jusu dienotvarkes."
               align="center"
               className="max-w-3xl"
             />
@@ -136,6 +136,7 @@ export default async function HomePage() {
                 <BranchCard
                   key={branch.href}
                   name={branch.name}
+                  cityLabel={branch.cityLabel}
                   address={branch.address}
                   hours={branch.hours}
                   imageUrl={branch.imageUrl}

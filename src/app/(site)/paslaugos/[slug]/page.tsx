@@ -310,7 +310,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                   mapUrl={branch.map_url || undefined}
                   branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "lt"), "lt")}
                   bookingHref={branch.booking_url || getBookingPath("lt")}
-                  eyebrow="Filialas"
+                  eyebrow={branch.city}
                   branchLabel="Ziureti filiala"
                   bookingLabel="Paskambinti filialui"
                   mapAriaLabel={`Atidaryti zemelapi ${getLocalizedContent(branch, "name", "lt")}`}

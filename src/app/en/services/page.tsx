@@ -6,6 +6,8 @@ import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import {
+  getActiveBranches,
+  getBranchCityCount,
   getPublishedServices,
   transformServiceForCard,
 } from "@/lib/public-data";
@@ -14,13 +16,16 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Services",
   description:
-    "Browse Picasso Barbershop services, prices, and timings so you can choose the right appointment across our Vilnius branches.",
+    "Browse Picasso Barbershop services, prices, and timings so you can choose the right appointment across our branches in Vilnius and Kaunas.",
   path: getLocalizedRoute("services", "en"),
   locale: "en",
 });
 
 export default async function EnServicesPage() {
-  const services = await getPublishedServices();
+  const [services, branches] = await Promise.all([
+    getPublishedServices(),
+    getActiveBranches(),
+  ]);
   const groupedServices = services.reduce<Record<string, ReturnType<typeof transformServiceForCard>[]>>(
     (accumulator, service) => {
       const category = service.category || "Other services";
@@ -32,17 +37,18 @@ export default async function EnServicesPage() {
     {},
   );
   const categoryEntries = Object.entries(groupedServices);
+  const cityCount = getBranchCityCount(branches);
 
   return (
     <main>
       <PublicPageIntro
         eyebrow="Service collection"
         title="Services arranged with clarity and a premium feel."
-        description="Browse services by result, timing, and branch fit so it is easy to choose the right visit with confidence."
+        description="Browse services by result, timing, and branch fit, then use each detail page to see exactly where the service is available across the network."
         stats={[
           { label: "Service options", value: String(services.length) },
           { label: "Categories", value: String(categoryEntries.length) },
-          { label: "City", value: "Vilnius" },
+          { label: "Cities", value: String(cityCount) },
         ]}
       />
 

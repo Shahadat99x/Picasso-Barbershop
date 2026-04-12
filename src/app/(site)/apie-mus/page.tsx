@@ -21,7 +21,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "Apie mus",
   description:
-    "Susipazinkite su Picasso Barbershop istorija, komanda ir principais, kurie kuria ramu, uztikrinta premium aptarnavima Vilniuje.",
+    "Susipazinkite su Picasso Barbershop istorija, komanda ir principais, kurie kuria ramu, uztikrinta premium aptarnavima Vilniuje ir Kaune.",
   path: getLocalizedRoute("about", "lt"),
   locale: "lt",
 });
@@ -79,7 +79,7 @@ export default async function AboutPage() {
         title="Prekinis zenklas, pastatytas ant ramaus darbo, nuoseklumo ir pasitikejimo."
         description="Picasso Barbershop istorija prasideda nuo amato, pagarbos laikui ir nuoseklaus darbo, prie kurio klientai nori grizti vel ir vel."
         stats={[
-          { label: "Vilniaus filialai", value: String(branches.length) },
+          { label: "Filialai miestuose", value: String(branches.length) },
           { label: "Komandos veidai", value: String(specialists.length) },
           { label: "Pagrindas", value: "Pasitikejimas" },
         ]}

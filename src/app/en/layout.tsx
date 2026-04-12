@@ -34,7 +34,7 @@ export default async function EnSiteLayout({
       <SiteFooter 
         locale="en"
         businessName={settings.business_name}
-        description="Premium grooming, haircut, beard, and salon experiences across three Vilnius branches."
+        description="Premium grooming, haircut, beard, and salon experiences across Picasso Barbershop branches in Vilnius and Kaunas."
         footerText={getSiteFooterCopy(settings, "en")}
         contactEmail={settings.default_email}
         contactPhone={settings.default_phone}
