@@ -93,7 +93,7 @@ export const footerNavGroups = {
 export const siteConfig = {
   name: "Picasso Barbershop",
   description:
-    "Premium grooming, haircut, beard, and salon experiences across three Vilnius branches.",
+    "Premium grooming, haircut, beard, and salon experiences across Picasso Barbershop branches in Vilnius and Kaunas.",
   contactEmail: "hello@picassobarbershop.lt",
   contactPhone: "+370 600 00000",
   bookingUrl: "/kontaktai",

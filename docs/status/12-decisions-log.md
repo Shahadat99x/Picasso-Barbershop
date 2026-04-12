@@ -397,3 +397,15 @@ The homepage needs to stay premium, calm, and conversion-focused. For this reaso
 - the team section is branch-selectable and keeps homepage specialist cards non-clickable
 - the gallery preview is limited to a tighter 3-item editorial composition
 - services remain capped as a featured preview with a stronger continuation CTA instead of expanding the homepage into a full catalog
+
+## Decision 048
+
+Public branch and service surfaces now represent Picasso Barbershop as a multi-city branch network rather than a Vilnius-only three-branch business.
+
+Reason:
+
+The live public site already has branch-based routing, availability, and cross-linking, so the safest F2 implementation is to correct the factual business representation inside the existing architecture instead of redesigning it. In practice this means:
+
+- Kaunas is treated as a first-class branch anywhere branch discovery and branch availability are already exposed
+- branch cards and branch stats use real city-aware data instead of hardcoded Vilnius assumptions
+- service discovery surfaces describe availability across the active branch network instead of implying Vilnius-only coverage

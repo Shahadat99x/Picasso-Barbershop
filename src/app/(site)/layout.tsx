@@ -34,7 +34,7 @@ export default async function SiteLayout({
       <SiteFooter 
         locale="lt"
         businessName={settings.business_name}
-        description="Premium grooming, haircut, beard, and salon experiences across three Vilnius branches."
+        description="Premium grozio, kirpimo ir barzdos paslaugos Picasso Barbershop filialuose Vilniuje ir Kaune."
         footerText={getSiteFooterCopy(settings, "lt")}
         contactEmail={settings.default_email}
         contactPhone={settings.default_phone}

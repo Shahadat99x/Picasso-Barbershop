@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase F1 - Homepage UX fixes (Completed)
+Phase F2 - Multi-city branch and service reality update (Completed)
 
-This phase tightened the homepage preview surfaces without changing the broader public information architecture. The team section is now branch-selectable and intentionally limited, the gallery preview now uses a cleaner 3-item editorial composition on desktop, and the services preview now makes the continuation path to the full services page more explicit in both Lithuanian and English.
+This phase updated the public branch and service story from an outdated Vilnius-only assumption to a cleaner multi-city representation. Kaunas now reads as a first-class public branch, branch and city counts are surfaced more truthfully, and the main branch/service discovery surfaces no longer imply a three-branch Vilnius-only business.
 
 ## Completed Phases
 
@@ -31,6 +31,7 @@ This phase tightened the homepage preview surfaces without changing the broader 
 - Phase 4 (responsive) - Admin responsiveness and usability hardening
 - Phase 5.5 - Public frontend editorial and copy cleanup
 - Phase F1 - Homepage UX fixes
+- Phase F2 - Multi-city branch and service reality update
 
 ## In Progress
 
@@ -38,7 +39,7 @@ This phase tightened the homepage preview surfaces without changing the broader 
 
 ## Next Planned Phase
 
-Phase F2 - Follow-on public UX fixes outside the homepage slice
+Phase F3 - Follow-on public consistency and content refinement
 
 ## Current Public CMS State
 
@@ -98,6 +99,26 @@ Homepage services preview and CTA cleanup:
 - homepage services remain limited to 3 featured cards
 - a clearer continuation CTA now points users to the full services index
 - the touched homepage preview sections now use more consistent continuation rows, spacing rhythm, and section-level CTA treatment
+
+## Phase F2 Delivery Summary
+
+Branch reality update:
+
+- public branch surfaces now represent the business as a multi-city network rather than a Vilnius-only set of locations
+- Kaunas is treated as a first-class public branch in the branches index, branch detail routes, and branch availability surfaces
+- shared branch cards now render the actual branch city instead of a hardcoded Vilnius label
+
+Branches and services consistency:
+
+- LT and EN branches index pages now use multi-city copy and stats instead of outdated Vilnius-only framing
+- LT and EN services index pages now use more accurate city coverage framing and no longer imply Vilnius-only availability
+- service and contact branch summary cards now surface the branch city more clearly where branch availability is already shown
+
+Shared public continuity:
+
+- homepage branch metadata and branch-preview copy were updated where needed for factual consistency
+- shared default public descriptions, footer fallbacks, and local business schema coverage now align with a Vilnius-and-Kaunas public representation
+- about page summary copy was minimally updated where it still implied a Vilnius-only branch footprint
 
 ## Phase 5d Delivery Summary
 
@@ -161,6 +182,7 @@ Specialist route decision:
 - content quality on EN pages still depends on translation completeness in admin, even though runtime fallback is now safe
 - specialist detail pages remain out of scope until product and IA requirements exist for them
 - homepage preview sections are intentionally curated, so requests to surface more inventory there should be treated as information architecture decisions rather than quick content changes
+- some public narrative still depends on admin-entered branch content quality, so future city expansion should continue through branch data first and copy polish second
 
 ## Post-Phase 5d UX Hardening
 
@@ -184,4 +206,4 @@ Read these files first:
 - `/docs/status/12-decisions-log.md`
 
 Do not reopen public CMS wiring unless a real regression is reported.
-Phase F2 should continue public UX polish outside this homepage-only slice and should not reopen F1 surfaces unless a regression is found.
+Phase F3 should build on the new multi-city reality without reopening F1 or F2 unless a regression is found.

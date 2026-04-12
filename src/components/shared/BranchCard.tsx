@@ -7,6 +7,7 @@ import { getSlugFromHref } from "@/lib/analytics";
 
 interface BranchCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
+  cityLabel?: string;
   address: string;
   hours: string;
   imageUrl?: string;
@@ -16,6 +17,7 @@ interface BranchCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function BranchCard({
   name,
+  cityLabel = "Vilnius",
   address,
   hours,
   imageUrl,
@@ -51,7 +53,7 @@ export function BranchCard({
       <div className="flex flex-grow flex-col p-6">
         <div className="mb-5 flex items-center justify-between gap-3">
           <span className="rounded-full bg-secondary/30 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Vilnius
+            {cityLabel}
           </span>
           {href ? (
             <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary/80 transition-colors group-hover:text-primary group-focus-visible:text-primary motion-reduce:transition-none">

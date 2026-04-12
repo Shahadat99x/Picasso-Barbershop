@@ -21,7 +21,7 @@ import { getLocalizedRoute } from "@/lib/site-routes";
 export const metadata = createLocalizedPageMetadata({
   title: "About",
   description:
-    "Learn about the Picasso Barbershop story, team, and the principles behind a calm, consistent premium experience in Vilnius.",
+    "Learn about the Picasso Barbershop story, team, and the principles behind a calm, consistent premium experience across Vilnius and Kaunas.",
   path: getLocalizedRoute("about", "en"),
   locale: "en",
 });
@@ -79,7 +79,7 @@ export default async function EnAboutPage() {
         title="A brand built on calm execution, consistency, and repeat trust."
         description="The Picasso Barbershop story begins with craft, respect for your time, and a service rhythm clients are happy to return to."
         stats={[
-          { label: "Vilnius branches", value: String(branches.length) },
+          { label: "Branches across cities", value: String(branches.length) },
           { label: "Team faces", value: String(specialists.length) },
           { label: "Foundation", value: "Trust" },
         ]}

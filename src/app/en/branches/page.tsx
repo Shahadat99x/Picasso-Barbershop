@@ -3,13 +3,17 @@ import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { BranchCard } from "@/components/shared/BranchCard";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { getActiveBranches, transformBranchForCard } from "@/lib/public-data";
+import {
+  getActiveBranches,
+  getBranchCityCount,
+  transformBranchForCard,
+} from "@/lib/public-data";
 import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Branches",
   description:
-    "Compare Picasso Barbershop branches in Vilnius and choose the location that best suits your routine, area, and preferred atmosphere.",
+    "Compare Picasso Barbershop branches in Vilnius and Kaunas and choose the location that best suits your routine, area, and preferred atmosphere.",
   path: getLocalizedRoute("branches", "en"),
   locale: "en",
 });
@@ -17,16 +21,17 @@ export const metadata = createLocalizedPageMetadata({
 export default async function EnBranchesPage() {
   const branches = await getActiveBranches();
   const branchCards = branches.map((branch) => transformBranchForCard(branch, "en"));
+  const cityCount = getBranchCityCount(branches);
 
   return (
     <main>
       <PublicPageIntro
-        eyebrow="Vilnius locations"
-        title="Choose the branch that fits your rhythm best."
-        description="Each branch keeps the same service standard while offering a different neighborhood feel, pace, and point of convenience across the city."
+        eyebrow="Vilnius and Kaunas"
+        title="Choose the branch that fits your city, route, and rhythm."
+        description="Each branch keeps the same service standard while offering a different city context, neighborhood feel, and point of convenience."
         stats={[
           { label: "Branches", value: String(branchCards.length) },
-          { label: "City", value: "Vilnius" },
+          { label: "Cities", value: String(cityCount) },
           { label: "Visits", value: "Direct" },
         ]}
       />
@@ -39,6 +44,7 @@ export default async function EnBranchesPage() {
                 <BranchCard
                   key={branch.href}
                   name={branch.name}
+                  cityLabel={branch.cityLabel}
                   address={branch.address}
                   hours={branch.hours}
                   imageUrl={branch.imageUrl}

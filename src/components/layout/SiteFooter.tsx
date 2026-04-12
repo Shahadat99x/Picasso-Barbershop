@@ -35,7 +35,11 @@ export function SiteFooter({
   const homeHref = getLocalizedRoute("home", locale);
   
   const name = businessName || "Picasso Barbershop";
-  const desc = description || "Premium grooming, haircut, beard, and salon experiences across three Vilnius branches.";
+  const desc =
+    description ||
+    (locale === "en"
+      ? "Premium grooming, haircut, beard, and salon experiences across Picasso Barbershop branches in Vilnius and Kaunas."
+      : "Premium grozio, kirpimo ir barzdos paslaugos Picasso Barbershop filialuose Vilniuje ir Kaune.");
   const copy = footerText || desc;
   const email = contactEmail || "hello@picassobarbershop.lt";
   const phone = contactPhone || "+370 600 00000";

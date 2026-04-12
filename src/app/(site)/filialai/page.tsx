@@ -3,13 +3,17 @@ import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { BranchCard } from "@/components/shared/BranchCard";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
-import { getActiveBranches, transformBranchForCard } from "@/lib/public-data";
+import {
+  getActiveBranches,
+  getBranchCityCount,
+  transformBranchForCard,
+} from "@/lib/public-data";
 import { getLocalizedRoute } from "@/lib/site-routes";
 
 export const metadata = createLocalizedPageMetadata({
   title: "Filialai",
   description:
-    "Atraskite Picasso Barbershop filialus Vilniuje ir issirinkite lokacija pagal patoguma, atmosfera bei kasdienio marsruto ritma.",
+    "Atraskite Picasso Barbershop filialus Vilniuje ir Kaune ir issirinkite lokacija pagal miesta, patoguma ir kasdienio marsruto ritma.",
   path: getLocalizedRoute("branches", "lt"),
   locale: "lt",
 });
@@ -17,16 +21,17 @@ export const metadata = createLocalizedPageMetadata({
 export default async function BranchesIndexPage() {
   const branches = await getActiveBranches();
   const branchCards = branches.map((branch) => transformBranchForCard(branch, "lt"));
+  const cityCount = getBranchCityCount(branches);
 
   return (
     <main>
       <PublicPageIntro
-        eyebrow="Vilniaus lokacijos"
-        title="Pasirinkite filiala taip, kaip rinktumes jusu ritmui."
-        description="Kiekvienas filialas islaiko ta pati paslaugu standarta, taciau skirtingai tinka pagal miesto dali, dienos tempa ir jums patogiausia sustojima."
+        eyebrow="Vilnius ir Kaunas"
+        title="Pasirinkite filiala pagal miesta, marsruta ir vizito ritma."
+        description="Kiekvienas filialas islaiko ta pati paslaugu standarta, taciau skirtingai prisitaiko prie miesto, rajono patogumo ir jums artimiausio kasdienio sustojimo."
         stats={[
           { label: "Filialai", value: String(branchCards.length) },
-          { label: "Miestas", value: "Vilnius" },
+          { label: "Miestai", value: String(cityCount) },
           { label: "Apsilankymas", value: "Tiesiogiai" },
         ]}
       />
@@ -39,6 +44,7 @@ export default async function BranchesIndexPage() {
                 <BranchCard
                   key={branch.href}
                   name={branch.name}
+                  cityLabel={branch.cityLabel}
                   address={branch.address}
                   hours={branch.hours}
                   imageUrl={branch.imageUrl}

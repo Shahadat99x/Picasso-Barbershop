@@ -310,7 +310,7 @@ export default async function EnServiceDetailPage({ params }: PageProps) {
                   mapUrl={branch.map_url || undefined}
                   branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "en"), "en")}
                   bookingHref={branch.booking_url || getBookingPath("en")}
-                  eyebrow="Branch"
+                  eyebrow={branch.city}
                   branchLabel="View branch"
                   bookingLabel="Call branch"
                   mapAriaLabel={`Open map for ${getLocalizedContent(branch, "name", "en")}`}

@@ -135,7 +135,7 @@ export default async function ContactPage() {
                 mapUrl={getMapUrl(getLocalizedContent(branch, "address", "lt"), branch.map_url)}
                 branchHref={getLocalizedDetailRoute("branches", getLocalizedSlug(branch, "lt"), "lt")}
                 bookingHref={`tel:${branch.phone.replace(/\s+/g, "")}`}
-                eyebrow="Filialas"
+                eyebrow={branch.city}
                 branchLabel="Ziureti filiala"
                 bookingLabel="Skambinti filialui"
                 mapAriaLabel={`Atidaryti zemelapi ${getLocalizedContent(branch, "name", "lt")}`}
