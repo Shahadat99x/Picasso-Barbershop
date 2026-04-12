@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase 5.5 - Public frontend editorial and copy cleanup (Completed)
+Phase F1 - Homepage UX fixes (Completed)
 
-This phase removed developer, demo, and system-style wording from the key public marketing pages and replaced it with calmer, customer-facing salon copy in both Lithuanian and English. Shared CTA wording now follows the current branch-first direction, and placeholder text no longer leaks onto public cards when media is missing.
+This phase tightened the homepage preview surfaces without changing the broader public information architecture. The team section is now branch-selectable and intentionally limited, the gallery preview now uses a cleaner 3-item editorial composition on desktop, and the services preview now makes the continuation path to the full services page more explicit in both Lithuanian and English.
 
 ## Completed Phases
 
@@ -30,6 +30,7 @@ This phase removed developer, demo, and system-style wording from the key public
 - Phase 5d - Public data wiring and route integrity
 - Phase 4 (responsive) - Admin responsiveness and usability hardening
 - Phase 5.5 - Public frontend editorial and copy cleanup
+- Phase F1 - Homepage UX fixes
 
 ## In Progress
 
@@ -37,13 +38,13 @@ This phase removed developer, demo, and system-style wording from the key public
 
 ## Next Planned Phase
 
-Phase 6 - Performance optimization
+Phase F2 - Follow-on public UX fixes outside the homepage slice
 
 ## Current Public CMS State
 
 These public surfaces are now fully CMS-backed with LT/EN fallback behavior where the schema supports it:
 
-- homepage services, branches, specialists preview, gallery, testimonials, blog preview, and promotions
+- homepage services, branches, branch-aware specialists preview, curated gallery preview, testimonials, blog preview, and promotions
 - services index and detail pages
 - branches index and detail pages
 - blog index and detail pages
@@ -76,6 +77,27 @@ Shared public language alignment:
 - global header/mobile booking CTA wording now aligns to the branch-first direction (`Aplankyti filialą` / `Visit branch`)
 - hero and page-level service-discovery CTAs now use service exploration wording instead of generic or inconsistent labels
 - branch card fallback labels and public card media fallbacks were cleaned up so missing images do not show placeholder copy
+
+## Phase F1 Delivery Summary
+
+Homepage team preview:
+
+- homepage team preview no longer mixes specialists from all branches into one flat row
+- users now switch branches through a pill-style selector
+- specialist cards on the homepage remain non-clickable in line with the current V1 team direction
+- each branch shows only a small curated preview, with a clear branch continuation CTA
+
+Homepage gallery preview:
+
+- homepage gallery preview now renders as a curated 3-item composition
+- desktop layout now favors an editorial lead image with two supporting frames instead of the older forced mosaic balance
+- the gallery page itself was not redesigned as part of this phase
+
+Homepage services preview and CTA cleanup:
+
+- homepage services remain limited to 3 featured cards
+- a clearer continuation CTA now points users to the full services index
+- the touched homepage preview sections now use more consistent continuation rows, spacing rhythm, and section-level CTA treatment
 
 ## Phase 5d Delivery Summary
 
@@ -138,6 +160,7 @@ Specialist route decision:
 - some premium editorial sections are still intentionally code-authored rather than admin-managed
 - content quality on EN pages still depends on translation completeness in admin, even though runtime fallback is now safe
 - specialist detail pages remain out of scope until product and IA requirements exist for them
+- homepage preview sections are intentionally curated, so requests to surface more inventory there should be treated as information architecture decisions rather than quick content changes
 
 ## Post-Phase 5d UX Hardening
 
@@ -161,4 +184,4 @@ Read these files first:
 - `/docs/status/12-decisions-log.md`
 
 Do not reopen public CMS wiring unless a real regression is reported.
-Phase 6 work should focus on performance, caching, media optimization, and rendering efficiency rather than more route or content architecture changes.
+Phase F2 should continue public UX polish outside this homepage-only slice and should not reopen F1 surfaces unless a regression is found.

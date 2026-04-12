@@ -385,3 +385,15 @@ Phase 6b keeps public analytics optional and lightweight: GA4 loads only when a 
 Reason:
 
 The project already had a lightweight settings slot for a GA4 ID, and deployment planning called for clean environment/config discipline. This approach keeps analytics production-ready without hardcoding IDs, avoids a heavy consent/dashboard scope, preserves public SEO behavior, and makes future Google-side setup straightforward from either admin settings or environment configuration.
+
+## Decision 047
+
+Homepage team, gallery, and services sections remain curated preview surfaces rather than full directory surfaces.
+
+Reason:
+
+The homepage needs to stay premium, calm, and conversion-focused. For this reason:
+
+- the team section is branch-selectable and keeps homepage specialist cards non-clickable
+- the gallery preview is limited to a tighter 3-item editorial composition
+- services remain capped as a featured preview with a stronger continuation CTA instead of expanding the homepage into a full catalog
