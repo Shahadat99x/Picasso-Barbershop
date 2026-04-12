@@ -6,29 +6,30 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { HomepageTeamSection } from "@/components/sections/HomepageTeamSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { BranchCard } from "@/components/shared/BranchCard";
 import { PromoBanner } from "@/components/shared/PromoBanner";
 import { ServiceCard } from "@/components/shared/ServiceCard";
-import { SpecialistCard } from "@/components/shared/SpecialistCard";
 import { StructuredData } from "@/components/shared/StructuredData";
 import { TestimonialCard } from "@/components/shared/TestimonialCard";
+import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import {
+  buildHomepageTeamBranchPreviews,
   getActiveBranches,
+  getActiveSpecialists,
   getActivePromotions,
   getFeaturedGalleryItems,
   getFeaturedServices,
-  getFeaturedSpecialists,
+  getHomepageGalleryPreviewItems,
   getPromotionCtaText,
   getPublishedBlogPosts,
   getVisibleTestimonials,
   getLocalizedContent,
   transformBlogPostForCard,
   transformBranchForCard,
-  transformGalleryItemForMosaic,
   transformServiceForCard,
-  transformSpecialistForCard,
   transformTestimonialForCard,
 } from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
@@ -48,33 +49,27 @@ export default async function HomePage() {
     await Promise.all([
       getFeaturedServices(3),
       getActiveBranches(),
-      getFeaturedSpecialists(4),
-      getFeaturedGalleryItems(6),
+      getActiveSpecialists(),
+      getFeaturedGalleryItems(3),
       getVisibleTestimonials(2),
       getPublishedBlogPosts(3),
       getActivePromotions(1),
     ]);
 
   const featuredBranches = branches.slice(0, 3);
-  const branchMap = new Map(
-    branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "lt")]),
-  );
   const serviceCards = services.map((service) => transformServiceForCard(service, "lt"));
   const branchCards = featuredBranches.map((branch) => transformBranchForCard(branch, "lt"));
-  const specialistCards = specialists.map((specialist) =>
-    transformSpecialistForCard(
-      specialist,
-      "lt",
-      branchMap.get(specialist.branch_id || ""),
-    ),
+  const teamBranchPreviews = buildHomepageTeamBranchPreviews(
+    branches,
+    specialists,
+    "lt",
+    3,
   );
   const testimonialCards = testimonials.map((testimonial) =>
     transformTestimonialForCard(testimonial, "lt"),
   );
   const blogCards = blogPosts.map((post) => transformBlogPostForCard(post, "lt"));
-  const galleryMosaicItems = galleryItems.map((item, index) =>
-    transformGalleryItemForMosaic(item, "lt", index),
-  );
+  const galleryPreviewItems = getHomepageGalleryPreviewItems(galleryItems, "lt", 3);
 
   return (
     <main>
@@ -104,6 +99,23 @@ export default async function HomePage() {
                   detailLabel="Placiau"
                 />
               ))}
+            </div>
+            <div className="mt-8 flex flex-col gap-4 border-t border-border/50 pt-6 md:flex-row md:items-center md:justify-between">
+              <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+                Namu puslapyje paliekame tik aiskia pradine atranka, o visas paslaugu
+                pasirinkimas su papildomais variantais pateikiamas atskirame puslapyje.
+              </p>
+              <SecondaryButton
+                href={getLocalizedRoute("services", "lt")}
+                analyticsEvent="service_explore_intent"
+                analyticsParams={{
+                  cta_label: "Ziureti visas paslaugas",
+                  placement: "homepage_services_preview",
+                }}
+                className="w-full md:w-auto"
+              >
+                Ziureti visas paslaugas
+              </SecondaryButton>
             </div>
           </Container>
         </Section>
@@ -138,38 +150,22 @@ export default async function HomePage() {
 
       <WhyChooseUsSection locale="lt" />
 
-      {specialistCards.length > 0 ? (
-        <Section className="bg-background" variant="padded">
-          <Container>
-            <SectionHeading
-              title="Musu komanda"
-              subtitle="Patyre specialistai"
-              description="Meistrai, kuriu darbas remiasi konsultacija, tikslumu ir nuosekliu rezultatu, prie kurio lengva noreti grizti."
-              align="left"
-              className="max-w-3xl"
-            />
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {specialistCards.map((specialist) => (
-                <SpecialistCard
-                  key={specialist.id}
-                  name={specialist.name}
-                  title={specialist.title}
-                  summary={specialist.summary}
-                  specialties={specialist.specialties}
-                  branchLabel={specialist.branchLabel}
-                  experienceLabel={specialist.experienceLabel}
-                  imageUrl={specialist.imageUrl}
-                  eyebrowLabel="Komanda"
-                  href={specialist.href}
-                  ctaLabel="Ziureti profili"
-                />
-              ))}
-            </div>
-          </Container>
-        </Section>
+      {teamBranchPreviews.length > 0 ? (
+        <HomepageTeamSection
+          branches={teamBranchPreviews}
+          title="Musu komanda"
+          subtitle="Komanda pagal filiala"
+          description="Trumpa kiekvieno filialo komandos perziura, kad galetumete issirinkti jums patogiausia lokacija neperkraunant namu puslapio."
+          eyebrowLabel="Komanda"
+          selectedBranchLabel="Pasirinktas filialas"
+          specialistCountLabel="Komanda: {count}"
+          previewNote="Rodome tik trumpa sios lokacijos komandos perziura. Visas filialo kontekstas ir tolimesnis pasirinkimas pateikiami filialo puslapyje."
+          visitBranchLabel="Aplankyti filiala"
+          tabListLabel="Filialo komandos pasirinkimas"
+        />
       ) : null}
 
-      <GallerySection items={galleryMosaicItems} locale="lt" />
+      <GallerySection items={galleryPreviewItems} locale="lt" />
 
       {testimonialCards.length > 0 ? (
         <Section className="bg-[linear-gradient(180deg,#f7f2eb_0%,#fdfaf6_100%)]">

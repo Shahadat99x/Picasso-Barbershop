@@ -127,6 +127,14 @@ export interface TransformedSpecialist {
   imageUrl?: string;
 }
 
+export interface HomepageTeamBranchPreview {
+  id: string;
+  name: string;
+  href: string;
+  totalSpecialists: number;
+  specialists: TransformedSpecialist[];
+}
+
 export interface TransformedTestimonial {
   author: string;
   content: string;
@@ -1233,6 +1241,45 @@ export function transformSpecialistForCard(
   };
 }
 
+export function buildHomepageTeamBranchPreviews(
+  branches: PublicBranch[],
+  specialists: PublicSpecialist[],
+  locale: Locale = defaultLocale,
+  maxSpecialistsPerBranch = 3,
+) {
+  return branches
+    .map((branch) => {
+      const branchSpecialists = specialists.filter(
+        (specialist) => specialist.branch_id === branch.id,
+      );
+
+      if (branchSpecialists.length === 0) {
+        return null;
+      }
+
+      const branchName = getLocalizedContent(branch, "name", locale);
+
+      return {
+        id: branch.id,
+        name: branchName,
+        href: getLocalizedDetailRoute(
+          "branches",
+          getLocalizedSlug(branch, locale),
+          locale,
+        ),
+        totalSpecialists: branchSpecialists.length,
+        specialists: branchSpecialists
+          .slice(0, maxSpecialistsPerBranch)
+          .map((specialist) =>
+            transformSpecialistForCard(specialist, locale, branchName),
+          ),
+      };
+    })
+    .filter(
+      (preview): preview is HomepageTeamBranchPreview => preview !== null,
+    );
+}
+
 export function transformTestimonialForCard(
   testimonial: PublicTestimonial,
   locale: Locale = defaultLocale,
@@ -1281,6 +1328,16 @@ export function transformGalleryItemForMosaic(
     tags,
     layout: galleryLayoutPattern[index % galleryLayoutPattern.length],
   };
+}
+
+export function getHomepageGalleryPreviewItems(
+  items: PublicGalleryItem[],
+  locale: Locale = defaultLocale,
+  limit = 3,
+) {
+  return items
+    .slice(0, limit)
+    .map((item, index) => transformGalleryItemForMosaic(item, locale, index));
 }
 
 export function getHomepageGalleryTitle(locale: Locale = defaultLocale) {
