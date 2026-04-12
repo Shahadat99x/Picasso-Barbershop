@@ -44,8 +44,9 @@ export function getFooterNav(locale: Locale = defaultLocale) {
       { label: t.contact, href: getLocalizedRoute("contact", locale) },
     ],
     legal: [
-      { label: t.privacyPolicy, href: "/privacy-policy" },
-      { label: t.termsOfService, href: "/terms" },
+      { label: t.privacyPolicy, href: getLocalizedRoute("privacyPolicy", locale) },
+      { label: t.termsOfService, href: getLocalizedRoute("terms", locale) },
+      { label: t.cookiePolicy, href: getLocalizedRoute("cookiePolicy", locale) },
     ],
     social: [
       { label: "Instagram", href: "https://instagram.com" },
@@ -81,8 +82,9 @@ export const footerNavGroups = {
     { label: "Contact", href: "/kontaktai" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Terms of Service", href: "/terms" },
+    { label: "Privacy Policy", href: "/privatumo-politika" },
+    { label: "Terms of Service", href: "/taisykles" },
+    { label: "Cookie Policy", href: "/slapuku-politika" },
   ],
   social: [
     { label: "Instagram", href: "https://instagram.com" },

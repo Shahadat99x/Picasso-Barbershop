@@ -36,6 +36,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     toSitemapEntry(getLocalizedRoute("about", "lt"), now, 0.7),
     toSitemapEntry(getLocalizedRoute("contact", "lt"), now, 0.8),
     toSitemapEntry(getLocalizedRoute("blog", "lt"), now, 0.8),
+    toSitemapEntry(getLocalizedRoute("privacyPolicy", "lt"), now, 0.4),
+    toSitemapEntry(getLocalizedRoute("terms", "lt"), now, 0.4),
+    toSitemapEntry(getLocalizedRoute("cookiePolicy", "lt"), now, 0.4),
     toSitemapEntry(getLocalizedRoute("home", "en"), now, 0.9),
     toSitemapEntry(getLocalizedRoute("services", "en"), now, 0.8),
     toSitemapEntry(getLocalizedRoute("branches", "en"), now, 0.8),
@@ -43,6 +46,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     toSitemapEntry(getLocalizedRoute("about", "en"), now, 0.7),
     toSitemapEntry(getLocalizedRoute("contact", "en"), now, 0.8),
     toSitemapEntry(getLocalizedRoute("blog", "en"), now, 0.8),
+    toSitemapEntry(getLocalizedRoute("privacyPolicy", "en"), now, 0.4),
+    toSitemapEntry(getLocalizedRoute("terms", "en"), now, 0.4),
+    toSitemapEntry(getLocalizedRoute("cookiePolicy", "en"), now, 0.4),
   ];
 
   const serviceRoutes = services.flatMap((service) => [

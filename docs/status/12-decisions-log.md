@@ -409,3 +409,11 @@ The live public site already has branch-based routing, availability, and cross-l
 - Kaunas is treated as a first-class branch anywhere branch discovery and branch availability are already exposed
 - branch cards and branch stats use real city-aware data instead of hardcoded Vilnius assumptions
 - service discovery surfaces describe availability across the active branch network instead of implying Vilnius-only coverage
+
+## Decision 049
+
+Blog article bodies should be normalized at the public rendering boundary, and launch-critical legal pages should remain code-authored public documents for now.
+
+Reason:
+
+The admin blog form currently saves article bodies through a simple textarea flow, which means production content may arrive as plain text or markdown-like strings rather than fully structured blocks. The safest F3 implementation is therefore to normalize that content into the existing typed article model and render it through a stronger editorial component instead of introducing a new CMS editor or heavy parsing dependency. For the same reason, Privacy Policy, Terms, and Cookie Policy are added as localized code-authored pages: they are trust-critical at launch, need clean public routing immediately, and do not yet justify a broader admin/content-model redesign.
