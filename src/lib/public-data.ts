@@ -238,6 +238,155 @@ function splitParagraphs(value: string) {
     .filter(Boolean);
 }
 
+function parsePlainTextArticleBody(value: string, prefix = "article"): ArticleBodyBlock[] {
+  const lines = value.replace(/\r/g, "").split("\n");
+  const blocks: ArticleBodyBlock[] = [];
+  let paragraphLines: string[] = [];
+  let listStyle: "bullet" | "ordered" | null = null;
+  let listItems: string[] = [];
+  let quoteLines: string[] = [];
+  let blockIndex = 0;
+
+  const nextId = (type: ArticleBodyBlock["type"]) => `${prefix}-${type}-${blockIndex++}`;
+
+  const flushParagraph = () => {
+    if (paragraphLines.length === 0) {
+      return;
+    }
+
+    blocks.push({
+      id: nextId("paragraph"),
+      type: "paragraph",
+      text: paragraphLines.join(" ").trim(),
+    });
+    paragraphLines = [];
+  };
+
+  const flushList = () => {
+    if (!listStyle || listItems.length === 0) {
+      return;
+    }
+
+    blocks.push({
+      id: nextId("list"),
+      type: "list",
+      style: listStyle,
+      items: listItems,
+    });
+    listStyle = null;
+    listItems = [];
+  };
+
+  const flushQuote = () => {
+    if (quoteLines.length === 0) {
+      return;
+    }
+
+    const normalizedQuoteLines = quoteLines.map((line) => line.trim()).filter(Boolean);
+
+    if (normalizedQuoteLines.length === 0) {
+      quoteLines = [];
+      return;
+    }
+
+    const lastLine = normalizedQuoteLines[normalizedQuoteLines.length - 1];
+    const attributionMatch = lastLine.match(/^[-–—]\s+(.+)$/);
+    const attribution = attributionMatch?.[1]?.trim();
+    const contentLines = attribution
+      ? normalizedQuoteLines.slice(0, -1)
+      : normalizedQuoteLines;
+    const text = contentLines.join(" ").trim();
+
+    if (text) {
+      blocks.push({
+        id: nextId("quote"),
+        type: "quote",
+        text,
+        attribution,
+      });
+    }
+
+    quoteLines = [];
+  };
+
+  const flushOpenBlock = () => {
+    flushParagraph();
+    flushList();
+    flushQuote();
+  };
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+
+    if (!trimmedLine) {
+      flushOpenBlock();
+      continue;
+    }
+
+    const headingLevel3 = trimmedLine.match(/^###\s+(.+)$/);
+    if (headingLevel3) {
+      flushOpenBlock();
+      blocks.push({
+        id: nextId("heading"),
+        type: "heading",
+        level: 3,
+        text: headingLevel3[1].trim(),
+      });
+      continue;
+    }
+
+    const headingLevel2 = trimmedLine.match(/^##\s+(.+)$/);
+    if (headingLevel2) {
+      flushOpenBlock();
+      blocks.push({
+        id: nextId("heading"),
+        type: "heading",
+        level: 2,
+        text: headingLevel2[1].trim(),
+      });
+      continue;
+    }
+
+    const orderedMatch = trimmedLine.match(/^\d+\.\s+(.+)$/);
+    const bulletMatch = trimmedLine.match(/^[-*]\s+(.+)$/);
+    if (orderedMatch || bulletMatch) {
+      flushParagraph();
+      flushQuote();
+      const resolvedStyle = orderedMatch ? "ordered" : "bullet";
+
+      if (listStyle && listStyle !== resolvedStyle) {
+        flushList();
+      }
+
+      listStyle = resolvedStyle;
+      listItems.push((orderedMatch?.[1] || bulletMatch?.[1] || "").trim());
+      continue;
+    }
+
+    const quoteMatch = trimmedLine.match(/^>\s?(.*)$/);
+    if (quoteMatch) {
+      flushParagraph();
+      flushList();
+      quoteLines.push(quoteMatch[1].trim());
+      continue;
+    }
+
+    flushList();
+    flushQuote();
+    paragraphLines.push(trimmedLine);
+  }
+
+  flushOpenBlock();
+
+  return blocks.length > 0
+    ? blocks
+    : splitParagraphs(value).map((paragraph, index) => ({
+        id: `${prefix}-paragraph-${index}`,
+        type: "paragraph" as const,
+        text: paragraph,
+      }));
+}
+
 function normalizeSocialUrl(
   value: string | null | undefined,
   platform: "instagram" | "facebook" | "tiktok",
@@ -473,13 +622,7 @@ export function normalizeFaqs(value: unknown): PublicFaqItem[] {
 
 export function normalizeArticleBody(value: unknown): ArticleBodyBlock[] {
   if (Array.isArray(value) && value.every((item) => typeof item === "string")) {
-    return value.flatMap((item, index) =>
-      splitParagraphs(item).map((paragraph, paragraphIndex) => ({
-        id: `paragraph-${index}-${paragraphIndex}`,
-        type: "paragraph" as const,
-        text: paragraph,
-      })),
-    );
+    return value.flatMap((item, index) => parsePlainTextArticleBody(item, `plain-${index}`));
   }
 
   if (Array.isArray(value)) {
@@ -550,11 +693,7 @@ export function normalizeArticleBody(value: unknown): ArticleBodyBlock[] {
   }
 
   if (typeof value === "string") {
-    return splitParagraphs(value).map((paragraph, index) => ({
-      id: `paragraph-${index}`,
-      type: "paragraph" as const,
-      text: paragraph,
-    }));
+    return parsePlainTextArticleBody(value);
   }
 
   return [];

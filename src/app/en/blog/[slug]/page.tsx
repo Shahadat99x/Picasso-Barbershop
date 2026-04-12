@@ -187,24 +187,26 @@ export default async function EnBlogPostPage({ params }: PageProps) {
       <Section className="bg-background">
         <Container>
           <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-            <article className="rounded-[2rem] border border-border/60 bg-card p-8 shadow-sm shadow-black/5 md:p-10">
-              <div className="mb-8 border-b border-border/50 pb-6">
-                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                  Reading
-                </span>
-                <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  <span className="inline-flex items-center gap-2">
-                    <CalendarDays className="h-4 w-4" />
-                    {publishedDate}
+            <article className="rounded-[2rem] border border-border/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(251,248,243,0.98)_100%)] p-8 shadow-sm shadow-black/5 md:p-10 lg:p-12">
+              <div className="mx-auto max-w-3xl">
+                <div className="mb-8 border-b border-border/50 pb-6">
+                  <span className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+                    Reading
                   </span>
-                  <span className="inline-flex items-center gap-2">
-                    <Clock3 className="h-4 w-4" />
-                    {readingTime} min read
-                  </span>
-                  <span>{post.author_name}</span>
+                  <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                    <span className="inline-flex items-center gap-2">
+                      <CalendarDays className="h-4 w-4" />
+                      {publishedDate}
+                    </span>
+                    <span className="inline-flex items-center gap-2">
+                      <Clock3 className="h-4 w-4" />
+                      {readingTime} min read
+                    </span>
+                    <span>{post.author_name}</span>
+                  </div>
                 </div>
+                <ArticleBody blocks={body} className="max-w-none" highlightLead />
               </div>
-              <ArticleBody blocks={body} />
             </article>
 
             <aside className="space-y-5 lg:sticky lg:top-28">

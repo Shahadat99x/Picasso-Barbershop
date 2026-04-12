@@ -8,7 +8,10 @@ export type PublicRouteKey =
   | "gallery"
   | "about"
   | "blog"
-  | "contact";
+  | "contact"
+  | "privacyPolicy"
+  | "terms"
+  | "cookiePolicy";
 
 const publicRouteSegments: Record<PublicRouteKey, Record<Locale, string>> = {
   home: { lt: "", en: "" },
@@ -19,6 +22,9 @@ const publicRouteSegments: Record<PublicRouteKey, Record<Locale, string>> = {
   about: { lt: "apie-mus", en: "about" },
   blog: { lt: "blogas", en: "blog" },
   contact: { lt: "kontaktai", en: "contact" },
+  privacyPolicy: { lt: "privatumo-politika", en: "privacy-policy" },
+  terms: { lt: "taisykles", en: "terms" },
+  cookiePolicy: { lt: "slapuku-politika", en: "cookie-policy" },
 };
 
 function normalizePath(path: string) {

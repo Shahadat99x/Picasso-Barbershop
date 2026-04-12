@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase F2 - Multi-city branch and service reality update (Completed)
+Phase F3 - Blog reading experience and legal/trust pages (Completed)
 
-This phase updated the public branch and service story from an outdated Vilnius-only assumption to a cleaner multi-city representation. Kaunas now reads as a first-class public branch, branch and city counts are surfaced more truthfully, and the main branch/service discovery surfaces no longer imply a three-branch Vilnius-only business.
+This phase upgraded the public blog article experience from a flatter text dump into a more polished editorial reading surface and added launch-quality legal/trust pages. Blog body normalization now handles markdown-like structure more gracefully, article pages have clearer reading rhythm, and Privacy Policy, Terms, and Cookie Policy pages now exist in both LT and EN with localized routes and footer discovery.
 
 ## Completed Phases
 
@@ -32,6 +32,7 @@ This phase updated the public branch and service story from an outdated Vilnius-
 - Phase 5.5 - Public frontend editorial and copy cleanup
 - Phase F1 - Homepage UX fixes
 - Phase F2 - Multi-city branch and service reality update
+- Phase F3 - Blog reading experience and legal/trust pages
 
 ## In Progress
 
@@ -39,7 +40,7 @@ This phase updated the public branch and service story from an outdated Vilnius-
 
 ## Next Planned Phase
 
-Phase F3 - Follow-on public consistency and content refinement
+Phase F4 - Launch-readiness QA and follow-on public polish
 
 ## Current Public CMS State
 
@@ -64,6 +65,7 @@ These surfaces remain intentionally static/editorial for now:
 - homepage why-choose-us/value framing
 - homepage final CTA copy
 - about page story/value/closing CTA copy
+- legal pages (privacy, terms, cookie policy)
 
 ## Phase 5.5 Delivery Summary
 
@@ -120,6 +122,22 @@ Shared public continuity:
 - shared default public descriptions, footer fallbacks, and local business schema coverage now align with a Vilnius-and-Kaunas public representation
 - about page summary copy was minimally updated where it still implied a Vilnius-only branch footprint
 
+## Phase F3 Delivery Summary
+
+Blog article reading experience:
+
+- blog article pages now render inside a tighter editorial reading column with a calmer premium content wrapper
+- the shared article body renderer now supports inline strong text and inline links instead of showing markdown syntax as plain text
+- plain-text or markdown-like article bodies are normalized into headings, paragraphs, lists, and quotes before rendering, which keeps admin-authored content readable without introducing a heavy rich-text dependency
+
+Legal and trust surfaces:
+
+- added LT and EN public Privacy Policy pages with localized metadata and alternate-language links
+- added LT and EN public Terms pages with lightweight but real launch-ready terms copy
+- added LT and EN public Cookie Policy pages that stay aligned with the project's limited analytics/cookie reality
+- footer legal links now route through localized public paths instead of hardcoded non-localized URLs
+- legal routes are now included in the public sitemap
+
 ## Phase 5d Delivery Summary
 
 Route integrity and localization:
@@ -162,6 +180,9 @@ Specialist route decision:
 - `/blogas`
 - `/blogas/[slug]`
 - `/kontaktai`
+- `/privatumo-politika`
+- `/taisykles`
+- `/slapuku-politika`
 
 ### English (EN)
 
@@ -175,6 +196,9 @@ Specialist route decision:
 - `/en/blog`
 - `/en/blog/[slug]`
 - `/en/contact`
+- `/en/privacy-policy`
+- `/en/terms`
+- `/en/cookie-policy`
 
 ## Current Risks
 
@@ -183,6 +207,8 @@ Specialist route decision:
 - specialist detail pages remain out of scope until product and IA requirements exist for them
 - homepage preview sections are intentionally curated, so requests to surface more inventory there should be treated as information architecture decisions rather than quick content changes
 - some public narrative still depends on admin-entered branch content quality, so future city expansion should continue through branch data first and copy polish second
+- legal documents are currently code-authored rather than CMS-managed, so future business/legal changes still require a code/content pass
+- live browser QA for the updated blog article detail pages is still worth repeating in a local or preview environment because this environment cannot bind a local port for full manual navigation checks
 
 ## Post-Phase 5d UX Hardening
 
@@ -206,4 +232,4 @@ Read these files first:
 - `/docs/status/12-decisions-log.md`
 
 Do not reopen public CMS wiring unless a real regression is reported.
-Phase F3 should build on the new multi-city reality without reopening F1 or F2 unless a regression is found.
+Phase F4 should build on the new public launch-quality trust surfaces without reopening F1-F3 unless a regression is found.
