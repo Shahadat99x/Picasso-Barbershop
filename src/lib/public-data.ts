@@ -1509,7 +1509,7 @@ export function transformGalleryItemForMosaic(
 export function getHomepageGalleryPreviewItems(
   items: PublicGalleryItem[],
   locale: Locale = defaultLocale,
-  limit = 3,
+  limit = 6,
 ) {
   return items
     .slice(0, limit)

@@ -446,7 +446,12 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
         </Section>
       ) : null}
 
-      <GallerySection items={galleryMosaicItems} locale="en" />
+      <GallerySection
+        items={galleryMosaicItems}
+        locale="en"
+        variant="supporting"
+        analyticsPlacement="branch_detail_gallery_preview"
+      />
 
       {blogCards.length > 0 ? (
         <Section className="bg-background">

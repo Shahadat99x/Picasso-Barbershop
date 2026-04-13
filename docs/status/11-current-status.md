@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase A - Shared team preview cleanup (Completed on fix branch)
+Phase B - Scalable gallery preview cleanup (Completed on fix branch)
 
-This fix-branch slice tightens the shared public team preview system used on the homepage and About page. Team cards are clickable again where specialist profiles already exist, branch filters are smaller and cleaner, branch labels are shortened, and mobile browsing now favors a calmer horizontal preview instead of a clumsy stacked desktop carryover.
+This fix-branch slice replaces brittle public gallery preview compositions with a scalable shared rail system. Homepage and detail-page gallery previews now keep a stable image-led rhythm as more items appear, with calmer overlays, intentional mobile scrolling, and a controlled continuation path into the full gallery.
 
 ## Completed Phases
 
@@ -101,6 +101,16 @@ Shared team preview cleanup:
 - specialist cards keep the premium editorial layout but the full card is once again the primary click target
 - team cards now show cleaner location metadata and fewer specialty chips to reduce lower-card noise
 - mobile team previews use a compact horizontal rail so all three specialists stay accessible without oversized stacked cards
+
+## Phase B Delivery Summary
+
+Shared gallery preview cleanup:
+
+- shared gallery previews now use a stable horizontal rail instead of a brittle exact-count mosaic composition
+- homepage gallery preview now supports a richer 6-image preview without depending on a fixed 3-card arrangement
+- branch and service detail gallery previews now inherit the same scalable rail system through the shared gallery layer
+- gallery cards now use more consistent image ratios, lighter overlays, and less text density on supporting cards
+- the shared gallery system now handles 3, 4, 5, 6+ images more gracefully by showing a controlled preview strip with an inline `+N more` continuation signal when needed
 
 Homepage gallery preview:
 

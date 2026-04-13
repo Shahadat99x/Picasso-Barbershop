@@ -50,7 +50,7 @@ export default async function HomePage() {
       getFeaturedServices(3),
       getActiveBranches(),
       getActiveSpecialists(),
-      getFeaturedGalleryItems(3),
+      getFeaturedGalleryItems(6),
       getVisibleTestimonials(2),
       getPublishedBlogPosts(3),
       getActivePromotions(1),
@@ -69,7 +69,7 @@ export default async function HomePage() {
     transformTestimonialForCard(testimonial, "lt"),
   );
   const blogCards = blogPosts.map((post) => transformBlogPostForCard(post, "lt"));
-  const galleryPreviewItems = getHomepageGalleryPreviewItems(galleryItems, "lt", 3);
+  const galleryPreviewItems = getHomepageGalleryPreviewItems(galleryItems, "lt", 6);
 
   return (
     <main>
@@ -163,7 +163,12 @@ export default async function HomePage() {
         />
       ) : null}
 
-      <GallerySection items={galleryPreviewItems} locale="lt" />
+      <GallerySection
+        items={galleryPreviewItems}
+        locale="lt"
+        variant="home"
+        analyticsPlacement="homepage_gallery_preview"
+      />
 
       {testimonialCards.length > 0 ? (
         <Section className="bg-[linear-gradient(180deg,#f7f2eb_0%,#fdfaf6_100%)]">
