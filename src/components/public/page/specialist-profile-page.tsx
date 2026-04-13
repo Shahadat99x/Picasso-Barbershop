@@ -17,6 +17,7 @@ import { createLocalizedPageMetadata } from "@/lib/metadata";
 import {
   getActiveBranches,
   getActiveSpecialists,
+  getCompactBranchName,
   getLocalizedContent,
   getPrimaryOpeningHours,
   getSpecialistBySlug,
@@ -74,7 +75,6 @@ const specialistPageCopy = {
     relatedTitle: "Komandoje taip pat",
     relatedDescription:
       "Perziurekite ir kitus komandos narius, kad lengviau susidarytumete bendra specialistu lygio ir stiliaus ispudi.",
-    cardCtaLabel: "Ziureti profili",
   },
   en: {
     metadataMissingTitle: "Specialist not found",
@@ -121,7 +121,6 @@ const specialistPageCopy = {
     relatedTitle: "Also on the team",
     relatedDescription:
       "Browse the rest of the team to get a clearer feel for the specialist bench, tone, and overall service level.",
-    cardCtaLabel: "View profile",
   },
 } as const;
 
@@ -203,7 +202,7 @@ export async function SpecialistProfilePage({
     ? branches.find((item) => item.id === specialist.branch_id) ?? null
     : null;
   const branchMap = new Map(
-    branches.map((item) => [item.id, getLocalizedContent(item, "name", locale)]),
+    branches.map((item) => [item.id, getCompactBranchName(item, locale)]),
   );
   const relatedSpecialists = allSpecialists
     .filter((item) => item.id !== specialist.id)
@@ -471,7 +470,6 @@ export async function SpecialistProfilePage({
                   imageUrl={item.imageUrl}
                   eyebrowLabel={copy.relatedSubtitle}
                   href={item.href}
-                  ctaLabel={copy.cardCtaLabel}
                 />
               ))}
             </div>

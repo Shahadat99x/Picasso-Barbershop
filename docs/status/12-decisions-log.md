@@ -298,11 +298,13 @@ Admin content is bilingual but not always translated at the same time. Matching 
 
 ## Decision 036
 
-Specialist and team cards remain intentionally non-clickable in V1. No public specialist detail route is introduced in Phase 5d.
+Superseded by Decision 050.
+
+Phase 5d kept specialist and team cards non-clickable until public specialist detail routes were available.
 
 Reason:
 
-The current information architecture documents specialists as preview/supporting content rather than a required public detail surface. Leaving clickable cards without a dedicated route would create broken navigation. A specialist detail route should only be added when there is explicit product scope, page design, and content depth for individual profiles.
+At that stage the public site did not yet have a launch-ready specialist detail surface, so keeping preview cards non-clickable avoided dead-end navigation.
 
 ## Decision 037
 
@@ -394,7 +396,7 @@ Reason:
 
 The homepage needs to stay premium, calm, and conversion-focused. For this reason:
 
-- the team section is branch-selectable and keeps homepage specialist cards non-clickable
+- the team section stays branch-selectable and curated rather than expanding into a full directory
 - the gallery preview is limited to a tighter 3-item editorial composition
 - services remain capped as a featured preview with a stronger continuation CTA instead of expanding the homepage into a full catalog
 
@@ -417,3 +419,11 @@ Blog article bodies should be normalized at the public rendering boundary, and l
 Reason:
 
 The admin blog form currently saves article bodies through a simple textarea flow, which means production content may arrive as plain text or markdown-like strings rather than fully structured blocks. The safest F3 implementation is therefore to normalize that content into the existing typed article model and render it through a stronger editorial component instead of introducing a new CMS editor or heavy parsing dependency. For the same reason, Privacy Policy, Terms, and Cookie Policy are added as localized code-authored pages: they are trust-critical at launch, need clean public routing immediately, and do not yet justify a broader admin/content-model redesign.
+
+## Decision 050
+
+Homepage and About team previews share one branch-filtered public component, and specialist cards are clickable wherever public specialist profiles already exist.
+
+Reason:
+
+The public site already has LT and EN specialist detail routes, so non-clickable preview cards add friction without protecting the information architecture anymore. Reusing one branch-aware team preview component across homepage and About keeps the interaction consistent, trims repetitive branch naming, and gives mobile users a cleaner horizontal browsing pattern while preserving the curated 3-specialist limit per selected branch.

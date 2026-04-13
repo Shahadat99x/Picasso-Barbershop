@@ -5,16 +5,15 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { TeamPreviewSection } from "@/components/sections/TeamPreviewSection";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { TeamPreviewCard } from "@/components/shared/TeamPreviewCard";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import {
   getActiveBranches,
   getActiveSpecialists,
-  getLocalizedContent,
-  transformSpecialistForCard,
+  buildHomepageTeamBranchPreviews,
 } from "@/lib/public-data";
 import { getLocalizedRoute } from "@/lib/site-routes";
 
@@ -58,18 +57,14 @@ const valuePillars = [
 
 export default async function AboutPage() {
   const [specialists, branches] = await Promise.all([
-    getActiveSpecialists(3),
+    getActiveSpecialists(),
     getActiveBranches(),
   ]);
-  const branchMap = new Map(
-    branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "lt")]),
-  );
-  const specialistCards = specialists.map((specialist) =>
-    transformSpecialistForCard(
-      specialist,
-      "lt",
-      branchMap.get(specialist.branch_id || ""),
-    ),
+  const teamBranchPreviews = buildHomepageTeamBranchPreviews(
+    branches,
+    specialists,
+    "lt",
+    3,
   );
 
   return (
@@ -170,35 +165,17 @@ export default async function AboutPage() {
         </Container>
       </Section>
 
-      {specialists.length > 0 ? (
-        <Section className="bg-background">
-          <Container>
-            <SectionHeading
-              title="Komandos perziura"
-              subtitle="Zmones uz kedes"
-              description="Trumpa pazintis su meistrais, kuriu darbas remiasi tikslumu, ramiu bendravimu ir nuosekliu rezultatu."
-              align="left"
-              className="max-w-3xl"
-            />
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {specialistCards.map((specialist) => (
-                <TeamPreviewCard
-                  key={specialist.id}
-                  name={specialist.name}
-                  role={specialist.title}
-                  imageUrl={specialist.imageUrl}
-                  branch={specialist.branchLabel}
-                  experience={specialist.experienceLabel}
-                  specialties={specialist.specialties}
-                  summary={specialist.summary}
-                  eyebrowLabel="Komanda"
-                  href={specialist.href}
-                  ctaLabel="Ziureti profili"
-                />
-              ))}
-            </div>
-          </Container>
-        </Section>
+      {teamBranchPreviews.length > 0 ? (
+        <TeamPreviewSection
+          branches={teamBranchPreviews}
+          title="Komanda"
+          subtitle="Zmones uz kedes"
+          description="Atraskite meistrus pagal jums patogiausia lokacija."
+          eyebrowLabel="Komanda"
+          specialistCountLabel="Komanda: {count}"
+          visitBranchLabel="Aplankyti filiala"
+          tabListLabel="Filialo komandos pasirinkimas"
+        />
       ) : null}
 
       <Section className="bg-background pt-0">

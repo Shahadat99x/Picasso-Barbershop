@@ -231,6 +231,21 @@ function normalizeCityValue(value: string | null | undefined) {
   return value?.trim().toLowerCase() || "";
 }
 
+function getCompactBranchNameFromValue(value: string, city?: string | null) {
+  const normalizedValue = value.replace(/\s+/g, " ").trim();
+
+  if (!normalizedValue) {
+    return city?.trim() || "";
+  }
+
+  const withoutBrand = normalizedValue
+    .replace(/^Picasso\s+Barbershop(?:\s*[-|,:]\s*|\s+)/i, "")
+    .replace(/\s+(filialas|branch)$/i, "")
+    .trim();
+
+  return withoutBrand || city?.trim() || normalizedValue;
+}
+
 function splitParagraphs(value: string) {
   return value
     .split(/\r?\n\r?\n/)
@@ -1374,6 +1389,16 @@ export function getBranchCityCount(branches: PublicBranch[]) {
   ).size;
 }
 
+export function getCompactBranchName(
+  branch: PublicBranch,
+  locale: Locale = defaultLocale,
+) {
+  return getCompactBranchNameFromValue(
+    getLocalizedContent(branch, "name", locale),
+    branch.city,
+  );
+}
+
 export function transformSpecialistForCard(
   specialist: PublicSpecialist,
   locale: Locale = defaultLocale,
@@ -1408,7 +1433,7 @@ export function buildHomepageTeamBranchPreviews(
         return null;
       }
 
-      const branchName = getLocalizedContent(branch, "name", locale);
+      const branchName = getCompactBranchName(branch, locale);
 
       return {
         id: branch.id,
