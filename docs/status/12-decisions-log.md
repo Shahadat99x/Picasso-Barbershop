@@ -443,3 +443,11 @@ Branch detail pages include a compact branch-specific team section that reuses t
 Reason:
 
 Users choosing a location often want to know who works there before deciding to book or visit. Reusing the shared team/card system keeps LT and EN branch routes aligned, avoids duplicating UI, reduces repeated branch naming inside branch context, and strengthens trust without reopening broader branch-page architecture.
+
+## Decision 053
+
+The full LT and EN Gallery pages use a stable responsive browse grid, while homepage and detail surfaces keep the separate preview-specific gallery treatments introduced earlier.
+
+Reason:
+
+The full gallery page has a different job from homepage or branch previews: it should support calm browsing as image counts grow, not imitate a curated preview composition. Keeping a dedicated browse-grid treatment for the full gallery preserves the scalable preview rail system from earlier phases, removes the last brittle mosaic dependency from the public site, and keeps the browsing page future-safe without reopening broader gallery architecture.

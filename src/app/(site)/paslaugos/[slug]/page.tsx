@@ -82,9 +82,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   const benefits = getServiceBenefits(service, "lt");
   const faqs = getServiceFaqs(service, "lt");
-  const galleryMosaicItems = galleryItems.map((item, index) =>
-    transformGalleryItemForMosaic(item, "lt", index),
-  );
+  const galleryMosaicItems = galleryItems.map((item) => transformGalleryItemForMosaic(item, "lt"));
   const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "lt"));
   const featuredPost = blogCards[0];
   const remainingPosts = blogCards.slice(1);

@@ -89,9 +89,7 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
   const specialistCards = branchSpecialists.map((specialist) =>
     transformSpecialistForCard(specialist, "en"),
   );
-  const galleryMosaicItems = galleryItems.map((item, index) =>
-    transformGalleryItemForMosaic(item, "en", index),
-  );
+  const galleryMosaicItems = galleryItems.map((item) => transformGalleryItemForMosaic(item, "en"));
   const blogCards = relatedPosts.map((post) => transformBlogPostForCard(post, "en"));
   const featuredPost = blogCards[0];
   const remainingPosts = blogCards.slice(1);

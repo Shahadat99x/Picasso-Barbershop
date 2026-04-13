@@ -6,7 +6,7 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { GalleryMosaic } from "@/components/shared/GalleryMosaic";
+import { GalleryBrowseGrid } from "@/components/shared/GalleryBrowseGrid";
 import { PageHero } from "@/components/shared/PageHero";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
@@ -33,18 +33,16 @@ export default async function GalleryPage() {
     getActiveBranches(3),
     getPublishedServices(3),
   ]);
-  const mosaicItems = galleryItems.map((item, index) =>
-    transformGalleryItemForMosaic(item, "lt", index),
-  );
+  const galleryCards = galleryItems.map((item) => transformGalleryItemForMosaic(item, "lt"));
 
   return (
     <main>
       <PageHero
         eyebrow="Galerija"
         title="Tikri darbai, tikra atmosfera ir rezultatai, kuriuos norisi issaugoti."
-        description="Galerijoje matysite kruopsciai atrinktus kirpimus, detales ir salono akimirkas, padedancias pajausti Picasso Barbershop braiza dar pries apsilankant."
+        description="Kirpimai, detales ir salono akimirkos, atskleidziancios Picasso Barbershop braiza is arciau."
         stats={[
-          { value: String(mosaicItems.length), label: "atrinkti kadrai" },
+          { value: String(galleryCards.length), label: "atrinkti kadrai" },
           { value: String(branches.length), label: "filialai" },
           { value: String(services.length), label: "paslaugu kryptys" },
         ]}
@@ -63,17 +61,17 @@ export default async function GalleryPage() {
       <Section className="bg-background">
         <Container>
           <SectionHeading
-            title="Naujausi darbai"
-            subtitle="Stilius ir atmosfera"
-            description="Zvilgsnis i kirpimus, formas, teksturas ir erdve, kurioje svarbios tiek detales, tiek bendra nuotaika."
+            title="Galerijos perziura"
+            subtitle="Darbai ir atmosfera"
+            description="Kirpimai, teksturos ir salono nuotaika vienoje ramioje, lengvai narstomoje perziuroje."
             align="left"
           />
-          {mosaicItems.length > 0 ? (
-            <GalleryMosaic items={mosaicItems} className="mt-12" />
+          {galleryCards.length > 0 ? (
+            <GalleryBrowseGrid items={galleryCards} className="mt-12" />
           ) : (
             <div className="mt-12 rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-              Netrukus pasidalinsime naujais darbais. Tuo metu kvieciame perziureti
-              filialus arba paslaugas.
+              Netrukus pasidalinsime naujais darbais. Kol kas kvieciame rinktis
+              filiala arba paslauga.
             </div>
           )}
         </Container>
@@ -84,7 +82,7 @@ export default async function GalleryPage() {
           <SectionHeading
             title="Kur toliau?"
             subtitle="Tolimesnis pasirinkimas"
-            description="Jei galerijoje jau radote artima braiza, pereikite prie filialo arba paslaugos, kuri geriausiai atitinka jusu poreiki."
+            description="Rinkites filiala arba paslauga pagal savo kita vizita."
             align="left"
           />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

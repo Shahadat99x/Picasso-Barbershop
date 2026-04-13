@@ -82,7 +82,7 @@ export default async function EnHomePage() {
             <SectionHeading
               title="Signature services"
               subtitle="Popular choices for a polished everyday look"
-              description="A concise edit for clients who want to understand where to start and choose a service by result, timing, and overall finish."
+              description="Popular haircut and grooming services for a polished, easy-to-maintain everyday look."
               align="left"
               className="max-w-3xl"
             />
@@ -100,10 +100,7 @@ export default async function EnHomePage() {
                 />
               ))}
             </div>
-            <div className="mt-8 flex flex-col gap-4 border-t border-border/50 pt-6 md:flex-row md:items-center md:justify-between">
-              <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                Start with the featured services, then continue into the full menu when ready.
-              </p>
+            <div className="mt-8 flex border-t border-border/50 pt-6 md:justify-end">
               <SecondaryButton
                 href={getLocalizedRoute("services", "en")}
                 analyticsEvent="service_explore_intent"
