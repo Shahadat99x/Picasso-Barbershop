@@ -14,7 +14,7 @@ interface SpecialistCardProps extends React.HTMLAttributes<HTMLDivElement> {
   imageUrl?: string;
   eyebrowLabel?: string;
   href?: string;
-  variant?: "compact" | "editorial";
+  variant?: "compact" | "editorial" | "branch";
 }
 
 export function SpecialistCard({
@@ -32,7 +32,10 @@ export function SpecialistCard({
   ...props
 }: SpecialistCardProps) {
   const isEditorial = variant === "editorial";
-  const visibleSpecialties = specialties.filter(Boolean).slice(0, 2);
+  const isBranch = variant === "branch";
+  const visibleSpecialties = specialties
+    .filter(Boolean)
+    .slice(0, isBranch ? 1 : 2);
   const fallbackInitial = name.trim().charAt(0).toUpperCase() || "P";
   const card = (
     <article
@@ -40,6 +43,7 @@ export function SpecialistCard({
         "group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-border/60 bg-card/95 shadow-sm shadow-black/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10",
         href && "cursor-pointer",
         isEditorial && "bg-[linear-gradient(180deg,rgba(249,246,241,0.98)_0%,rgba(255,255,255,0.98)_100%)]",
+        isBranch && "bg-[linear-gradient(180deg,#f9f5ef_0%,#ffffff_100%)]",
         className,
       )}
       {...props}
@@ -47,7 +51,11 @@ export function SpecialistCard({
       <div
         className={cn(
           "relative overflow-hidden bg-[linear-gradient(180deg,rgba(33,27,24,0.08),rgba(33,27,24,0.2))]",
-          isEditorial ? "aspect-[4/4.7]" : "aspect-[4/5]",
+          isEditorial
+            ? "aspect-[4/4.7]"
+            : isBranch
+              ? "aspect-[4/4.65]"
+              : "aspect-[4/5]",
         )}
       >
         {imageUrl ? (
@@ -58,7 +66,9 @@ export function SpecialistCard({
             sizes={
               isEditorial
                 ? "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                : "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                : isBranch
+                  ? "(max-width: 768px) 78vw, (max-width: 1280px) 50vw, 33vw"
+                  : "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
             }
             className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           />
@@ -88,7 +98,12 @@ export function SpecialistCard({
         </div>
       </div>
 
-      <div className={cn("flex flex-1 flex-col p-5", isEditorial ? "gap-4 p-6" : "gap-4")}>
+      <div
+        className={cn(
+          "flex flex-1 flex-col p-5",
+          isEditorial ? "gap-4 p-6" : isBranch ? "gap-3.5 p-5" : "gap-4",
+        )}
+      >
         {branchLabel ? (
           <div className="flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-primary/70" />
@@ -99,7 +114,7 @@ export function SpecialistCard({
         <p
           className={cn(
             "text-sm leading-7 text-muted-foreground",
-            isEditorial ? "line-clamp-3" : "line-clamp-3",
+            isBranch ? "line-clamp-2 leading-6" : "line-clamp-3",
           )}
         >
           {summary}

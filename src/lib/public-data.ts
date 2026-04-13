@@ -1275,6 +1275,31 @@ export async function getAvailableServicesForBranch(branchId: string) {
   return getCachedAvailableServicesForBranch(branchId);
 }
 
+const getCachedSpecialistsForBranch = createPublicDataCache(
+  "specialists-for-branch",
+  [PUBLIC_CACHE_TAGS.specialists, PUBLIC_CACHE_TAGS.branches],
+  async (branchId: string, limit?: number) =>
+    runPublicQuery<PublicSpecialist[]>("branch specialists", [], async (client) => {
+      let query = client
+        .from("specialists")
+        .select("*")
+        .eq("branch_id", branchId)
+        .eq("is_active", true)
+        .order("is_featured", { ascending: false })
+        .order("sort_order", { ascending: true });
+
+      if (typeof limit === "number") {
+        query = query.limit(limit);
+      }
+
+      return query;
+    }),
+);
+
+export async function getSpecialistsForBranch(branchId: string, limit?: number) {
+  return getCachedSpecialistsForBranch(branchId, limit);
+}
+
 const getCachedGalleryItemsForService = createPublicDataCache(
   "gallery-items-for-service",
   [PUBLIC_CACHE_TAGS.gallery, PUBLIC_CACHE_TAGS.services],

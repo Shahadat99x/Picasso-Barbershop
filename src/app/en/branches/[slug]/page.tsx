@@ -12,6 +12,7 @@ import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { StructuredData } from "@/components/shared/StructuredData";
+import { BranchTeamSection } from "@/components/sections/BranchTeamSection";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -26,8 +27,10 @@ import {
   getLocalizedSlug,
   getLocalizedOpeningHours,
   getPrimaryOpeningHours,
+  getSpecialistsForBranch,
   transformBlogPostForCard,
   transformGalleryItemForMosaic,
+  transformSpecialistForCard,
   transformServiceForCard,
 } from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
@@ -73,8 +76,9 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const [services, galleryItems, relatedPosts] = await Promise.all([
+  const [services, branchSpecialists, galleryItems, relatedPosts] = await Promise.all([
     getAvailableServicesForBranch(branch.id),
+    getSpecialistsForBranch(branch.id, 3),
     getGalleryItemsForBranch(branch.id),
     getBlogPostsForBranch(branch.id),
   ]);
@@ -82,6 +86,9 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
   const openingHours = getLocalizedOpeningHours(branch.opening_hours_json, "en");
   const trustPoints = getBranchTrustPoints(branch, "en");
   const serviceCards = services.map((service) => transformServiceForCard(service, "en"));
+  const specialistCards = branchSpecialists.map((specialist) =>
+    transformSpecialistForCard(specialist, "en"),
+  );
   const galleryMosaicItems = galleryItems.map((item, index) =>
     transformGalleryItemForMosaic(item, "en", index),
   );
@@ -393,6 +400,18 @@ export default async function EnBranchDetailPage({ params }: PageProps) {
           </div>
         </Container>
       </Section>
+
+      <BranchTeamSection
+        specialists={specialistCards}
+        title="Team at this branch"
+        subtitle="Specialists"
+        description="Meet the specialists working at this location and choose the profile that feels right for your visit."
+        eyebrowLabel="Team"
+        ctaLabel="Contact this branch"
+        ctaHref="#contact"
+        analyticsPlacement="branch_detail_team"
+        branchSlug={resolvedSlug}
+      />
 
       {trustPoints.length > 0 ? (
         <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
