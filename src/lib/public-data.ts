@@ -67,8 +67,6 @@ export type ArticleBodyBlock =
       attribution?: string;
     };
 
-export type GalleryLayout = "hero" | "portrait" | "landscape" | "square";
-
 export interface GalleryMosaicItem {
   id: string;
   title: string;
@@ -76,7 +74,6 @@ export interface GalleryMosaicItem {
   imageSrc: string;
   alt: string;
   tags: string[];
-  layout: GalleryLayout;
 }
 
 export interface SiteSettingsWithDefaults {
@@ -153,15 +150,6 @@ export interface TransformedBlogPost {
   imageAlt: string;
   href: string;
 }
-
-const galleryLayoutPattern: GalleryLayout[] = [
-  "hero",
-  "portrait",
-  "square",
-  "portrait",
-  "landscape",
-  "square",
-];
 
 const envGa4MeasurementId =
   process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID?.trim() ||
@@ -1514,7 +1502,6 @@ export function transformBlogPostForCard(
 export function transformGalleryItemForMosaic(
   item: PublicGalleryItem,
   locale: Locale = defaultLocale,
-  index = 0,
 ): GalleryMosaicItem {
   const title = getLocalizedContent(item, "title", locale);
   const description = getLocalizedContent(item, "description", locale);
@@ -1527,7 +1514,6 @@ export function transformGalleryItemForMosaic(
     imageSrc: item.image_url,
     alt: getGalleryAltText(item, locale),
     tags,
-    layout: galleryLayoutPattern[index % galleryLayoutPattern.length],
   };
 }
 
@@ -1536,9 +1522,7 @@ export function getHomepageGalleryPreviewItems(
   locale: Locale = defaultLocale,
   limit = 6,
 ) {
-  return items
-    .slice(0, limit)
-    .map((item, index) => transformGalleryItemForMosaic(item, locale, index));
+  return items.slice(0, limit).map((item) => transformGalleryItemForMosaic(item, locale));
 }
 
 export function getHomepageGalleryTitle(locale: Locale = defaultLocale) {

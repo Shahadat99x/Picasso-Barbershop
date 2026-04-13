@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase C - Branch detail team enrichment (Completed on fix branch)
+Phase D - Final public gallery and copy polish (Completed on fix branch)
 
-This fix-branch slice adds a reusable branch-specific team section to LT and EN branch detail pages. Branch pages now surface the specialists assigned to that location, use a lighter branch-context card treatment, and keep a clear continuation path back into each branch's contact CTA without reopening broader page architecture.
+This fix-branch slice replaces the full LT and EN Gallery pages' remaining brittle mosaic layout with a calmer scalable browse grid, while also removing leftover explanatory helper copy from the homepage services preview. The touched public surfaces now rely more on imagery, headings, cards, and direct CTAs instead of explaining interface logic to visitors.
 
 ## Completed Phases
 
@@ -133,6 +133,19 @@ Branch detail team enrichment:
 - repeated branch naming was reduced inside the branch team area because the branch context is already established by the page
 - the new section sits between the practical branch details and the rest of the supporting proof and selection content, making the page feel more complete without overloading it
 - the section footer CTA sends users back into the branch contact block so the added trust layer supports, rather than interrupts, the main conversion path
+
+## Phase D Delivery Summary
+
+Full gallery page polish:
+
+- LT and EN Gallery pages now use a stable responsive browse grid instead of the older fragile stacked mosaic composition
+- gallery cards now keep a calmer image-led rhythm with consistent ratios, lighter text treatment, and layout behavior that scales more safely as more images are added
+- the Gallery page continuation section was tightened so it points visitors clearly toward branches or services without over-explaining the browsing flow
+
+Homepage services copy cleanup:
+
+- the leftover helper sentence beneath the homepage services preview was removed in both LT and EN
+- homepage services now rely on tighter section copy and a clearer continuation CTA instead of explaining how the preview/menu relationship works
 
 ## Phase F2 Delivery Summary
 

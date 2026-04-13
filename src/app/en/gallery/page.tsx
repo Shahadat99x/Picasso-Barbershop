@@ -6,7 +6,7 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { GalleryMosaic } from "@/components/shared/GalleryMosaic";
+import { GalleryBrowseGrid } from "@/components/shared/GalleryBrowseGrid";
 import { PageHero } from "@/components/shared/PageHero";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
@@ -33,18 +33,16 @@ export default async function EnGalleryPage() {
     getActiveBranches(3),
     getPublishedServices(3),
   ]);
-  const mosaicItems = galleryItems.map((item, index) =>
-    transformGalleryItemForMosaic(item, "en", index),
-  );
+  const galleryCards = galleryItems.map((item) => transformGalleryItemForMosaic(item, "en"));
 
   return (
     <main>
       <PageHero
         eyebrow="Gallery"
         title="Real work, real atmosphere, and finishes worth a closer look."
-        description="This gallery brings together selected cuts, details, and in-salon moments so you can feel the Picasso Barbershop style before you visit."
+        description="Cuts, details, and in-salon moments that bring the Picasso Barbershop style into sharper focus."
         stats={[
-          { value: String(mosaicItems.length), label: "selected frames" },
+          { value: String(galleryCards.length), label: "selected frames" },
           { value: String(branches.length), label: "branches" },
           { value: String(services.length), label: "service directions" },
         ]}
@@ -63,17 +61,17 @@ export default async function EnGalleryPage() {
       <Section className="bg-background">
         <Container>
           <SectionHeading
-            title="Latest work"
-            subtitle="Style and atmosphere"
-            description="A closer look at finishes, texture, and the kind of calm in-salon detail that shapes the overall experience."
+            title="Gallery browse"
+            subtitle="Work and atmosphere"
+            description="Cuts, texture, and the mood of the salon in a calmer, easier-to-browse layout."
             align="left"
           />
-          {mosaicItems.length > 0 ? (
-            <GalleryMosaic items={mosaicItems} className="mt-12" />
+          {galleryCards.length > 0 ? (
+            <GalleryBrowseGrid items={galleryCards} className="mt-12" />
           ) : (
             <div className="mt-12 rounded-[2rem] border border-border/60 bg-card p-8 text-center text-muted-foreground shadow-sm shadow-black/5">
-              New work will be added here soon. In the meantime, explore our branches or
-              services to find the right fit for your next visit.
+              New work will be added here soon. For now, choose the branch or
+              service that fits your next visit.
             </div>
           )}
         </Container>
@@ -84,7 +82,7 @@ export default async function EnGalleryPage() {
           <SectionHeading
             title="Where next?"
             subtitle="Continue exploring"
-            description="If the gallery already feels close to the result you want, move on to the branch or service that suits you best."
+            description="Choose the branch or service that suits your next visit."
             align="left"
           />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

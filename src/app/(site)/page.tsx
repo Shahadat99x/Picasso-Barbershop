@@ -82,7 +82,7 @@ export default async function HomePage() {
             <SectionHeading
               title="Pagrindines paslaugos"
               subtitle="Populiariausi pasirinkimai kasdieniam stiliui"
-              description="Trumpa atranka tiems, kurie nori greitai suprasti, nuo ko pradeti, ir issirinkti paslauga pagal rezultata, laika bei prieziuros ritma."
+              description="Populiariausios kirpimo ir prieziuros paslaugos tvarkingam, uztikrintam kasdieniam ivaizdziui."
               align="left"
               className="max-w-3xl"
             />
@@ -100,10 +100,7 @@ export default async function HomePage() {
                 />
               ))}
             </div>
-            <div className="mt-8 flex flex-col gap-4 border-t border-border/50 pt-6 md:flex-row md:items-center md:justify-between">
-              <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                Perziurekite svarbiausias paslaugas, o tada ramiai pereikite prie viso meniu.
-              </p>
+            <div className="mt-8 flex border-t border-border/50 pt-6 md:justify-end">
               <SecondaryButton
                 href={getLocalizedRoute("services", "lt")}
                 analyticsEvent="service_explore_intent"
