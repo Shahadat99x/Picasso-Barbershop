@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { HomepageTeamSection } from "@/components/sections/HomepageTeamSection";
+import { TeamPreviewSection } from "@/components/sections/TeamPreviewSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { BranchCard } from "@/components/shared/BranchCard";
@@ -102,8 +102,7 @@ export default async function HomePage() {
             </div>
             <div className="mt-8 flex flex-col gap-4 border-t border-border/50 pt-6 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                Namu puslapyje paliekame tik aiskia pradine atranka, o visas paslaugu
-                pasirinkimas su papildomais variantais pateikiamas atskirame puslapyje.
+                Perziurekite svarbiausias paslaugas, o tada ramiai pereikite prie viso meniu.
               </p>
               <SecondaryButton
                 href={getLocalizedRoute("services", "lt")}
@@ -152,15 +151,13 @@ export default async function HomePage() {
       <WhyChooseUsSection locale="lt" />
 
       {teamBranchPreviews.length > 0 ? (
-        <HomepageTeamSection
+        <TeamPreviewSection
           branches={teamBranchPreviews}
           title="Musu komanda"
           subtitle="Komanda pagal filiala"
-          description="Trumpa kiekvieno filialo komandos perziura, kad galetumete issirinkti jums patogiausia lokacija neperkraunant namu puslapio."
+          description="Susipazinkite su meistrais kiekvienoje lokacijoje."
           eyebrowLabel="Komanda"
-          selectedBranchLabel="Pasirinktas filialas"
           specialistCountLabel="Komanda: {count}"
-          previewNote="Rodome tik trumpa sios lokacijos komandos perziura. Visas filialo kontekstas ir tolimesnis pasirinkimas pateikiami filialo puslapyje."
           visitBranchLabel="Aplankyti filiala"
           tabListLabel="Filialo komandos pasirinkimas"
         />

@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { HomepageTeamSection } from "@/components/sections/HomepageTeamSection";
+import { TeamPreviewSection } from "@/components/sections/TeamPreviewSection";
 import { WhyChooseUsSection } from "@/components/sections/WhyChooseUsSection";
 import { BlogCard } from "@/components/shared/BlogCard";
 import { BranchCard } from "@/components/shared/BranchCard";
@@ -102,8 +102,7 @@ export default async function EnHomePage() {
             </div>
             <div className="mt-8 flex flex-col gap-4 border-t border-border/50 pt-6 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                The homepage stays focused on a clean starting point, while the complete
-                service list and broader comparisons live on the services page.
+                Start with the featured services, then continue into the full menu when ready.
               </p>
               <SecondaryButton
                 href={getLocalizedRoute("services", "en")}
@@ -152,15 +151,13 @@ export default async function EnHomePage() {
       <WhyChooseUsSection locale="en" />
 
       {teamBranchPreviews.length > 0 ? (
-        <HomepageTeamSection
+        <TeamPreviewSection
           branches={teamBranchPreviews}
           title="Meet the team"
           subtitle="Team by branch"
-          description="A lighter branch-aware preview helps visitors compare locations without turning the homepage into a full team directory."
+          description="Meet the specialists shaping each location."
           eyebrowLabel="Team"
-          selectedBranchLabel="Selected branch"
           specialistCountLabel="Team: {count}"
-          previewNote="This is a focused preview for the selected branch. The branch page holds the fuller context and the next step from here."
           visitBranchLabel="Visit branch"
           tabListLabel="Choose a branch team preview"
         />

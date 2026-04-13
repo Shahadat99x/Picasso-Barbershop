@@ -14,7 +14,6 @@ interface SpecialistCardProps extends React.HTMLAttributes<HTMLDivElement> {
   imageUrl?: string;
   eyebrowLabel?: string;
   href?: string;
-  ctaLabel?: string;
   variant?: "compact" | "editorial";
 }
 
@@ -28,13 +27,12 @@ export function SpecialistCard({
   imageUrl,
   eyebrowLabel,
   href,
-  ctaLabel,
   variant = "compact",
   className,
   ...props
 }: SpecialistCardProps) {
   const isEditorial = variant === "editorial";
-  const visibleSpecialties = specialties.filter(Boolean).slice(0, isEditorial ? 3 : 2);
+  const visibleSpecialties = specialties.filter(Boolean).slice(0, 2);
   const fallbackInitial = name.trim().charAt(0).toUpperCase() || "P";
   const card = (
     <article
@@ -72,28 +70,28 @@ export function SpecialistCard({
         <div className="absolute inset-0 bg-gradient-to-t from-[#181311]/82 via-[#181311]/28 to-transparent" />
         <div className="absolute left-4 top-4 flex flex-wrap gap-2">
           {eyebrowLabel ? (
-            <span className="rounded-full border border-white/18 bg-black/15 px-3 py-1.5 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-white/88 backdrop-blur-sm">
+            <span className="rounded-full border border-white/18 bg-black/15 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white/88 backdrop-blur-sm">
               {eyebrowLabel}
             </span>
           ) : null}
         </div>
         {experienceLabel ? (
-          <div className="absolute right-4 top-4 rounded-full border border-white/18 bg-white/10 px-3 py-1.5 text-[0.64rem] font-semibold uppercase tracking-[0.16em] text-white/92 backdrop-blur-sm">
+          <div className="absolute right-4 top-4 rounded-full border border-white/18 bg-white/10 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-white/92 backdrop-blur-sm">
             {experienceLabel}
           </div>
         ) : null}
         <div className="absolute inset-x-4 bottom-4">
-          <h3 className="text-[1.65rem] font-medium tracking-tight text-white md:text-[1.8rem]">
+          <h3 className="text-[1.5rem] font-medium tracking-tight text-white md:text-[1.72rem]">
             {name}
           </h3>
           <p className="mt-1 text-sm leading-6 text-white/78">{title}</p>
         </div>
       </div>
 
-      <div className={cn("flex flex-1 flex-col p-5", isEditorial ? "gap-5 p-6" : "gap-4")}>
+      <div className={cn("flex flex-1 flex-col p-5", isEditorial ? "gap-4 p-6" : "gap-4")}>
         {branchLabel ? (
-          <div className="flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-primary/75" />
+          <div className="flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-primary/70" />
             <span>{branchLabel}</span>
           </div>
         ) : null}
@@ -101,28 +99,22 @@ export function SpecialistCard({
         <p
           className={cn(
             "text-sm leading-7 text-muted-foreground",
-            isEditorial ? "line-clamp-4" : "line-clamp-3",
+            isEditorial ? "line-clamp-3" : "line-clamp-3",
           )}
         >
           {summary}
         </p>
 
         {visibleSpecialties.length > 0 ? (
-          <div className="mt-auto flex flex-wrap gap-2.5 pt-1">
+          <div className="mt-auto flex flex-wrap gap-2 pt-1">
             {visibleSpecialties.map((specialty) => (
               <span
                 key={specialty}
-                className="rounded-full border border-border/60 bg-background/85 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                className="rounded-full border border-border/60 bg-background/85 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground"
               >
                 {specialty}
               </span>
             ))}
-          </div>
-        ) : null}
-
-        {href && ctaLabel ? (
-          <div className="mt-4 pt-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-primary">
-            {ctaLabel} {"->"}
           </div>
         ) : null}
       </div>

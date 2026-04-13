@@ -5,16 +5,15 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { PublicPageIntro } from "@/components/public/page/public-page-intro";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
+import { TeamPreviewSection } from "@/components/sections/TeamPreviewSection";
 import { FeatureCard } from "@/components/shared/FeatureCard";
-import { TeamPreviewCard } from "@/components/shared/TeamPreviewCard";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
 import {
   getActiveBranches,
   getActiveSpecialists,
-  getLocalizedContent,
-  transformSpecialistForCard,
+  buildHomepageTeamBranchPreviews,
 } from "@/lib/public-data";
 import { getLocalizedRoute } from "@/lib/site-routes";
 
@@ -58,18 +57,14 @@ const valuePillars = [
 
 export default async function EnAboutPage() {
   const [specialists, branches] = await Promise.all([
-    getActiveSpecialists(3),
+    getActiveSpecialists(),
     getActiveBranches(),
   ]);
-  const branchMap = new Map(
-    branches.map((branch) => [branch.id, getLocalizedContent(branch, "name", "en")]),
-  );
-  const specialistCards = specialists.map((specialist) =>
-    transformSpecialistForCard(
-      specialist,
-      "en",
-      branchMap.get(specialist.branch_id || ""),
-    ),
+  const teamBranchPreviews = buildHomepageTeamBranchPreviews(
+    branches,
+    specialists,
+    "en",
+    3,
   );
 
   return (
@@ -170,35 +165,17 @@ export default async function EnAboutPage() {
         </Container>
       </Section>
 
-      {specialists.length > 0 ? (
-        <Section className="bg-background">
-          <Container>
-            <SectionHeading
-              title="Team preview"
-              subtitle="The people behind the chair"
-              description="A closer look at the barbers whose work is defined by precision, calm communication, and consistent results."
-              align="left"
-              className="max-w-3xl"
-            />
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {specialistCards.map((specialist) => (
-                <TeamPreviewCard
-                  key={specialist.id}
-                  name={specialist.name}
-                  role={specialist.title}
-                  imageUrl={specialist.imageUrl}
-                  branch={specialist.branchLabel}
-                  experience={specialist.experienceLabel}
-                  specialties={specialist.specialties}
-                  summary={specialist.summary}
-                  eyebrowLabel="Team"
-                  href={specialist.href}
-                  ctaLabel="View profile"
-                />
-              ))}
-            </div>
-          </Container>
-        </Section>
+      {teamBranchPreviews.length > 0 ? (
+        <TeamPreviewSection
+          branches={teamBranchPreviews}
+          title="Team"
+          subtitle="The people behind the chair"
+          description="Discover the specialists at the location that suits you best."
+          eyebrowLabel="Team"
+          specialistCountLabel="Team: {count}"
+          visitBranchLabel="Visit branch"
+          tabListLabel="Choose a branch team preview"
+        />
       ) : null}
 
       <Section className="bg-background pt-0">

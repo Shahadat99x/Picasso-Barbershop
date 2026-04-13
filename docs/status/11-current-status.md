@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase F3 - Blog reading experience and legal/trust pages (Completed)
+Phase A - Shared team preview cleanup (Completed on fix branch)
 
-This phase upgraded the public blog article experience from a flatter text dump into a more polished editorial reading surface and added launch-quality legal/trust pages. Blog body normalization now handles markdown-like structure more gracefully, article pages have clearer reading rhythm, and Privacy Policy, Terms, and Cookie Policy pages now exist in both LT and EN with localized routes and footer discovery.
+This fix-branch slice tightens the shared public team preview system used on the homepage and About page. Team cards are clickable again where specialist profiles already exist, branch filters are smaller and cleaner, branch labels are shortened, and mobile browsing now favors a calmer horizontal preview instead of a clumsy stacked desktop carryover.
 
 ## Completed Phases
 
@@ -49,11 +49,12 @@ These public surfaces are now fully CMS-backed with LT/EN fallback behavior wher
 - homepage services, branches, branch-aware specialists preview, curated gallery preview, testimonials, blog preview, and promotions
 - services index and detail pages
 - branches index and detail pages
+- specialist detail pages
 - blog index and detail pages
 - gallery index page
 - contact page branch/contact blocks
 - shared header/footer/settings-driven UI
-- sitemap entries for services, branches, and blog posts
+- sitemap entries for services, branches, specialists, and blog posts
 
 These surfaces are partially CMS-backed by design:
 
@@ -87,8 +88,19 @@ Homepage team preview:
 
 - homepage team preview no longer mixes specialists from all branches into one flat row
 - users now switch branches through a pill-style selector
-- specialist cards on the homepage remain non-clickable in line with the current V1 team direction
+- specialist cards in the shared preview system now link directly to public specialist profiles
 - each branch shows only a small curated preview, with a clear branch continuation CTA
+
+## Phase A Delivery Summary
+
+Shared team preview cleanup:
+
+- homepage and About now use the same shared branch-filtered team preview component instead of separate treatments
+- branch pills were reduced to a more elegant segmented-filter style and use shorter branch naming
+- About now exposes the full relevant branch filter set instead of feeling limited to a flatter single-slice preview
+- specialist cards keep the premium editorial layout but the full card is once again the primary click target
+- team cards now show cleaner location metadata and fewer specialty chips to reduce lower-card noise
+- mobile team previews use a compact horizontal rail so all three specialists stay accessible without oversized stacked cards
 
 Homepage gallery preview:
 
@@ -161,10 +173,10 @@ Settings and media:
 - service and branch admin forms now support image uploads needed for public rendering
 - public pages now render Cloudinary-hosted media correctly
 
-Specialist route decision:
+Specialist route status:
 
-- there is still no public specialist detail route in V1
-- specialist/team cards are intentionally non-clickable to avoid dead-end navigation until a dedicated IA and content model exist for specialist profiles
+- public specialist detail routes now exist in both LT and EN
+- shared public team-preview cards link directly to those profiles instead of using non-clickable preview-only cards
 
 ## Route Coverage
 
@@ -175,6 +187,7 @@ Specialist route decision:
 - `/paslaugos/[slug]`
 - `/filialai`
 - `/filialai/[slug]`
+- `/specialistai/[slug]`
 - `/galerija`
 - `/apie-mus`
 - `/blogas`
@@ -191,6 +204,7 @@ Specialist route decision:
 - `/en/services/[slug]`
 - `/en/branches`
 - `/en/branches/[slug]`
+- `/en/specialists/[slug]`
 - `/en/gallery`
 - `/en/about`
 - `/en/blog`
@@ -204,11 +218,10 @@ Specialist route decision:
 
 - some premium editorial sections are still intentionally code-authored rather than admin-managed
 - content quality on EN pages still depends on translation completeness in admin, even though runtime fallback is now safe
-- specialist detail pages remain out of scope until product and IA requirements exist for them
 - homepage preview sections are intentionally curated, so requests to surface more inventory there should be treated as information architecture decisions rather than quick content changes
 - some public narrative still depends on admin-entered branch content quality, so future city expansion should continue through branch data first and copy polish second
 - legal documents are currently code-authored rather than CMS-managed, so future business/legal changes still require a code/content pass
-- live browser QA for the updated blog article detail pages is still worth repeating in a local or preview environment because this environment cannot bind a local port for full manual navigation checks
+- live browser QA for the shared team preview behavior is still worth repeating on preview after deploy, especially across touch devices and real content mixes
 
 ## Post-Phase 5d UX Hardening
 
