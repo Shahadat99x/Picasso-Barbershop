@@ -2,9 +2,9 @@
 
 ## Current Phase
 
-Phase A - Shared team preview cleanup (Completed on fix branch)
+Phase C - Branch detail team enrichment (Completed on fix branch)
 
-This fix-branch slice tightens the shared public team preview system used on the homepage and About page. Team cards are clickable again where specialist profiles already exist, branch filters are smaller and cleaner, branch labels are shortened, and mobile browsing now favors a calmer horizontal preview instead of a clumsy stacked desktop carryover.
+This fix-branch slice adds a reusable branch-specific team section to LT and EN branch detail pages. Branch pages now surface the specialists assigned to that location, use a lighter branch-context card treatment, and keep a clear continuation path back into each branch's contact CTA without reopening broader page architecture.
 
 ## Completed Phases
 
@@ -48,7 +48,7 @@ These public surfaces are now fully CMS-backed with LT/EN fallback behavior wher
 
 - homepage services, branches, branch-aware specialists preview, curated gallery preview, testimonials, blog preview, and promotions
 - services index and detail pages
-- branches index and detail pages
+- branches index and detail pages, including branch-specific team sections driven by specialist assignment
 - specialist detail pages
 - blog index and detail pages
 - gallery index page
@@ -102,6 +102,16 @@ Shared team preview cleanup:
 - team cards now show cleaner location metadata and fewer specialty chips to reduce lower-card noise
 - mobile team previews use a compact horizontal rail so all three specialists stay accessible without oversized stacked cards
 
+## Phase B Delivery Summary
+
+Shared gallery preview cleanup:
+
+- shared gallery previews now use a stable horizontal rail instead of a brittle exact-count mosaic composition
+- homepage gallery preview now supports a richer 6-image preview without depending on a fixed 3-card arrangement
+- branch and service detail gallery previews now inherit the same scalable rail system through the shared gallery layer
+- gallery cards now use more consistent image ratios, lighter overlays, and less text density on supporting cards
+- the shared gallery system now handles 3, 4, 5, 6+ images more gracefully by showing a controlled preview strip with an inline `+N more` continuation signal when needed
+
 Homepage gallery preview:
 
 - homepage gallery preview now renders as a curated 3-item composition
@@ -113,6 +123,16 @@ Homepage services preview and CTA cleanup:
 - homepage services remain limited to 3 featured cards
 - a clearer continuation CTA now points users to the full services index
 - the touched homepage preview sections now use more consistent continuation rows, spacing rhythm, and section-level CTA treatment
+
+## Phase C Delivery Summary
+
+Branch detail team enrichment:
+
+- LT and EN branch detail pages now include a dedicated team section showing only the specialists assigned to the current branch
+- branch team cards reuse the shared public specialist card system in a lighter branch-context variant with direct profile click-through
+- repeated branch naming was reduced inside the branch team area because the branch context is already established by the page
+- the new section sits between the practical branch details and the rest of the supporting proof and selection content, making the page feel more complete without overloading it
+- the section footer CTA sends users back into the branch contact block so the added trust layer supports, rather than interrupts, the main conversion path
 
 ## Phase F2 Delivery Summary
 

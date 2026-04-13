@@ -427,3 +427,19 @@ Homepage and About team previews share one branch-filtered public component, and
 Reason:
 
 The public site already has LT and EN specialist detail routes, so non-clickable preview cards add friction without protecting the information architecture anymore. Reusing one branch-aware team preview component across homepage and About keeps the interaction consistent, trims repetitive branch naming, and gives mobile users a cleaner horizontal browsing pattern while preserving the curated 3-specialist limit per selected branch.
+
+## Decision 051
+
+Public gallery previews use a shared horizontal rail with consistent card ratios instead of count-dependent stacked compositions.
+
+Reason:
+
+The previous preview layout looked strongest only at a narrow image count and crop mix, which made the 4th+ image increasingly awkward as gallery content grew. A controlled rail keeps homepage and detail-page previews visually related, scales safely from 3 to 6+ items, allows cleaner mobile behavior, and avoids reopening broader branch-page or gallery-page architecture.
+
+## Decision 052
+
+Branch detail pages include a compact branch-specific team section that reuses the shared public specialist card system with a lighter branch-context presentation.
+
+Reason:
+
+Users choosing a location often want to know who works there before deciding to book or visit. Reusing the shared team/card system keeps LT and EN branch routes aligned, avoids duplicating UI, reduces repeated branch naming inside branch context, and strengthens trust without reopening broader branch-page architecture.

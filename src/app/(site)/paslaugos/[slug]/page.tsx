@@ -321,7 +321,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </Section>
       ) : null}
 
-      <GallerySection items={galleryMosaicItems} locale="lt" />
+      <GallerySection
+        items={galleryMosaicItems}
+        locale="lt"
+        variant="supporting"
+        analyticsPlacement="service_detail_gallery_preview"
+      />
 
       {faqs.length > 0 ? (
         <ServiceFaqSection

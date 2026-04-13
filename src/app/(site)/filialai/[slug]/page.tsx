@@ -12,6 +12,7 @@ import { FeaturedArticleCard } from "@/components/shared/FeaturedArticleCard";
 import { OptimizedImage } from "@/components/shared/OptimizedImage";
 import { ServiceCard } from "@/components/shared/ServiceCard";
 import { StructuredData } from "@/components/shared/StructuredData";
+import { BranchTeamSection } from "@/components/sections/BranchTeamSection";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -26,8 +27,10 @@ import {
   getLocalizedSlug,
   getLocalizedOpeningHours,
   getPrimaryOpeningHours,
+  getSpecialistsForBranch,
   transformBlogPostForCard,
   transformGalleryItemForMosaic,
+  transformSpecialistForCard,
   transformServiceForCard,
 } from "@/lib/public-data";
 import { createLocalizedPageMetadata } from "@/lib/metadata";
@@ -73,8 +76,9 @@ export default async function BranchDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const [services, galleryItems, relatedPosts] = await Promise.all([
+  const [services, branchSpecialists, galleryItems, relatedPosts] = await Promise.all([
     getAvailableServicesForBranch(branch.id),
+    getSpecialistsForBranch(branch.id, 3),
     getGalleryItemsForBranch(branch.id),
     getBlogPostsForBranch(branch.id),
   ]);
@@ -82,6 +86,9 @@ export default async function BranchDetailPage({ params }: PageProps) {
   const openingHours = getLocalizedOpeningHours(branch.opening_hours_json, "lt");
   const trustPoints = getBranchTrustPoints(branch, "lt");
   const serviceCards = services.map((service) => transformServiceForCard(service, "lt"));
+  const specialistCards = branchSpecialists.map((specialist) =>
+    transformSpecialistForCard(specialist, "lt"),
+  );
   const galleryMosaicItems = galleryItems.map((item, index) =>
     transformGalleryItemForMosaic(item, "lt", index),
   );
@@ -394,6 +401,18 @@ export default async function BranchDetailPage({ params }: PageProps) {
         </Container>
       </Section>
 
+      <BranchTeamSection
+        specialists={specialistCards}
+        title="Komanda siame filiale"
+        subtitle="Specialistai"
+        description="Susipazinkite su meistrais, dirbanciais sioje lokacijoje, ir pasirinkite jums artimiausia profili."
+        eyebrowLabel="Komanda"
+        ctaLabel="Susisiekti su filialu"
+        ctaHref="#kontaktai"
+        analyticsPlacement="branch_detail_team"
+        branchSlug={resolvedSlug}
+      />
+
       {trustPoints.length > 0 ? (
         <Section className="border-y border-border/50 bg-[linear-gradient(180deg,#f5f0ea_0%,#fbf8f4_100%)]">
           <Container>
@@ -446,7 +465,12 @@ export default async function BranchDetailPage({ params }: PageProps) {
         </Section>
       ) : null}
 
-      <GallerySection items={galleryMosaicItems} locale="lt" />
+      <GallerySection
+        items={galleryMosaicItems}
+        locale="lt"
+        variant="supporting"
+        analyticsPlacement="branch_detail_gallery_preview"
+      />
 
       {blogCards.length > 0 ? (
         <Section className="bg-background">
